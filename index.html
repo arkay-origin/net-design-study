@@ -551,6 +551,195 @@ const DATA = [
      ]
     },
     "card": "What does BFD do when it misses packets within the detect timer, and what does it work with?"
+   },
+   {
+    "q": "Which design technique helps limit EIGRP topology changes from propagating throughout an enterprise network?",
+    "a": [
+     "Route summarization at distribution boundaries"
+    ],
+    "why": "Summarizing at distribution boundaries hides the detailed prefixes behind them, so a flap inside one block doesn't ripple (or drive queries) across the whole network.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "Disabling DUAL",
+      "Route summarization at distribution boundaries",
+      "Using a single flat routing topology",
+      "Increasing the number of non-stub neighbors"
+     ],
+     "c": [
+      1
+     ]
+    }
+   },
+   {
+    "q": "What is an EIGRP feasible successor?",
+    "a": [
+     "A loop-free backup route meeting the feasibility condition"
+    ],
+    "why": "A feasible successor is a backup path whose reported distance is lower than the current feasible distance (the feasibility condition), which guarantees it's loop-free and usable instantly.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "Any route with a lower administrative distance",
+      "The route with the highest bandwidth",
+      "A loop-free backup route meeting the feasibility condition",
+      "A route learned exclusively from BGP"
+     ],
+     "c": [
+      2
+     ]
+    }
+   },
+   {
+    "q": "When does an EIGRP route typically enter the active state?",
+    "a": [
+     "When its successor is lost and no suitable feasible successor is available"
+    ],
+    "why": "A route goes active when the successor is lost and no feasible successor exists, so DUAL has to send queries to find a new path.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "When a router has two equal-cost successors",
+      "When its successor is lost and no suitable feasible successor is available",
+      "Whenever a hello packet arrives",
+      "Whenever route summarization is enabled"
+     ],
+     "c": [
+      1
+     ]
+    }
+   },
+   {
+    "q": "What is the primary design benefit of configuring branch routers as EIGRP stubs?",
+    "a": [
+     "They reduce unnecessary query propagation toward branch sites"
+    ],
+    "why": "Stub branches aren't used as transit and aren't queried, so a failure elsewhere doesn't send queries out to every branch.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "They become preferred transit routers",
+      "They automatically disable all routing advertisements",
+      "They prevent all interface failures",
+      "They reduce unnecessary query propagation toward branch sites"
+     ],
+     "c": [
+      3
+     ]
+    }
+   },
+   {
+    "q": "Which route does a hub commonly advertise to spokes to minimize spoke routing-table size?",
+    "a": [
+     "0.0.0.0/0"
+    ],
+    "why": "The hub can send spokes just a default route (0.0.0.0/0), keeping spoke routing tables tiny while still reaching everything through the hub.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "0.0.0.0/0",
+      "255.255.255.255/32",
+      "Every corporate /24 prefix",
+      "Only the WAN transit subnet"
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "Which aggregate covers 10.1.0.0/24 through 10.1.3.0/24?",
+    "a": [
+     "10.1.0.0/22"
+    ],
+    "why": "10.1.0.0 to 10.1.3.255 is four /24s, which is exactly one /22 (255.255.252.0).",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "10.1.0.0/23",
+      "10.1.0.0/22",
+      "10.1.0.0/25",
+      "10.1.0.0/16 only"
+     ],
+     "c": [
+      1
+     ]
+    }
+   },
+   {
+    "q": "What is a major concern when redistributing routes between multiple EIGRP autonomous systems?",
+    "a": [
+     "Route feedback, loops, and unintended route selection"
+    ],
+    "why": "Redistributing between EIGRP ASes can feed routes back into the domain they came from, causing loops and odd path choices, so it needs filtering or tagging.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "EIGRP stops supporting IPv4",
+      "All routes automatically become connected",
+      "Route feedback, loops, and unintended route selection",
+      "DUAL is disabled across the enterprise"
+     ],
+     "c": [
+      2
+     ]
+    }
+   },
+   {
+    "q": "What is the main role of Bidirectional Forwarding Detection (BFD) when integrated with EIGRP?",
+    "a": [
+     "Detect forwarding-path failures quickly and notify EIGRP"
+    ],
+    "why": "BFD detects a broken forwarding path in milliseconds and tells EIGRP, which then reconverges. BFD itself doesn't do any routing.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "Calculate EIGRP composite metrics",
+      "Replace the routing table",
+      "Detect forwarding-path failures quickly and notify EIGRP",
+      "Redistribute routes between EIGRP processes"
+     ],
+     "c": [
+      2
+     ]
+    }
+   },
+   {
+    "q": "How does Cisco Nonstop Forwarding (NSF) differ from ordinary EIGRP failover?",
+    "a": [
+     "NSF seeks to preserve packet forwarding during supported control-plane switchover events"
+    ],
+    "why": "NSF (with graceful restart) keeps forwarding packets on known routes during a supervisor or control-plane switchover. Normal failover reconverges onto a new path after a failure.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "NSF seeks to preserve packet forwarding during supported control-plane switchover events",
+      "NSF makes every route a feasible successor",
+      "NSF replaces the need for redundant hardware",
+      "NSF guarantees zero loss during any physical link failure"
+     ],
+     "c": [
+      0
+     ]
+    }
    }
   ],
   "refs": [
@@ -927,6 +1116,216 @@ const DATA = [
      ],
      "c": [
       0
+     ]
+    }
+   },
+   {
+    "q": "A large OSPF area experiences frequent link flaps and high router CPU utilization. Which design change most directly reduces the scope of detailed topology changes?",
+    "a": [
+     "Divide the network into appropriately sized areas with ABRs"
+    ],
+    "why": "Splitting a big area into smaller ones with ABRs keeps each area's detailed topology changes (and SPF runs) inside that area.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "Increase the OSPF Hello interval on all interfaces",
+      "Divide the network into appropriately sized areas with ABRs",
+      "Configure every router as a DR",
+      "Redistribute all routes into BGP"
+     ],
+     "c": [
+      1
+     ]
+    }
+   },
+   {
+    "q": "Which LSA type does an OSPFv2 ABR typically originate to advertise inter-area prefix reachability?",
+    "a": [
+     "Type 3"
+    ],
+    "why": "ABRs advertise inter-area prefixes as Type 3 summary LSAs. Type 1 and 2 stay within an area, and Type 5 carries external routes.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "Type 1",
+      "Type 2",
+      "Type 3",
+      "Type 5"
+     ],
+     "c": [
+      2
+     ]
+    }
+   },
+   {
+    "q": "An OSPF ASBR redistributes four contiguous external /24 networks: 192.168.8.0/24 through 192.168.11.0/24. Which summary is appropriate?",
+    "a": [
+     "192.168.8.0/22"
+    ],
+    "why": "192.168.8.0 to 192.168.11.255 is four /24s, which is one /22. On an ASBR that's done with summary-address.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "192.168.8.0/22",
+      "192.168.8.0/23",
+      "192.168.0.0/24",
+      "192.168.8.0/21"
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "A branch area must redistribute a local static route into OSPF but should not receive ordinary Type 5 external LSAs from the backbone. Which area type best fits?",
+    "a": [
+     "Not-so-stubby area (NSSA)"
+    ],
+    "why": "An NSSA blocks Type 5 externals from the backbone but still lets the area inject its own external routes as Type 7 LSAs, which the ABR converts to Type 5.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "Standard stub area",
+      "Totally stubby area",
+      "Backbone area",
+      "Not-so-stubby area (NSSA)"
+     ],
+     "c": [
+      3
+     ]
+    }
+   },
+   {
+    "q": "On an Ethernet broadcast segment with multiple OSPF routers, what is the main purpose of electing a DR and BDR?",
+    "a": [
+     "Reduce the number of full adjacencies and streamline LSA exchange"
+    ],
+    "why": "On a broadcast segment every router fully peers only with the DR and BDR, so there are far fewer adjacencies and LSA flooding goes through the DR.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "Eliminate the need for Hello packets",
+      "Reduce the number of full adjacencies and streamline LSA exchange",
+      "Replace the SPF algorithm",
+      "Prevent inter-area routing"
+     ],
+     "c": [
+      1
+     ]
+    }
+   },
+   {
+    "q": "Which symptom most strongly suggests an OSPF control-plane instability issue that should be investigated?",
+    "a": [
+     "Repeated neighbor state changes with frequent SPF runs"
+    ],
+    "why": "Neighbours repeatedly going up and down, with frequent SPF runs, point to an unstable link or routing problem. Correlate with interface logs and CPU.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "Consistently low CPU and stable adjacencies",
+      "A single user forgetting a password",
+      "Repeated neighbor state changes with frequent SPF runs",
+      "A server reaching its disk capacity"
+     ],
+     "c": [
+      2
+     ]
+    }
+   },
+   {
+    "q": "A company places Finance in OSPF Area 20 and Employees in Area 10. Which statement about security is accurate?",
+    "a": [
+     "A firewall or ACL is needed to enforce traffic restrictions; areas alone do not isolate traffic"
+    ],
+    "why": "OSPF areas only divide the routing topology. They don't block any traffic, so separating Finance from Employees needs a firewall or ACLs.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "Different OSPF areas automatically block user traffic",
+      "ABR route summarization encrypts traffic between areas",
+      "OSPF authentication replaces firewall policy",
+      "A firewall or ACL is needed to enforce traffic restrictions; areas alone do not isolate traffic"
+     ],
+     "c": [
+      3
+     ]
+    }
+   },
+   {
+    "q": "Where should an internal segmentation firewall be positioned to inspect employee-to-finance traffic?",
+    "a": [
+     "On the actual forwarding path between the security zones"
+    ],
+    "why": "A firewall can only inspect traffic that actually passes through it, so it must sit on the forwarding path between the two zones.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "On the actual forwarding path between the security zones",
+      "Anywhere in Area 0, regardless of forwarding path",
+      "Only on the Internet edge",
+      "Only on the OSPF DR"
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "A hub-and-spoke WAN has many unstable spoke links. Which ABR placement can help keep spoke-link topology changes out of Area 0?",
+    "a": [
+     "Place area boundaries at the hub so spoke WAN links are in nonbackbone areas"
+    ],
+    "why": "Putting the ABRs at the hub keeps flapping spoke WAN links in non-backbone areas, so their changes don't churn Area 0.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "Make all WAN-facing spoke links part of Area 0",
+      "Place area boundaries at the hub so spoke WAN links are in nonbackbone areas",
+      "Make every spoke an ASBR and redistribute connected routes",
+      "Place every router in Area 0"
+     ],
+     "c": [
+      1
+     ]
+    }
+   },
+   {
+    "q": "Which Cisco IOS/IOS XE OSPF command is used on an ABR to summarize Area 1 inter-area routes into 10.20.0.0/22?",
+    "a": [
+     "area 1 range 10.20.0.0 255.255.252.0"
+    ],
+    "why": "area <id> range on the ABR summarizes inter-area routes. summary-address is for external routes on an ASBR.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "summary-address 10.20.0.0 255.255.252.0",
+      "network 10.20.0.0 0.0.3.255 area 0",
+      "area 1 range 10.20.0.0 255.255.252.0",
+      "default-information originate always"
+     ],
+     "c": [
+      2
      ]
     }
    }
@@ -1392,6 +1791,216 @@ const DATA = [
       0,
       1,
       2
+     ]
+    }
+   },
+   {
+    "q": "Which statement best describes IS-IS?",
+    "a": [
+     "A link-state interior gateway protocol that uses SPF"
+    ],
+    "why": "IS-IS is a link-state IGP that runs Dijkstra's SPF, like OSPF.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "An exterior gateway protocol based on path vectors",
+      "A link-state interior gateway protocol that uses SPF",
+      "A distance-vector protocol that uses hop count",
+      "A Layer 4 transport protocol"
+     ],
+     "c": [
+      1
+     ]
+    }
+   },
+   {
+    "q": "What is the primary purpose of Level 1 routing in IS-IS?",
+    "a": [
+     "Routing within an IS-IS area"
+    ],
+    "why": "Level 1 routes within an area. Level 2 carries routing between areas (the backbone).",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "Routing within an IS-IS area",
+      "Routing exclusively between autonomous systems",
+      "Replacing the Ethernet data-link layer",
+      "Electing a BGP route reflector"
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "Two IS-IS Level 1-only routers are connected but have different area addresses. What is the expected result?",
+    "a": [
+     "They do not establish an IS-IS adjacency"
+    ],
+    "why": "Level 1 adjacencies need a matching area address. With different areas and no Level 2 capability, no adjacency forms.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "They establish a Level 2 adjacency",
+      "They establish both Level 1 and Level 2 adjacencies",
+      "They do not establish an IS-IS adjacency",
+      "They automatically change to Level 1-2"
+     ],
+     "c": [
+      2
+     ]
+    }
+   },
+   {
+    "q": "Which router type maintains both Level 1 and Level 2 link-state databases?",
+    "a": [
+     "Level 1-2 router"
+    ],
+    "why": "A Level 1-2 router takes part in both levels and keeps a separate LSDB for each.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "Level 1-only router",
+      "Level 2-only router",
+      "End system",
+      "Level 1-2 router"
+     ],
+     "c": [
+      3
+     ]
+    }
+   },
+   {
+    "q": "On an IS-IS broadcast network, which device is elected to represent the shared segment as a pseudonode?",
+    "a": [
+     "Designated Intermediate System (DIS)"
+    ],
+    "why": "The DIS represents a broadcast segment as a pseudonode. Unlike OSPF there's no backup DIS, and a better router can take over the role.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "Backup Designated Router (BDR)",
+      "Designated Intermediate System (DIS)",
+      "Area Border Router (ABR)",
+      "Route reflector"
+     ],
+     "c": [
+      1
+     ]
+    }
+   },
+   {
+    "q": "Which IS-IS PDU is used primarily to discover and maintain neighbors?",
+    "a": [
+     "Hello (IIH)"
+    ],
+    "why": "IS-IS Hellos (IIHs) find and keep neighbours. LSPs carry the topology information.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "Hello (IIH)",
+      "BGP UPDATE",
+      "OSPF Type 5 LSA",
+      "ICMP Echo Request"
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "Where is IS-IS authentication information carried?",
+    "a": [
+     "In the Authentication TLV (TLV 10) inside the IS-IS PDU"
+    ],
+    "why": "IS-IS carries authentication in TLV 10 inside its PDUs. It validates them but doesn't encrypt anything.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "In a separate TCP trailer",
+      "In an IPv4 authentication header",
+      "In the Authentication TLV (TLV 10) inside the IS-IS PDU",
+      "Only in Ethernet frame checksums"
+     ],
+     "c": [
+      2
+     ]
+    }
+   },
+   {
+    "q": "Two connected Level 1-2 routers belong to different IS-IS areas. Which adjacency can they form if other settings match?",
+    "a": [
+     "Level 2 only"
+    ],
+    "why": "Level 2 adjacencies can form across different areas, but Level 1 needs the same area, so two L1-2 routers in different areas form Level 2 only.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "Level 1 only",
+      "Level 2 only",
+      "Both Level 1 and Level 2",
+      "Neither level under any circumstances"
+     ],
+     "c": [
+      1
+     ]
+    }
+   },
+   {
+    "q": "Which statement correctly compares OSPF and IS-IS hierarchy?",
+    "a": [
+     "OSPF uses Area 0 as its backbone; IS-IS uses a Level 2 topology"
+    ],
+    "why": "OSPF's backbone is Area 0. IS-IS has no special area number; its backbone is the chain of Level 2 routers.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "Both require a specially numbered Area 0",
+      "IS-IS requires a BGP backbone",
+      "OSPF uses Area 0 as its backbone; IS-IS uses a Level 2 topology",
+      "Neither protocol supports areas"
+     ],
+     "c": [
+      2
+     ]
+    }
+   },
+   {
+    "q": "Which statement about traditional IS-IS metrics is correct?",
+    "a": [
+     "On common Cisco defaults, interface metric is 10 regardless of interface bandwidth"
+    ],
+    "why": "Cisco IS-IS defaults every interface to metric 10 whatever the bandwidth, so you must set metrics yourself if you want faster links preferred.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "Interface cost is always derived automatically from bandwidth",
+      "Every interface defaults to cost 1 on all implementations",
+      "IS-IS uses hop count only",
+      "On common Cisco defaults, interface metric is 10 regardless of interface bandwidth"
+     ],
+     "c": [
+      3
      ]
     }
    }
@@ -2348,6 +2957,90 @@ const DATA = [
      ],
      "c": [
       0
+     ]
+    }
+   },
+   {
+    "q": "Which BGP address family is used to exchange IPv6 unicast reachability information?",
+    "a": [
+     "IPv6 unicast"
+    ],
+    "why": "MP-BGP carries IPv6 routes in the IPv6 unicast address family.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "IPv4 unicast",
+      "IPv6 unicast",
+      "VPNv4 only",
+      "L2VPN only"
+     ],
+     "c": [
+      1
+     ]
+    }
+   },
+   {
+    "q": "What format does the BGP router ID use, even when exchanging IPv6 routes?",
+    "a": [
+     "32-bit dotted-decimal identifier"
+    ],
+    "why": "The BGP router ID is always a 32-bit number written like an IPv4 address, even on an IPv6-only router (where you set it manually).",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "128-bit IPv6 address",
+      "48-bit MAC address",
+      "32-bit dotted-decimal identifier",
+      "Autonomous system number"
+     ],
+     "c": [
+      2
+     ]
+    }
+   },
+   {
+    "q": "A route tagged NO_EXPORT is learned by a router in AS 65000. Which advertisement is normally permitted?",
+    "a": [
+     "To an iBGP peer within AS 65000"
+    ],
+    "why": "NO_EXPORT routes can go to iBGP peers inside the AS (or confederation) but not to external ASes.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "To an iBGP peer within AS 65000",
+      "To any external AS",
+      "Only to a non-BGP protocol",
+      "To all transit providers"
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "What is the primary purpose of a BGP community list used with a route map?",
+    "a": [
+     "Match routes by community so policy actions can be applied"
+    ],
+    "why": "A community list matches routes by their community tags, so a route map can then apply policy (set local preference, filter and so on) to them.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "Assign IP addresses to interfaces",
+      "Match routes by community so policy actions can be applied",
+      "Replace the BGP AS_PATH",
+      "Establish MPLS labels automatically"
+     ],
+     "c": [
+      1
      ]
     }
    }
