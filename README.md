@@ -13,7 +13,15 @@ A self-contained study course for the Cisco ENSLD 300-420 (Designing Cisco Enter
 - **Weak areas** – mastery per section, weakest first, with a one-tap drill.
 - **Cheat sheet** – key terms, design comparisons, ports and exam tips by topic, with a filter box.
 
-Everything lives in one file (`index.html`) with no build step. Progress is saved in your own browser (localStorage), so it stays on your device and isn't shared.
+## Also included
+
+- **Spaced repetition** – flash cards you mark "Got it" come back after 1, 3, 7, 14, 30 and 60 days; "Due today" shows what's ready.
+- **Bookmarks** – tap ☆ on any question in the study guide, flash cards or practice test, then study or test just those.
+- **Test-day summary** – weakest sections, questions missed twice or more, and your mock exam trend on one page.
+- **Progress backup** – save your progress to a file and restore it on another device.
+- **Works offline** – on your phone, use "Add to Home screen" (Android) or Share → "Add to Home Screen" (iPhone). After the first visit it opens without internet.
+
+The course is one file (`index.html`); `manifest.webmanifest`, `sw.js` and the icons make it installable and available offline. Progress is saved in your own browser (localStorage), so it stays on your device and isn't shared.
 
 ## Updating
 

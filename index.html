@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>ENSLD 300-420 Study Guide</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0c0b10"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" href="icon-192.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="ENSLD Study"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>ENSLD 300-420 Study Guide</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700&family=Saira:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
@@ -194,6 +194,19 @@ button.wrow:hover .nm{color:var(--tan)}
 .views{display:grid;grid-template-columns:repeat(4,auto)}
 .views button+button{border-left:1px solid var(--tan-dim)}
 @media (max-width:560px){.views{grid-template-columns:1fr 1fr;width:100%}.views button:nth-child(3){border-left:0}.views button:nth-child(n+3){border-top:1px solid var(--tan-dim)}}
+.seg{flex-wrap:wrap}
+.star{background:none;border:0;padding:0 2px;margin-left:6px;font-size:1.05rem;line-height:1;color:var(--muted);cursor:pointer;vertical-align:baseline}
+.star[aria-pressed="true"]{color:var(--red)}
+.star:hover{color:var(--tan)}
+.foot{border-top:1px solid var(--line);padding-top:16px;margin-top:8px}
+.foot .btnrow>*{flex:1 1 160px}
+.sumq{display:flex;flex-direction:column;gap:6px;padding:12px 0;border-top:1px solid var(--line);font-size:.92rem}
+.sumq .mq{margin:0;font-weight:500}
+.sumq ul{margin:0;padding-left:16px;color:var(--tan);font-weight:600}
+.trend{display:flex;align-items:flex-end;gap:6px;height:90px;padding-top:6px}
+.trend i{flex:1;max-width:36px;background:var(--tan-dim);border-radius:2px 2px 0 0;position:relative}
+.trend i.lo{background:var(--red)}
+.trend i span{position:absolute;top:-16px;left:0;right:0;text-align:center;font:500 .66rem var(--mono);color:var(--muted)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style><style>body{margin:0}img{max-width:100%}</style></head><body>
 
@@ -226,6 +239,8 @@ button.wrow:hover .nm{color:var(--tan)}
       <button type="button" id="m-all" data-mode="all">All cards</button>
       <button type="button" id="m-new" data-mode="new">Not mastered</button>
       <button type="button" id="m-rev" data-mode="rev">Review pile</button>
+      <button type="button" id="m-due" data-mode="due">Due today</button>
+      <button type="button" id="m-star" data-mode="star">Bookmarked</button>
     </div>
     <div style="display:flex;gap:8px">
       <button class="tool" id="shuffleBtn" type="button">Shuffle</button>
@@ -244,6 +259,10 @@ button.wrow:hover .nm{color:var(--tan)}
 
   <section id="cheatView" class="wrap" hidden></section>
 </div>
+<div class="wrap foot" style="margin:0 auto"><div class="tpanel" style="background:none;border:0;padding:0"><span class="label">Your progress</span>
+  <p class="tsub">Progress is saved in this browser only. Back it up to a file to move it to another device or keep it safe if you clear your browser.</p>
+  <div class="btnrow"><button type="button" class="go alt" id="bkSave">Back up progress</button><button type="button" class="go alt" id="bkLoad">Restore from file</button></div>
+  <input type="file" id="bkFile" accept="application/json,.json" hidden><p class="tsub" id="bkMsg" aria-live="polite"></p></div></div>
 <button type="button" class="top" id="toTop" hidden>Top ↑</button>
 
 <script>
@@ -967,10 +986,10 @@ const DATA = [
     },
     "mc": {
      "o": [
-      "All of the above (number of prefixes, flapping links, adjacent neighbours per router, adjacent routers in an area).",
+      "All of the above.",
       "Number of prefixes only.",
       "Flapping links only.",
-      "Number of adjacent neighbours for any one router only."
+      "Number of adjacent neighbours only."
      ],
      "c": [
       0
@@ -2810,8 +2829,8 @@ const DATA = [
      "o": [
       "100",
       "0",
-      "There is no default local preference value.",
-      "It depends on the Cisco IOS Software release."
+      "200",
+      "No default value"
      ],
      "c": [
       0
@@ -3197,9 +3216,9 @@ const DATA = [
     "mc": {
      "o": [
       "StackWise.",
-      "Layer 2 loop-free design.",
-      "Layer 2 looped design.",
-      "Layer 3 routed design."
+      "Looped Layer 2 design.",
+      "Loop-free Layer 2 design.",
+      "Routed access design."
      ],
      "c": [
       0
@@ -3220,8 +3239,8 @@ const DATA = [
      "o": [
       "Dropbox",
       "WordPress",
-      "A company's own on-premises data centre",
-      "A private cloud hosted for one company"
+      "On-premises data centre",
+      "Single-tenant private cloud"
      ],
      "c": [
       0,
@@ -3372,8 +3391,8 @@ const DATA = [
      "o": [
       "STP.",
       "FHRP.",
-      "Slower speeds for access.",
-      "No VLANs can span access switches."
+      "Slower access speeds.",
+      "VLANs cannot span switches."
      ],
      "c": [
       0
@@ -3587,10 +3606,10 @@ const DATA = [
     },
     "mc": {
      "o": [
-      "Cisco StackWise Virtual.",
-      "PAgP.",
-      "STP.",
-      "VTP."
+      "StackWise Virtual.",
+      "EtherChannel with PAgP.",
+      "Rapid PVST+.",
+      "VTP pruning."
      ],
      "c": [
       0
@@ -3762,7 +3781,7 @@ const DATA = [
       "1.",
       "2.",
       "3.",
-      "One per VLAN."
+      "4."
      ],
      "c": [
       0
@@ -3809,7 +3828,7 @@ const DATA = [
     },
     "mc": {
      "o": [
-      "Static persistence (mode on).",
+      "Static (mode on).",
       "LACP active.",
       "PAgP desirable.",
       "LACP passive."
@@ -4575,9 +4594,9 @@ const DATA = [
       "Graceful restart",
       "NSF",
       "Slowing down information propagation",
-      "Removing all summarization.",
-      "Speeding up information propagation.",
-      "Speeding up network convergence timers."
+      "Removing all summarization",
+      "Speeding up information propagation",
+      "Speeding up network convergence timers"
      ],
      "c": [
       0,
@@ -4992,9 +5011,9 @@ const DATA = [
      "o": [
       "NetFlow records detailed per-flow data (who talked to whom, ports, volume)",
       "SNMP and RMON collect device and interface statistics",
-      "NetFlow only counts total bytes per interface.",
-      "SNMP records full per-flow conversations.",
-      "RMON replaces both and needs no probes."
+      "NetFlow only counts total bytes per interface",
+      "SNMP records full per-flow conversations",
+      "RMON replaces both and needs no probes"
      ],
      "c": [
       0,
@@ -5021,8 +5040,8 @@ const DATA = [
      "o": [
       "In-band management uses the same network as user traffic",
       "Out-of-band management uses a separate, dedicated network",
-      "In-band management needs a separate physical network.",
-      "Out-of-band management shares the user data network."
+      "In-band management needs a separate physical network",
+      "Out-of-band management shares the user data network"
      ],
      "c": [
       0,
@@ -5268,12 +5287,12 @@ const DATA = [
     },
     "mc": {
      "o": [
-      "DNA Center software",
+      "Cisco DNA Center",
       "Identity Services Engine (ISE)",
       "Wired and wireless fabric",
-      "Cisco TACACS+",
-      "DMVPN",
-      "SGACLs"
+      "TACACS+ server",
+      "DMVPN hub routers",
+      "Stacked access switches"
      ],
      "c": [
       0,
@@ -5872,7 +5891,7 @@ const DATA = [
       "VRFs",
       "Cisco TrustSec",
       "mGRE tunnels",
-      "Identity Services Engine (ISE)"
+      "Private VLANs"
      ],
      "c": [
       0,
@@ -6943,7 +6962,7 @@ const DATA = [
       "PE router.",
       "CE router.",
       "P router.",
-      "A router in the customer's own routing domain."
+      "Customer core router."
      ],
      "c": [
       0
@@ -7050,9 +7069,9 @@ const DATA = [
     "mc": {
      "o": [
       "Area 0.",
-      "An internal area.",
+      "Area 1.",
       "A stub area.",
-      "An external area."
+      "An NSSA."
      ],
      "c": [
       0
@@ -9408,10 +9427,10 @@ const DATA = [
     },
     "mc": {
      "o": [
-      "TLOCs (transport locators)",
-      "OMP",
-      "BFD",
-      "IPsec"
+      "TLOCs",
+      "OMP routes",
+      "BFD sessions",
+      "IPsec SAs"
      ],
      "c": [
       0
@@ -9546,7 +9565,7 @@ const DATA = [
     "src": "Cert Guide",
     "mc": {
      "o": [
-      "OMP (Overlay Management Protocol)",
+      "OMP",
       "BGP",
       "IKEv2",
       "BFD"
@@ -10096,10 +10115,10 @@ const DATA = [
     "card": "Which devices must vSmart controllers have IP reachability to?",
     "mc": {
      "o": [
-      "vBond, other vSmarts, vManage, and WAN Edges",
-      "vBond only",
-      "Other vSmarts only",
-      "WAN Edges only"
+      "vBond, other vSmarts, vManage and WAN Edges",
+      "vBond and vManage only",
+      "Other vSmarts and vManage only",
+      "WAN Edges and vBond only"
      ],
      "c": [
       0
@@ -10147,7 +10166,7 @@ const DATA = [
     },
     "mc": {
      "o": [
-      "Four (one per transport)",
+      "Four",
       "One",
       "Two",
       "Three"
@@ -10225,7 +10244,7 @@ const DATA = [
      "o": [
       "AWS",
       "VirtualBox",
-      "Hyper-V on a laptop",
+      "VMware Workstation",
       "Oracle Cloud Free Tier"
      ],
      "c": [
@@ -10381,7 +10400,7 @@ const DATA = [
      "o": [
       "NAT traversal",
       "A dedicated MPLS transport",
-      "A public IP behind no firewall at all",
+      "A public IP with no firewall",
       "BGP peering with the ISP"
      ],
      "c": [
@@ -10789,8 +10808,8 @@ const DATA = [
      "o": [
       "ENCS",
       "UCS-E",
-      "WAN Edge",
-      "Cisco IOS XE SD-WAN Edge",
+      "Catalyst 9300",
+      "ASR 1000",
       "ESXi"
      ],
      "c": [
@@ -10835,10 +10854,10 @@ const DATA = [
     },
     "mc": {
      "o": [
-      "vOrchestrator",
-      "vBond",
-      "vSmart",
-      "vManage"
+      "vOrchestrator (PnP Connect)",
+      "vBond orchestrator",
+      "vSmart controller",
+      "vManage NMS"
      ],
      "c": [
       0
@@ -10939,10 +10958,10 @@ const DATA = [
     "dup": false,
     "mc": {
      "o": [
-      "Cisco Integrated Services Virtual Router (ISRv)",
-      "ESXi host",
-      "NFV Infrastructure Software (NFVIS)",
-      "Cisco ISR router"
+      "Cisco ISRv",
+      "Cisco ASAv",
+      "Cisco CSR 1000v",
+      "Cisco vWAAS"
      ],
      "c": [
       0
@@ -11303,7 +11322,7 @@ const DATA = [
       "VRRP",
       "HSRP",
       "GLBP",
-      "VRRPv3 with object tracking only on the vSmart"
+      "CARP"
      ],
      "c": [
       0
@@ -11446,9 +11465,9 @@ const DATA = [
     "mc": {
      "o": [
       "Cisco Secure Endpoint with Threat Grid",
-      "Enterprise firewall",
-      "IPS",
-      "Cisco Umbrella"
+      "Enterprise firewall with IPS",
+      "Cisco URL Filtering",
+      "Cisco Umbrella DNS security"
      ],
      "c": [
       0
@@ -11471,7 +11490,7 @@ const DATA = [
     "mc": {
      "o": [
       "IPS",
-      "Cisco URL Filtering",
+      "URL Filtering",
       "Enterprise firewall",
       "DNS inspection"
      ],
@@ -11602,7 +11621,7 @@ const DATA = [
       "Network service routes",
       "OMP routes",
       "TLOC routes",
-      "VPN routes"
+      "Static VPN routes"
      ],
      "c": [
       0
@@ -12104,7 +12123,7 @@ const DATA = [
     "card": "Name four common traffic descriptors used for QoS classification.",
     "mc": {
      "o": [
-      "All of the above (CoS, DSCP, IP precedence, MPLS EXP bits)",
+      "All of the above",
       "CoS only",
       "DSCP only",
       "IP precedence only"
@@ -12341,7 +12360,7 @@ const DATA = [
     "src": "Cert Guide",
     "mc": {
      "o": [
-      "EF (Expedited Forwarding)",
+      "EF",
       "DSCP 46",
       "AF41",
       "CS3",
@@ -13048,8 +13067,8 @@ const DATA = [
      "o": [
       "One packet",
       "One packet per receiver",
-      "Two packets, one per tree",
-      "One packet per subnet with receivers"
+      "One packet per tree",
+      "One packet per subnet"
      ],
      "c": [
       0
@@ -13204,9 +13223,9 @@ const DATA = [
     "mc": {
      "o": [
       "The packet is discarded.",
-      "An error message is sent to the source address.",
-      "The packet is forwarded based on the unicast routing table.",
-      "The packet is forwarded out all the interfaces in the OIL."
+      "An ICMP error is sent to the source.",
+      "It is forwarded using the unicast table.",
+      "It is forwarded out every OIL interface."
      ],
      "c": [
       0
@@ -13283,9 +13302,9 @@ const DATA = [
     "mc": {
      "o": [
       "Multicast router",
-      "Receiver",
-      "Sender",
-      "Source"
+      "Multicast receiver",
+      "Multicast sender",
+      "Multicast source"
      ],
      "c": [
       0
@@ -13485,9 +13504,9 @@ const DATA = [
     "src": "Cert Guide",
     "mc": {
      "o": [
-      "224.0.0.0/4 (224.0.0.0 to 239.255.255.255), the old Class D",
+      "224.0.0.0/4",
       "240.0.0.0/4",
-      "224.0.0.0/8 only",
+      "224.0.0.0/8",
       "232.0.0.0/8"
      ],
      "c": [
@@ -13591,7 +13610,7 @@ const DATA = [
     "src": "Cert Guide",
     "mc": {
      "o": [
-      "SSM (Source-Specific Multicast)",
+      "PIM-SSM",
       "PIM-SM",
       "BIDIR-PIM",
       "PIM-DM"
@@ -13617,7 +13636,7 @@ const DATA = [
     "src": "Cert Guide",
     "mc": {
      "o": [
-      "MSDP (Multicast Source Discovery Protocol)",
+      "MSDP",
       "MP-BGP",
       "IGMP",
       "Auto-RP"
@@ -13895,8 +13914,8 @@ const DATA = [
      "o": [
       "Designated Forwarder (DF)",
       "Rendezvous Point (RP)",
-      "Receiver",
-      "Source"
+      "Designated Router (DR)",
+      "Bootstrap Router (BSR)"
      ],
      "c": [
       0
@@ -13945,8 +13964,8 @@ const DATA = [
      "o": [
       "Three winner messages are sent to give a better candidate the opportunity to respond with an offer.",
       "A winner message may be sent to update information in neighbouring routers.",
-      "No action is taken.",
-      "The RP elects a new DF."
+      "No action is taken, and the current DF keeps forwarding until it fails.",
+      "The RP elects a new DF and announces it with a winner message."
      ],
      "c": [
       0
@@ -14292,9 +14311,9 @@ const DATA = [
     },
     "mc": {
      "o": [
-      "They should be identical.",
+      "They should advertise identical mappings.",
       "Each should advertise a different subset.",
-      "Only one should hold the mappings; the others stay empty.",
+      "Only one should hold mappings; the others stay empty.",
       "They should use different RP addresses for the same groups."
      ],
      "c": [
@@ -14691,10 +14710,10 @@ const DATA = [
     },
     "mc": {
      "o": [
-      "An extra private address space",
-      "NAT",
+      "Extra private address space",
+      "Static NAT",
       "Readdressing",
-      "Expanding the mask"
+      "A longer subnet mask"
      ],
      "c": [
       0
@@ -14792,9 +14811,9 @@ const DATA = [
     "mc": {
      "o": [
       "VLAN",
-      "Building number",
-      "Department number",
-      "Location number"
+      "Building",
+      "Department",
+      "Location"
      ],
      "c": [
       0
@@ -14867,9 +14886,9 @@ const DATA = [
     "mc": {
      "o": [
       "They offer scalability in networks that were not designed to accommodate new services.",
-      "They solve problems with VoIP call quality.",
-      "They provide a layer of security.",
-      "They remove the need for DHCP."
+      "They solve call-quality problems for voice and video traffic.",
+      "They provide a layer of security between departments.",
+      "They remove the need for DHCP on the new subnets."
      ],
      "c": [
       0
@@ -15190,9 +15209,9 @@ const DATA = [
     "mc": {
      "o": [
       "Renumbering",
-      "Running out of addresses",
-      "Inability to use ISP-provided addresses",
-      "Too few subnets for a large enterprise"
+      "Address exhaustion",
+      "ISP lock-in",
+      "Too few subnets"
      ],
      "c": [
       0
@@ -15342,10 +15361,10 @@ const DATA = [
     "card": "What is the main downside of provider-independent IPv6 space?",
     "mc": {
      "o": [
-      "The service provider has to advertise your prefix alongside its own, increasing the global routing table; it can't be aggregated.",
-      "You can never change service providers without renumbering.",
-      "Provider-independent space cannot be used for multihoming.",
-      "Your prefix cannot be summarized inside your own network."
+      "The provider must advertise your prefix separately, growing the global routing table",
+      "You can never change providers without renumbering",
+      "PI space cannot be used for multihoming",
+      "Your prefix cannot be summarized inside your own network"
      ],
      "c": [
       0
@@ -15608,9 +15627,9 @@ const DATA = [
     "src": "Cert Guide",
     "mc": {
      "o": [
-      "Neighbor Discovery (ICMPv6 Neighbor Solicitation and Neighbor Advertisement)",
+      "Neighbor Discovery (ND)",
       "ARPv6",
-      "DHCPv6",
+      "DHCPv6 relay",
       "Inverse ARP"
      ],
      "c": [
@@ -15746,9 +15765,9 @@ const DATA = [
     "mc": {
      "o": [
       "SLAAC",
-      "DHCPv6 stateful",
-      "DNS AAAA record",
-      "DNS PTR record"
+      "Stateful DHCPv6",
+      "DNS AAAA",
+      "DNS PTR"
      ],
      "c": [
       0
@@ -16048,9 +16067,9 @@ const DATA = [
     "mc": {
      "o": [
       "IPv6 implementation and optimization",
-      "IPv6 discovery",
-      "IPv6 assessment",
-      "IPv6 planning"
+      "IPv6 discovery and assessment",
+      "IPv6 planning and design",
+      "IPv4 readdressing and cleanup"
      ],
      "c": [
       0
@@ -16460,8 +16479,8 @@ const DATA = [
       "JSON",
       "XML",
       "HTML",
-      "YAML only for device configs",
-      "CSV"
+      "CSV",
+      "YAML"
      ],
      "c": [
       0,
@@ -17005,10 +17024,10 @@ const DATA = [
     "src": "Cert Guide",
     "mc": {
      "o": [
-      "A data modelling language that describes the structure of configuration and operational data",
+      "A data modelling language that describes configuration and operational data",
       "A transport protocol that replaces SSH for device management",
       "An encoding format, like JSON or XML",
-      "A Cisco CLI scripting language"
+      "A Cisco CLI scripting language for automation"
      ],
      "c": [
       0
@@ -17400,8 +17419,8 @@ const DATA = [
     "mc": {
      "o": [
       "Model-driven telemetry",
-      "SNMP",
-      "RESTCONF",
+      "SNMP polling",
+      "RESTCONF GET requests",
       "CLI show commands"
      ],
      "c": [
@@ -17630,9 +17649,9 @@ const DATA = [
      "o": [
       "As objects change",
       "Periodically",
-      "Continually, regardless of changes",
-      "Never to a subscriber",
-      "Only when requested by the subscriber"
+      "Continually, whether or not anything changes",
+      "Never sent to a subscriber",
+      "Only when the subscriber requests it"
      ],
      "c": [
       0,
@@ -17760,10 +17779,10 @@ const DATA = [
     "src": "Cert Guide",
     "mc": {
      "o": [
-      "The device streams (pushes) data to a collector instead of being polled, which is faster and more efficient",
-      "SNMP polling uses less bandwidth because it only sends data on request",
-      "Telemetry needs no collector",
-      "Telemetry works without YANG models"
+      "The device pushes data to a collector instead of being polled",
+      "SNMP polling uses less bandwidth because data is only sent on request",
+      "Telemetry needs no collector or receiver",
+      "Telemetry works without any YANG models"
      ],
      "c": [
       0
@@ -17878,7 +17897,7 @@ const KEY='ndfc-v1';
 function load(){try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return {}}}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 let S=load();
-S.marks=S.marks||{};S.known=S.known||(S.secs?S.secs.slice():[]);S.secs=S.secs||DATA.map(s=>s.name);S.mode=S.mode||'all';
+S.marks=S.marks||{};S.stars=S.stars||{};S.sr=S.sr||{};var DAY=86400000,SRINT=[0,1,3,7,14,30,60];S.known=S.known||(S.secs?S.secs.slice():[]);S.secs=S.secs||DATA.map(s=>s.name);S.mode=S.mode||'all';
 DATA.forEach(s=>{if(!S.known.includes(s.name)){S.known.push(s.name);if(!S.secs.includes(s.name))S.secs.push(s.name)}});
 let queue=[],pos=0,flipped=false,shuffled=S.shuffled||false;
 
@@ -17889,19 +17908,21 @@ function build(){
   let list=CARDS.filter(c=>S.secs.includes(c.sec));
   if(S.mode==='new')list=list.filter(c=>S.marks[c.id]!=='k');
   if(S.mode==='rev')list=list.filter(c=>S.marks[c.id]==='r');
+  if(S.mode==='due'){list=list.filter(c=>srDue(c));list.sort((a,b)=>((S.sr[a.id]||{}).due||0)-((S.sr[b.id]||{}).due||0))}
+  if(S.mode==='star')list=list.filter(c=>S.stars[c.id]);
   if(shuffled){for(let i=list.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[list[i],list[j]]=[list[j],list[i]]}}
   queue=list;pos=0;flipped=false;render();
 }
 function chips(){
   $('chips').innerHTML=DATA.map(s=>`<button type="button" class="chip${s.book?' bk':''}" aria-pressed="${S.secs.includes(s.name)}" data-s="${esc(s.name)}">${esc(SHORT[s.name]||s.name)} <span style="opacity:.6">${s.qs.length}</span></button>`).join('');
   $('allBtn').textContent=S.secs.length===DATA.length?'Clear all':'Select all';
-  ['all','new','rev'].forEach(m=>$('m-'+m).setAttribute('aria-pressed',S.mode===m));
+  ['all','new','rev','due','star'].forEach(m=>$('m-'+m).setAttribute('aria-pressed',S.mode===m));
   $('shuffleBtn').textContent=shuffled?'In order':'Shuffle';
 }
 function tally(){
   const sel=CARDS.filter(c=>S.secs.includes(c.sec));
   const k=sel.filter(c=>S.marks[c.id]==='k').length,r=sel.filter(c=>S.marks[c.id]==='r').length;
-  $('tally').innerHTML=`<span><b>${sel.length}</b> cards</span><span class="k"><b>${k}</b> mastered</span><span class="r"><b>${r}</b> to review</span>`;
+  $('tally').innerHTML=`<span><b>${sel.length}</b> cards</span><span class="k"><b>${k}</b> mastered</span><span class="r"><b>${r}</b> to review</span><span><b>${sel.filter(c=>srDue(c)).length}</b> due</span><span><b>${sel.filter(c=>S.stars[c.id]).length}</b> ★</span>`;
   $('bar').style.width=(sel.length?k/sel.length*100:0)+'%';
 }
 function render(){
@@ -17909,15 +17930,15 @@ function render(){
   const st=$('stage');
   if(!S.secs.length){st.innerHTML=`<div class="card done" style="cursor:default"><h2>No sections picked</h2><p>Choose at least one section above to start.</p></div>`;return}
   if(pos>=queue.length){
-    const msg=queue.length?'You went through every card in this set.':(S.mode==='rev'?'Nothing in the review pile for these sections.':'Every card in these sections is mastered.');
+    const msg=queue.length?'You went through every card in this set.':(S.mode==='rev'?'Nothing in the review pile for these sections.':S.mode==='due'?'Nothing due right now. Cards you mark "Got it" come back after 1, 3, 7, 14, 30, then 60 days.':S.mode==='star'?'No bookmarked cards in these sections. Tap ☆ on a card to bookmark it.':'Every card in these sections is mastered.');
     st.innerHTML=`<div class="card done" style="cursor:default"><h2>${queue.length?'Deck complete':'All clear'}</h2><p>${msg}</p><button class="tool" id="again" type="button">Start this set again</button></div>`;
     $('again').onclick=build;return;
   }
   const c=queue[pos],m=S.marks[c.id];
-  const status=m==='k'?'<span class="st-k">Mastered</span>':m==='r'?'<span class="st-r">Reviewing</span>':'<span>New</span>';
+  const nx=srNext(c),status=m==='k'?`<span class="st-k">Mastered${nx?' · '+nx:''}</span>`:m==='r'?'<span class="st-r">Reviewing</span>':'<span>New</span>';
   st.innerHTML=`
   <div class="card${flipped?' flipped':''}" id="card" tabindex="0" role="button" aria-label="${flipped?'Hide answer':'Show answer'}">
-    <div class="meta"><span>${esc(SHORT[c.sec]||c.sec)} · Q${c.num}${c.src?' · '+esc(c.src):''}</span><span>${pos+1} / ${queue.length} · ${status}</span></div>
+    <div class="meta"><span>${esc(SHORT[c.sec]||c.sec)} · Q${c.num}${c.src?' · '+esc(c.src):''}</span><span>${pos+1} / ${queue.length} · ${status}${starBtn(c.id)}</span></div>
     <p class="q">${esc(c.card||c.q)}</p>
     ${c.dia?`<div class="dia">${c.dia}</div>`:''}
     ${flipped?`<div class="ans"><ul>${(c.ca||c.a).map(a=>`<li>${esc(a)}</li>`).join('')}</ul>
@@ -17939,7 +17960,7 @@ function render(){
 function flip(){flipped=!flipped;render()}
 function grade(g){
   if(!flipped)return;
-  const c=queue[pos];S.marks[c.id]=g;save();
+  const c=queue[pos];S.marks[c.id]=g;srGrade(c,g);save();
   if(g==='r'){const at=Math.min(queue.length,pos+4);queue.splice(at,0,c)}
   pos++;flipped=false;render();
 }
@@ -17950,7 +17971,7 @@ $('shuffleBtn').onclick=()=>{shuffled=!shuffled;S.shuffled=shuffled;save();build
 let armed=false;
 $('resetBtn').onclick=()=>{
   if(!armed){armed=true;$('resetBtn').textContent='Tap again to confirm';$('resetBtn').style.color='var(--red)';setTimeout(()=>{armed=false;$('resetBtn').textContent='Reset progress';$('resetBtn').style.color=''},3000);return}
-  armed=false;S.marks={};save();$('resetBtn').textContent='Reset progress';$('resetBtn').style.color='';build();
+  armed=false;S.marks={};S.sr={};save();$('resetBtn').textContent='Reset progress';$('resetBtn').style.color='';build();
 };
 document.addEventListener('keydown',e=>{
   if(S.view!=='cards')return;
@@ -18008,11 +18029,16 @@ function renderGuide(){
     g.querySelectorAll('.hit').forEach(b=>b.onclick=()=>{const si=+b.dataset.s,i=+b.dataset.i;$('q').value='';openSec(DATA[si].name,i)});
     return;
   }
+  if(S.gsec==='__star'){const L=CARDS.filter(c=>S.stars[c.id]);
+    g.innerHTML=`<div class="secnav"><button type="button" class="tool" id="gBack">← All sections</button></div><div class="gsec"><h2>Bookmarked<small>${L.length} Q</small></h2>${L.length?L.map((c,i)=>`<details class="gq"><summary><h3><span class="n">${esc(SHORT[c.sec]||c.sec)} Q${c.num}</span><span>${esc(c.q)}${starBtn(c.id)}</span></h3>${c.dia?`<div class="dia">${c.dia}</div>`:''}<span class="tapr">Show answer</span></summary>${qBody(c,'')}</details>`).join(''):'<p class="tsub">Nothing bookmarked yet. Tap ☆ next to any question.</p>'}</div>`;
+    $('gBack').onclick=()=>{S.gsec=null;save();renderGuide();goTo(0)};return}
   const cur=S.gsec&&SECBY[S.gsec]!==undefined?S.gsec:null;
   if(!cur){ // menu
-    g.innerHTML=`<p class="tsub">${CARDS.length} questions in ${DATA.length} sections. Pick a section to study, or search above.</p>`+GROUPS.map(([gn,names])=>`<div class="mgrp"><div class="label">${esc(gn)}</div><div class="weak">${names.filter(n=>SECBY[n]!==undefined).map(n=>{const s=DATA[SECBY[n]],p=pctOf(n),lo=p!==null&&p<60;
+    const nst=starCount();
+    g.innerHTML=`<p class="tsub">${CARDS.length} questions in ${DATA.length} sections. Pick a section to study, or search above.</p>`+(nst?`<div class="mgrp"><div class="weak"><button type="button" class="wrow" id="gStar"><span class="nm">★ Bookmarked questions</span><span class="pc">${nst}</span></button></div></div>`:'')+GROUPS.map(([gn,names])=>`<div class="mgrp"><div class="label">${esc(gn)}</div><div class="weak">${names.filter(n=>SECBY[n]!==undefined).map(n=>{const s=DATA[SECBY[n]],p=pctOf(n),lo=p!==null&&p<60;
       return `<button type="button" class="wrow" data-n="${esc(n)}"><span class="nm" style="white-space:normal">${esc(n)}</span><span class="pc${lo?' lo':''}">${p===null?`<span style="color:var(--muted)">${s.qs.length} Q</span>`:p+'%'}</span>${p===null?'':`<span class="wb"><i class="${lo?'lo':''}" style="width:${p}%"></i></span><span class="dt">${s.qs.length} questions</span>`}</button>`}).join('')}</div></div>`).join('');
-    g.querySelectorAll('.wrow').forEach(b=>b.onclick=()=>openSec(b.dataset.n));
+    g.querySelectorAll('.wrow[data-n]').forEach(b=>b.onclick=()=>openSec(b.dataset.n));
+    if($('gStar'))$('gStar').onclick=()=>{S.gsec='__star';save();renderGuide();goTo(0)};
     return;
   }
   const si=SECBY[cur],s=DATA[si],prev=DATA[si-1],next=DATA[si+1],p=pctOf(cur);
@@ -18021,7 +18047,7 @@ function renderGuide(){
   <div class="gsec"><h2>${esc(s.name)}<small>${s.qs.length} Q${p!==null?' · '+p+'% known':''}</small></h2>
   ${s.intro&&s.intro.length?`<details class="fold"><summary>Cheat sheet</summary>${intro(s)}</details>`:''}
   ${s.refs&&s.refs.length?`<details class="fold bk"><summary>Cert Guide notes</summary>${bookPanel(s)}</details>`:''}
-  <div>${s.qs.map((c,i)=>`<details class="gq" id="gq-${i}"${gExpand?' open':''}><summary><h3><span class="n">Q${i+1}</span><span>${esc(c.q)}${c.src?` <span class="srctag">${esc(c.src)}</span>`:''}</span></h3>${c.dia?`<div class="dia">${c.dia}</div>`:''}<span class="tapr">Show answer</span></summary>${qBody(c,'')}</details>`).join('')}</div></div>
+  <div>${s.qs.map((c,i)=>`<details class="gq" id="gq-${i}"${gExpand?' open':''}><summary><h3><span class="n">Q${i+1}</span><span>${esc(c.q)}${c.src?` <span class="srctag">${esc(c.src)}</span>`:''}${c.dup?'':starBtn(cid(s.name,i,c.q))}</span></h3>${c.dia?`<div class="dia">${c.dia}</div>`:''}<span class="tapr">Show answer</span></summary>${qBody(c,'')}</details>`).join('')}</div></div>
   <div class="secnav">${prev?`<button type="button" class="tool" id="gPrev">← ${esc(SHORT[prev.name]||prev.name)}</button>`:'<span></span>'}${next?`<button type="button" class="tool" id="gNext">${esc(SHORT[next.name]||next.name)} →</button>`:''}</div>`;
   $('gBack').onclick=()=>{S.gsec=null;save();renderGuide();goTo(0)};
   $('gExp').onclick=()=>{gExpand=!gExpand;g.querySelectorAll('details.gq').forEach(d=>d.open=gExpand);$('gExp').textContent=gExpand?'Collapse all':'Expand all'};
@@ -18076,9 +18102,11 @@ function tEnd(){ // finish a run; unanswered questions count as wrong in a mock
   else r.qs=r.qs.filter(q=>q.res!==null);
   r.done=true;T.showRes=!!r.qs.length;if(!r.qs.length)T.cur=null;tSave();tRender();goTo(0);
 }
+function tRenderX(){}
 function tRender(){
   const v=$('testView');if(tTick){clearInterval(tTick);tTick=null}
   if(T.cur&&!T.cur.done)return tQuestion(v);
+  if(T.view==='sum')return tSummary(v);
   if(T.cur&&T.cur.done&&T.showRes)return tResults(v);
   return tSetup(v);
 }
@@ -18103,7 +18131,7 @@ function tSetup(v){
       <span class="nm">${esc(SHORT[w.name]||w.name)}</span><span class="pc${lo?' lo':''}">${w.seen?w.pct+'%':'<span style="color:var(--muted)">new</span>'}</span>
       ${w.seen?`<span class="wb"><i class="${lo?'lo':''}" style="width:${w.pct}%"></i></span>
       <span class="dt">${w.ok} of ${w.total} known · ${w.tested} tested${w.tested?` (${Math.round(w.tOk/w.tested*100)}% right)`:''}</span>`:''}</button>`}).join('')}</div>
-    <div class="btnrow"><button type="button" class="go alt" id="tWeak">Drill weakest 3</button></div>
+    <div class="btnrow"><button type="button" class="go alt" id="tWeak">Drill weakest 3</button><button type="button" class="go alt" id="tSum">Test-day summary</button>${starCount()?`<button type="button" class="go alt" id="tStar">Test bookmarked (${CARDS.filter(c=>S.stars[c.id]&&c.mc).length})</button>`:''}</div>
   </div>
   <div class="tpanel">
     <h2>New test</h2>
@@ -18127,6 +18155,8 @@ function tSetup(v){
   $('tCount').onclick=e=>{const b=e.target.closest('button');if(!b)return;cfg.count=b.dataset.n==='all'?'all':+b.dataset.n;tSave();tSetup(v)};
   $('tFb').onclick=e=>{const b=e.target.closest('button');if(!b)return;cfg.fb=b.dataset.f;tSave();tSetup(v)};
   $('tGo').onclick=()=>tStart(tPickIds(cfg.secs,cfg.count),cfg.fb);
+  $('tSum').onclick=()=>{T.view='sum';tRender();goTo(0)};
+  if($('tStar'))$('tStar').onclick=()=>tStart(shuf(CARDS.filter(c=>S.stars[c.id]&&c.mc).map(c=>c.id)),cfg.fb);
   $('tMock').onclick=()=>tStart(EXAM.map(e=>'mock#'+e.n),'exam',true);
   if($('tLast'))$('tLast').onclick=()=>{T.showRes=true;tSave();tRender();goTo(0)};
   v.querySelectorAll('.wrow').forEach(b=>b.onclick=()=>tStart(tPickIds([b.dataset.sec],cfg.count),cfg.fb));
@@ -18166,7 +18196,7 @@ function tQuestion(v){
   <div class="tally"><span><b>${r.i+1}</b> of ${r.qs.length}</span><span>${r.mock?`Mock exam · <b id="tClock">${fmtT(r.deadline-Date.now())}</b> left`:r.fb==='exam'?'Exam style':'Feedback after each'}</span></div>
   <div class="bar"><i style="width:${r.i/r.qs.length*100}%"></i></div>
   <div class="card" style="cursor:default;min-height:0">
-    <div class="meta"><span>${esc(SHORT[c.sec]||c.sec)} · Q${c.num}${c.src&&!r.mock?' · '+esc(c.src):''}</span></div>
+    <div class="meta"><span>${esc(SHORT[c.sec]||c.sec)} · Q${c.num}${c.src&&!r.mock?' · '+esc(c.src):''}</span>${c.mock?'':starBtn(c.id)}</div>
     <p class="q">${esc(c.q)}</p>
     ${c.dia?`<div class="dia">${c.dia}</div>`:''}
     ${body}
@@ -18253,6 +18283,57 @@ function renderCheat(){
     box.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{box.querySelectorAll('.opt').forEach(o=>{o.disabled=true;const k=+o.dataset.k;if(k===x.a){o.classList.add('ok');o.querySelector('.bx').textContent='✓'}else if(o===b)o.classList.add('bad')});box.querySelector('.why').hidden=false})});
 }
 
+// ----- stars, spaced repetition helpers, backup, summary -----
+function cid(secName,i,q){return secName+'#'+(i+1)+'#'+q.slice(0,40)}
+function starBtn(id){const on=!!S.stars[id];return `<button type="button" class="star" data-star="${esc(id)}" aria-pressed="${on}" aria-label="${on?'Remove bookmark':'Bookmark this question'}" title="Bookmark">${on?'★':'☆'}</button>`}
+function starCount(){return CARDS.filter(c=>S.stars[c.id]).length}
+document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('.star');if(!b)return;
+  e.preventDefault();e.stopPropagation();const id=b.dataset.star;
+  if(S.stars[id])delete S.stars[id];else S.stars[id]=1;save();
+  document.querySelectorAll('.star').forEach(x=>{if(x.dataset.star===id){const on=!!S.stars[id];x.setAttribute('aria-pressed',on);x.textContent=on?'★':'☆'}});
+  if(S.view==='cards')tally();},true);
+function srDue(c){const r=S.sr[c.id];if(!r)return S.marks[c.id]?true:false;return r.due<=Date.now()}
+function srNext(c){const r=S.sr[c.id];if(!r||r.due<=Date.now())return '';const d=Math.ceil((r.due-Date.now())/DAY);return d<=1?'due tomorrow':`next in ${d} days`}
+function srGrade(c,g){const r=S.sr[c.id]||{b:0};
+  if(g==='k'){r.b=Math.min((r.b||0)+1,SRINT.length-1);const t=new Date();t.setHours(4,0,0,0);r.due=t.getTime()+SRINT[r.b]*DAY}
+  else{r.b=0;r.due=Date.now()}
+  S.sr[c.id]=r}
+
+// backup / restore
+function backup(){
+  const data={app:'ensld-study',v:1,at:new Date().toISOString(),flash:S,test:T};
+  const blob=new Blob([JSON.stringify(data)],{type:'application/json'}),a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);a.download='ensld-progress-'+new Date().toISOString().slice(0,10)+'.json';document.body.appendChild(a);a.click();
+  setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500);
+  $('bkMsg').textContent='Saved a backup file. Keep it somewhere you can reach from your other device.';
+}
+function restore(file){
+  const rd=new FileReader();rd.onload=()=>{try{const d=JSON.parse(rd.result);if(d.app!=='ensld-study'||!d.flash)throw 0;
+    localStorage.setItem(KEY,JSON.stringify(d.flash));localStorage.setItem(TKEY,JSON.stringify(d.test||{}));
+    $('bkMsg').textContent='Progress restored. Reloading…';setTimeout(()=>location.reload(),600)}
+    catch(e){$('bkMsg').textContent="That file isn't a progress backup from this course."}};rd.readAsText(file)}
+$('bkSave').onclick=backup;$('bkLoad').onclick=()=>$('bkFile').click();$('bkFile').onchange=e=>{if(e.target.files[0])restore(e.target.files[0]);e.target.value=''};
+
+// test-day summary
+function tSummary(v){
+  const W=weakList().filter(w=>w.seen).slice(0,5);
+  const rep=POOL.filter(c=>{const h=T.hist[c.id];return h&&h.n-h.c>=2}).sort((a,b)=>(T.hist[b.id].n-T.hist[b.id].c)-(T.hist[a.id].n-T.hist[a.id].c));
+  const M=T.mocks,stars=CARDS.filter(c=>S.stars[c.id]);
+  const due=CARDS.filter(c=>srDue(c)).length;
+  v.innerHTML=`
+  <div class="secnav"><button type="button" class="tool" id="sBack">← Back to tests</button></div>
+  <div class="tpanel"><h2>Test-day summary</h2><p class="tsub">One page for the final review: where you're weakest, what you keep missing, and how your mock exams are trending.</p>
+    <p class="tsub" style="color:var(--ink)">${CARDS.length} questions · ${Object.keys(T.hist).length} tested · ${due} flash card${due===1?'':'s'} due · ${stars.length} bookmarked</p></div>
+  <div class="tpanel"><h2>Weakest sections</h2>${W.length?`<div class="weak">${W.map(w=>{const lo=w.pct<60;return `<button type="button" class="wrow" data-sec="${esc(w.name)}"><span class="nm">${esc(SHORT[w.name]||w.name)}</span><span class="pc${lo?' lo':''}">${w.pct}%</span><span class="wb"><i class="${lo?'lo':''}" style="width:${w.pct}%"></i></span><span class="dt">${w.ok} of ${w.total} known · tap to test</span></button>`}).join('')}</div>`:'<p class="tsub">Nothing started yet. Do some flash cards or a practice test first.</p>'}</div>
+  <div class="tpanel"><h2>Mock exam trend</h2>${M.length?`<div class="trend">${M.slice(-12).map(m=>{const p=Math.round(m.ok/m.n*100);return `<i class="${p<60?'lo':''}" style="height:${Math.max(p,3)}%"><span>${p}</span></i>`}).join('')}</div><p class="tsub">Last ${Math.min(M.length,12)} attempts, oldest on the left. Best ${Math.max(...M.map(m=>Math.round(m.ok/m.n*100)))}%.</p>`:'<p class="tsub">No mock exam attempts yet.</p>'}</div>
+  <div class="tpanel"><h2>Missed twice or more</h2>${rep.length?`<div class="btnrow"><button type="button" class="go" id="sRep">Test these ${rep.length}</button></div><div>${rep.slice(0,40).map(c=>`<div class="sumq"><p class="mq">${esc(c.q)} ${starBtn(c.id)}</p><ul>${(c.mc.order?c.a:c.mc.c.map(k=>c.mc.o[k])).map(a=>`<li>${esc(a)}</li>`).join('')}</ul>${c.why?`<p class="why"><b>Why</b>${esc(c.why)}</p>`:''}<p class="ref">${esc(SHORT[c.sec]||c.sec)} · Q${c.num} · missed ${T.hist[c.id].n-T.hist[c.id].c} of ${T.hist[c.id].n}</p></div>`).join('')}</div>`:'<p class="tsub">No question missed twice yet.</p>'}</div>
+  <div class="tpanel"><h2>Bookmarked</h2>${stars.length?`<div class="btnrow"><button type="button" class="go alt" id="sStar">Test bookmarked (${stars.filter(c=>c.mc).length})</button></div>`:'<p class="tsub">Tap ☆ on any question to bookmark it.</p>'}</div>`;
+  $('sBack').onclick=()=>{T.view=null;tRender();goTo(0)};
+  v.querySelectorAll('.wrow').forEach(b=>b.onclick=()=>{T.view=null;tStart(tPickIds([b.dataset.sec],T.cfg.count),T.cfg.fb)});
+  if($('sRep'))$('sRep').onclick=()=>{T.view=null;tStart(shuf(rep.map(c=>c.id)),'instant')};
+  if($('sStar'))$('sStar').onclick=()=>{T.view=null;tStart(shuf(stars.filter(c=>c.mc).map(c=>c.id)),T.cfg.fb)};
+}
+
 renderGuide();setView(S.view);
 </script>
-</body></html>
+<script>if('serviceWorker' in navigator&&location.protocol==='https:'){addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))}</script></body></html>
