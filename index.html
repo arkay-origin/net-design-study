@@ -740,6 +740,51 @@ const DATA = [
       0
      ]
     }
+   },
+   {
+    "q": "An EIGRP router has a successor feasible distance of 900. A neighbor reports a distance of 850 and a total metric of 1200. How is the neighbor route classified?",
+    "a": [
+     "Feasible successor"
+    ],
+    "why": "Feasibility condition: the neighbour's reported distance (850) is less than the current feasible distance (900), so the path is loop-free and becomes a feasible successor, even though its total metric (1200) is higher.",
+    "note": "",
+    "dup": false,
+    "src": "Mock exam",
+    "mc": {
+     "o": [
+      "Not loop-free",
+      "Feasible successor",
+      "Successor regardless of metric",
+      "External route only"
+     ],
+     "c": [
+      1
+     ]
+    }
+   },
+   {
+    "q": "A redistribution boundary connects OSPF and EIGRP domains. Which two controls most directly reduce route feedback loops?",
+    "a": [
+     "Route tagging with matching filters",
+     "Explicit prefix filtering"
+    ],
+    "why": "Tagging routes as they're redistributed, and filtering on those tags (plus explicit prefix filters), stops routes leaking back into the domain they came from.",
+    "note": "",
+    "dup": false,
+    "src": "Mock exam",
+    "mc": {
+     "o": [
+      "Route tagging with matching filters",
+      "Unrestricted bidirectional redistribution",
+      "Explicit prefix filtering",
+      "Disabling administrative distance globally",
+      "Increasing OSPF hello timers"
+     ],
+     "c": [
+      0,
+      2
+     ]
+    }
    }
   ],
   "refs": [
@@ -3380,6 +3425,27 @@ const DATA = [
       0
      ]
     }
+   },
+   {
+    "q": "An IP phone requires power to remain available during a supported switch control-plane reload. Which PoE capability is most relevant?",
+    "a": [
+     "Perpetual PoE"
+    ],
+    "why": "Perpetual PoE keeps power flowing to phones and other PoE devices while the switch's control plane reloads. Fast PoE restores power quickly after a full power-up.",
+    "note": "",
+    "dup": false,
+    "src": "Mock exam",
+    "mc": {
+     "o": [
+      "Perpetual PoE",
+      "LACP",
+      "VACL",
+      "WOL"
+     ],
+     "c": [
+      0
+     ]
+    }
    }
   ],
   "refs": [
@@ -4961,6 +5027,27 @@ const DATA = [
      "c": [
       0,
       1
+     ]
+    }
+   },
+   {
+    "q": "A company wants its operations traffic isolated from user traffic using a separate routing instance. Which solution is most appropriate?",
+    "a": [
+     "Management VRF"
+    ],
+    "why": "A management VRF gives operations traffic its own routing table, separate from user traffic, even when it shares the same physical network.",
+    "note": "",
+    "dup": false,
+    "src": "Mock exam",
+    "mc": {
+     "o": [
+      "Management VRF",
+      "Single shared default VRF",
+      "Disable SSH",
+      "Increase DSCP for all user traffic"
+     ],
+     "c": [
+      0
      ]
     }
    }
@@ -7334,6 +7421,27 @@ const DATA = [
      ],
      "c": [
       1
+     ]
+    }
+   },
+   {
+    "q": "A company requires private high-capacity optical transport between data centers across a metropolitan area. Which technology is most closely associated with wavelength multiplexing?",
+    "a": [
+     "DWDM"
+    ],
+    "why": "DWDM carries many wavelengths over one fibre pair, giving very high private capacity between sites in a metro area.",
+    "note": "",
+    "dup": false,
+    "src": "Mock exam",
+    "mc": {
+     "o": [
+      "DWDM",
+      "NHRP",
+      "PIM-SM",
+      "VRRP"
+     ],
+     "c": [
+      0
      ]
     }
    }
@@ -14988,6 +15096,27 @@ const DATA = [
       0
      ]
     }
+   },
+   {
+    "q": "A company allocates a /16 to 16 branches. Each branch must receive a summarizable block supporting up to 12 /24 networks. Which allocation best meets the requirement?",
+    "a": [
+     "Assign one /20 per branch"
+    ],
+    "why": "A /20 holds sixteen /24s, enough for 12 with room to grow, and summarizes as one route. Sixteen /20s fit exactly in a /16.",
+    "note": "",
+    "dup": false,
+    "src": "Mock exam",
+    "mc": {
+     "o": [
+      "Assign one /24 per branch",
+      "Assign one /20 per branch",
+      "Assign one /22 per branch",
+      "Assign one /28 per branch"
+     ],
+     "c": [
+      1
+     ]
+    }
    }
   ]
  },
@@ -17696,6 +17825,48 @@ const DATA = [
       1
      ]
     }
+   },
+   {
+    "q": "A design calls for a vendor-neutral YANG model maintained by an industry community for network interfaces. Which model family is most appropriate?",
+    "a": [
+     "OpenConfig"
+    ],
+    "why": "OpenConfig is a vendor-neutral set of YANG models written by an operator-led industry group. IETF models are standards-body models, and native models are vendor-specific.",
+    "note": "",
+    "dup": false,
+    "src": "Mock exam",
+    "mc": {
+     "o": [
+      "OpenConfig",
+      "Cisco proprietary YANG only",
+      "MST",
+      "OSPF LSAs"
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "A controller needs streaming model-driven telemetry over a gRPC-based network management interface. Which protocol is most appropriate?",
+    "a": [
+     "gNMI"
+    ],
+    "why": "gNMI runs over gRPC and handles both configuration and streaming model-driven telemetry.",
+    "note": "",
+    "dup": false,
+    "src": "Mock exam",
+    "mc": {
+     "o": [
+      "gNMI",
+      "TACACS+",
+      "STP",
+      "NHRP"
+     ],
+     "c": [
+      0
+     ]
+    }
    }
   ]
  }
@@ -17869,7 +18040,12 @@ let T=tLoad();T.hist=T.hist||{};T.cfg=T.cfg||{};
 T.cfg.secs=T.cfg.secs||DATA.map(s=>s.name);T.cfg.count=T.cfg.count||25;T.cfg.fb=T.cfg.fb||'instant';
 const POOL=CARDS.filter(c=>c.mc);
 const BYID={};POOL.forEach(c=>BYID[c.id]=c);
+const EXAM=[{"n": 1, "dom": "Routing", "q": "A company allocates a /16 to 16 branches. Each branch must receive a summarizable block supporting up to 12 /24 networks. Which allocation best meets the requirement?", "o": ["Assign one /24 per branch", "Assign one /20 per branch", "Assign one /22 per branch", "Assign one /28 per branch"], "c": [1], "why": "A /20 holds sixteen /24s, enough for 12 with room to grow, and summarizes as one route. Sixteen /20s fit exactly in a /16."}, {"n": 2, "dom": "Routing", "q": "An EIGRP router has a successor feasible distance of 900. A neighbor reports a distance of 850 and a total metric of 1200. How is the neighbor route classified?", "o": ["Not loop-free", "Feasible successor", "Successor regardless of metric", "External route only"], "c": [1], "why": "Feasibility condition: the neighbour's reported distance (850) is less than the current feasible distance (900), so the path is loop-free and becomes a feasible successor, even though its total metric (1200) is higher."}, {"n": 3, "dom": "Routing", "q": "A large EIGRP hub-and-spoke network experiences excessive queries when a remote route fails. Which two changes help contain queries?", "o": ["Configure spokes as EIGRP stubs", "Disable route summarization", "Summarize routes at distribution boundaries", "Increase the number of transit spokes", "Use a single flat query domain"], "c": [0, 2], "why": "Stub spokes and summaries limit query propagation."}, {"n": 4, "dom": "Routing", "q": "An OSPF area must allow a local ASBR to redistribute routes while limiting Type 5 external LSAs. Which area type fits?", "o": ["Stub", "Totally stubby", "NSSA", "Backbone"], "c": [2], "why": "An NSSA carries redistributed external routes as Type 7 LSAs."}, {"n": 5, "dom": "Routing", "q": "A network designer wants OSPF interarea summarization for a group of branch prefixes. Where should the summary be configured?", "o": ["On each internal router", "On the ABR", "On the DR", "On every host default gateway"], "c": [1], "why": "An ABR originates interarea summary information."}, {"n": 6, "dom": "Routing", "q": "An IS-IS design needs routers in different areas to exchange reachability. Which routing level supplies interarea connectivity?", "o": ["Level 1 only", "Level 2", "DIS only", "CSNP only"], "c": [1], "why": "IS-IS Level 2 connects areas."}, {"n": 7, "dom": "Routing", "q": "On a broadcast IS-IS segment, which statement about the DIS is accurate?", "o": ["A backup DIS is elected", "The DIS creates a pseudonode LSP", "The DIS blocks redundant links", "The DIS is the only router that forwards traffic"], "c": [1], "why": "The DIS represents the broadcast segment using a pseudonode LSP; no backup DIS is elected."}, {"n": 8, "dom": "Routing", "q": "An enterprise wants all iBGP speakers to learn routes without a full mesh. Which design most directly reduces peer count?", "o": ["Route reflection", "Increasing local preference", "Route dampening", "MED tuning"], "c": [0], "why": "Route reflectors propagate eligible iBGP routes to clients."}, {"n": 9, "dom": "Routing", "q": "Two Internet exits advertise the same prefix to internal routers. The enterprise wants all internal routers to prefer exit A for outbound traffic. Which BGP attribute should be set?", "o": ["MED", "Local preference", "Origin code", "AS_PATH prepend on exit A"], "c": [1], "why": "Higher local preference influences outbound selection throughout the AS."}, {"n": 10, "dom": "Routing", "q": "A multihomed enterprise wants to influence which ingress a neighboring AS uses. Which attribute can it advertise as a hint, subject to neighbor policy?", "o": ["Weight", "Local preference", "MED", "IGP cost"], "c": [2], "why": "MED suggests a preferred entry point to a neighboring AS."}, {"n": 11, "dom": "Routing", "q": "Which two mechanisms can support IPv6-only clients reaching IPv4-only services?", "o": ["NAT64", "DNS64", "HSRP", "MST", "LACP"], "c": [0, 1], "why": "DNS64 synthesizes AAAA records and NAT64 translates between address families."}, {"n": 12, "dom": "Routing", "q": "A BGP peer must exchange IPv6 unicast NLRI. Which design element is necessary?", "o": ["IPv6 unicast address family activation", "Only an IPv4 static default route", "MPLS PHP", "OSPF Type 7 translation"], "c": [0], "why": "MP-BGP negotiates and exchanges NLRI through the appropriate address family."}, {"n": 13, "dom": "Routing", "q": "A redistribution boundary connects OSPF and EIGRP domains. Which two controls most directly reduce route feedback loops?", "o": ["Route tagging with matching filters", "Unrestricted bidirectional redistribution", "Explicit prefix filtering", "Disabling administrative distance globally", "Increasing OSPF hello timers"], "c": [0, 2], "why": "Tagging routes as they're redistributed, and filtering on those tags (plus explicit prefix filters), stops routes leaking back into the domain they came from."}, {"n": 14, "dom": "Campus", "q": "A campus must minimize spanning-tree dependencies between access and distribution. Which architecture is most appropriate?", "o": ["Extend all VLANs end to end", "Routed access with Layer 3 uplinks", "Single root bridge for all buildings", "Disable loop protection"], "c": [1], "why": "Routed access limits Layer 2 domains and uses routing convergence."}, {"n": 15, "dom": "Campus", "q": "A distribution pair provides one virtual default gateway for hosts, with an active router and standby router. Which technology meets this requirement?", "o": ["HSRP", "BFD alone", "LACP", "MPLS"], "c": [0], "why": "HSRP provides an active/standby first-hop gateway."}, {"n": 16, "dom": "Campus", "q": "A fiber link fails without an immediate routing protocol dead-timer expiration. Which mechanism provides fast forwarding-path failure detection?", "o": ["BFD", "DHCP snooping", "LLDP", "WRED"], "c": [0], "why": "BFD detects forwarding path failures rapidly when supported and tuned."}, {"n": 17, "dom": "Campus", "q": "Which two features protect access edge ports against unintended spanning-tree participation?", "o": ["BPDU Guard", "PortFast on edge ports", "Increase root priority", "Disable all STP", "Enable trunking on every access port"], "c": [0, 1], "why": "PortFast provides edge behavior; BPDU Guard shuts down an edge port receiving BPDUs."}, {"n": 18, "dom": "Campus", "q": "An organization wants a designated distribution switch to remain spanning-tree root despite superior BPDUs from an access switch. Which feature helps enforce that design?", "o": ["Root Guard", "Storm control", "DHCP relay", "LISP"], "c": [0], "why": "Root Guard prevents a port from accepting a superior root path."}, {"n": 19, "dom": "Campus", "q": "An IP phone requires power to remain available during a supported switch control-plane reload. Which PoE capability is most relevant?", "o": ["Perpetual PoE", "LACP", "VACL", "WOL"], "c": [0], "why": "Perpetual PoE keeps power flowing to phones and other PoE devices while the switch's control plane reloads. Fast PoE restores power quickly after a full power-up."}, {"n": 20, "dom": "Campus", "q": "An enterprise wants to isolate two departments using separate routing domains in an SD-Access fabric. Which feature is designed for this?", "o": ["Virtual networks", "One shared VLAN", "DSCP marking", "RPF"], "c": [0], "why": "Virtual networks provide macrosegmentation through distinct routing domains."}, {"n": 21, "dom": "Campus", "q": "An SDA fabric edge needs to discover the current location of an endpoint. Which control-plane technology provides endpoint mapping?", "o": ["LISP", "VXLAN", "STP", "LACP"], "c": [0], "why": "LISP maps endpoint identifiers to routing locators."}, {"n": 22, "dom": "Campus", "q": "Which technology encapsulates user traffic between SDA fabric nodes?", "o": ["VXLAN", "NETCONF", "RADIUS", "SNMP"], "c": [0], "why": "VXLAN carries overlay data traffic across the IP underlay."}, {"n": 23, "dom": "Campus", "q": "Which two functions are associated with SDA fabric edge nodes?", "o": ["Provide an anycast gateway to endpoints", "Encapsulate endpoint traffic into VXLAN", "Replace all fabric control-plane mapping services", "Act as the Internet DNS root", "Perform WAN OMP route reflection"], "c": [0, 1], "why": "Fabric edges connect endpoints, provide anycast gateways, and encapsulate fabric traffic."}, {"n": 24, "dom": "Campus", "q": "An SDA underlay has an IP MTU of 1500 bytes and carries 1500-byte original Ethernet frames inside VXLAN. What design concern must be addressed?", "o": ["Increase transport MTU to accommodate encapsulation", "Disable all routing protocols", "Use BGP MED", "Turn off anycast gateways"], "c": [0], "why": "VXLAN adds outer headers; the underlay needs adequate MTU to avoid drops or fragmentation."}, {"n": 25, "dom": "Campus", "q": "A multi-building campus needs separate tenant routing tables on shared Layer 3 infrastructure. Which feature fits?", "o": ["VRF", "BPDU filter", "WRED", "NHRP"], "c": [0], "why": "VRFs provide logically separate routing and forwarding tables."}, {"n": 26, "dom": "WAN", "q": "A provider offers customer-specific Layer 3 routing separation across an MPLS backbone. Which service is this?", "o": ["MPLS L3VPN", "GRE alone", "Metro Ethernet point-to-point only", "GETVPN only"], "c": [0], "why": "MPLS L3VPN uses VRFs and VPN routing to isolate customers."}, {"n": 27, "dom": "WAN", "q": "In an MPLS L3VPN, what is the main purpose of a route target?", "o": ["Determine VRF import/export membership", "Make overlapping IPv4 routes globally unique", "Set MPLS TTL", "Encrypt payloads"], "c": [0], "why": "Route targets control VPN route import/export; route distinguishers make VPN prefixes unique."}, {"n": 28, "dom": "WAN", "q": "An enterprise needs dynamic spoke-to-spoke encrypted connectivity over Internet transports. Which architecture best matches?", "o": ["DMVPN using mGRE, NHRP, and IPsec", "Static GRE without encryption", "MPLS PHP", "STP with PortFast"], "c": [0], "why": "DMVPN supports dynamic spoke-to-spoke resolution and commonly uses IPsec for encryption."}, {"n": 29, "dom": "WAN", "q": "An enterprise needs to carry multicast routing packets across an encrypted site-to-site connection. Which two design options may support this requirement?", "o": ["GRE over IPsec", "Supported route-based IPsec VTI with multicast routing", "IPsec tunnel mode always prohibits multicast", "Plain NAT only", "BGP communities alone"], "c": [0, 1], "why": "GRE over IPsec and suitable VTI implementations can carry multicast routing traffic. ENSLD 300-420 | Original practice questions Page 12"}, {"n": 30, "dom": "WAN", "q": "A business wants group encryption on an existing private routed WAN without introducing a traditional tunnel overlay. Which option is most relevant?", "o": ["GETVPN", "DMVPN Phase 1", "LACP", "MST"], "c": [0], "why": "GETVPN protects native routed traffic without traditional point-to-point tunnel encapsulation."}, {"n": 31, "dom": "WAN", "q": "A branch uses one ISP and requires connectivity even if that ISP experiences a regional outage. Which design best improves provider diversity?", "o": ["Second circuit from an independent ISP", "Second cable to same CPE on same ISP", "Increase OSPF cost", "Increase WAN shaping rate"], "c": [0], "why": "Independent providers reduce common-provider failure risk."}, {"n": 32, "dom": "WAN", "q": "Which Cisco SD-WAN component distributes overlay routing and centralized control policies?", "o": ["SD-WAN Controller (vSmart)", "SD-WAN Manager (vManage)", "SD-WAN Validator (vBond)", "WAN Edge data-plane ASIC"], "c": [0], "why": "The controller distributes OMP routes and policies."}, {"n": 33, "dom": "WAN", "q": "A branch application must prefer a path with acceptable latency, loss, and jitter, and move when SLA thresholds are exceeded. Which SD-WAN capability fits?", "o": ["Application-aware routing", "Spanning-tree root election", "LACP hashing", "DHCP snooping"], "c": [0], "why": "Application-aware routing selects paths using measured transport performance."}, {"n": 34, "dom": "WAN", "q": "An SD-WAN edge behind NAT must establish secure overlay connectivity. Which two items are particularly relevant?", "o": ["NAT traversal and supported transport connectivity", "Correct controller/validator reachability", "Disable all certificates", "Use only STP", "Require a public address on every LAN endpoint"], "c": [0, 1], "why": "Onboarding and tunnel establishment depend on NAT handling and reachability to control components."}, {"n": 35, "dom": "WAN", "q": "A company requires private high-capacity optical transport between data centers across a metropolitan area. Which technology is most closely associated with wavelength multiplexing?", "o": ["DWDM", "NHRP", "PIM-SM", "VRRP"], "c": [0], "why": "DWDM carries many wavelengths over one fibre pair, giving very high private capacity between sites in a metro area."}, {"n": 36, "dom": "Network Services", "q": "A WAN edge must smooth traffic bursts to a contracted rate while minimizing unnecessary drops. Which QoS action is preferred?", "o": ["Shaping", "Policing", "BPDU Guard", "Route reflection"], "c": [0], "why": "Shaping buffers bursts and controls egress transmission rate."}, {"n": 37, "dom": "Network Services", "q": "A service provider must enforce a strict traffic contract and immediately drop or remark excess packets. Which mechanism applies?", "o": ["Policing", "Shaping only", "LISP", "NSSA"], "c": [0], "why": "Policing enforces the configured rate without buffering excess traffic."}, {"n": 38, "dom": "Network Services", "q": "Voice packets must receive strict priority under congestion. Which queuing feature is commonly selected?", "o": ["LLQ", "WRED only", "FIFO only", "RPF"], "c": [0], "why": "LLQ provides a priority queue, typically with policing safeguards."}, {"n": 39, "dom": "Network Services", "q": "Which marking is commonly recommended for voice bearer traffic?", "o": ["DSCP EF (46)", "DSCP CS0 (0)", "AF11 (10)", "CS1 (8)"], "c": [0], "why": "Expedited Forwarding EF 46 is commonly used for voice bearer."}, {"n": 40, "dom": "Network Services", "q": "A company wants scalable differentiated traffic treatment without per-flow resource reservations. Which model fits?", "o": ["DiffServ", "IntServ with RSVP per flow", "STP", "PIM bidirectional"], "c": [0], "why": "DiffServ applies class-based treatment using markings."}, {"n": 41, "dom": "Network Services", "q": "A multicast receiver joins a specific (S,G) channel and the design must avoid an RP. Which model should be selected?", "o": ["SSM", "ASM shared tree only", "MSDP RP discovery", "PIM bidirectional only"], "c": [0], "why": "Source-specific multicast uses source/group subscriptions without an RP."}, {"n": 42, "dom": "Network Services", "q": "A PIM-SM multicast packet arrives on an interface that is not the expected path toward its source. What should occur?", "o": ["RPF check fails and packet is discarded", "Packet is always flooded", "Packet becomes a unicast packet", "RP is automatically removed"], "c": [0], "why": "RPF checks prevent multicast loops and unwanted duplicate forwarding."}, {"n": 43, "dom": "Network Services", "q": "A PIM-SM Any-Source Multicast design uses a shared tree. Which node acts as its root?", "o": ["Rendezvous Point", "DR in OSPF", "BGP route reflector", "LACP actor"], "c": [0], "why": "The RP roots the shared tree in PIM-SM ASM."}, {"n": 44, "dom": "Network Services", "q": "A network must remain manageable when its production routing plane is unavailable. Which management approach best supports this goal?", "o": ["Dedicated out-of-band management", "In-band management only", "SNMP over production default route only", "No separate management access"], "c": [0], "why": "An independent OOB network provides a separate management path."}, {"n": 45, "dom": "Network Services", "q": "A company wants its operations traffic isolated from user traffic using a separate routing instance. Which solution is most appropriate?", "o": ["Management VRF", "Single shared default VRF", "Disable SSH", "Increase DSCP for all user traffic"], "c": [0], "why": "A management VRF gives operations traffic its own routing table, separate from user traffic, even when it shares the same physical network."}, {"n": 46, "dom": "Automation", "q": "A design calls for a vendor-neutral YANG model maintained by an industry community for network interfaces. Which model family is most appropriate?", "o": ["OpenConfig", "Cisco proprietary YANG only", "MST", "OSPF LSAs"], "c": [0], "why": "OpenConfig is a vendor-neutral set of YANG models written by an operator-led industry group. IETF models are standards-body models, and native models are vendor-specific."}, {"n": 47, "dom": "Automation", "q": "An automation application needs transactional network configuration operations over SSH using XML RPCs. Which protocol fits?", "o": ["NETCONF", "RESTCONF using JSON only", "SNMP traps", "TFTP"], "c": [0], "why": "NETCONF uses XML-encoded RPCs, commonly over SSH TCP 830."}, {"n": 48, "dom": "Automation", "q": "An application uses HTTPS methods to read and change YANG-modeled resources. Which interface best matches?", "o": ["RESTCONF", "LACP", "IS-IS", "BFD"], "c": [0], "why": "RESTCONF exposes YANG data through HTTP methods."}, {"n": 49, "dom": "Automation", "q": "Telemetry should notify a collector when an operational value changes rather than only at fixed intervals. Which subscription mode fits?", "o": ["On-change", "Periodic only", "Syslog disabled", "Static polling once per day"], "c": [0], "why": "On-change telemetry emits updates when subscribed state changes, subject to implementation."}, {"n": 50, "dom": "Automation", "q": "A controller needs streaming model-driven telemetry over a gRPC-based network management interface. Which protocol is most appropriate?", "o": ["gNMI", "TACACS+", "STP", "NHRP"], "c": [0], "why": "gNMI runs over gRPC and handles both configuration and streaming model-driven telemetry."}],DOMS=['Routing','Campus','WAN','Network Services','Automation'],MOCKMIN=90;
+EXAM.forEach(e=>{BYID['mock#'+e.n]={id:'mock#'+e.n,sec:e.dom,num:e.n,q:e.q,a:e.c.map(k=>e.o[k]),why:e.why,note:'',src:'Mock exam',mc:{o:e.o,c:e.c},mock:true}});
+T.mocks=T.mocks||[];
 if(T.cur&&T.cur.qs.some(x=>!BYID[x.id]))T.cur=null;
+let tTick=null;
+function fmtT(ms){ms=Math.max(0,ms);const m=Math.floor(ms/60000),s=Math.floor(ms%60000/1000);return m+':'+String(s).padStart(2,'0')}
 let tArmed=false;
 function shuf(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 const NUMW=['','one','two','three','four','five','six'];
@@ -17883,16 +18059,25 @@ function secStats(name){
 }
 function weakList(){return DATA.map(s=>secStats(s.name)).sort((a,b)=>(!a.seen)-(!b.seen)||a.pct-b.pct||a.seen-b.seen)}
 
-function tStart(ids,fb){
+function tStart(ids,fb,mock){
   if(!ids.length)return;
-  T.cur={fb,i:0,done:false,qs:ids.map(id=>{const c=BYID[id];
+  T.showRes=false;
+  T.cur={fb,i:0,done:false,mock:!!mock,started:Date.now(),deadline:mock?Date.now()+MOCKMIN*60000:null,qs:ids.map(id=>{const c=BYID[id];
     return c.mc.order?{id,o:shuf(c.a.map((_,k)=>k)),sel:[],res:null}:{id,o:shuf(c.mc.o.map((_,k)=>k)),sel:[],res:null}})};
   tSave();tRender();goTo(0);
 }
 function tPickIds(secs,count){let p=shuf(POOL.filter(c=>secs.includes(c.sec)).map(c=>c.id));return count==='all'?p:p.slice(0,count)}
 
+function tEnd(){ // finish a run; unanswered questions count as wrong in a mock
+  const r=T.cur;if(!r||r.done)return;
+  if(r.mock){r.qs.forEach(x=>{if(x.res===null)x.res=false});
+    const by={};r.qs.forEach(x=>{const d=BYID[x.id].sec;by[d]=by[d]||[0,0];by[d][1]++;if(x.res)by[d][0]++});
+    T.mocks.push({at:Date.now(),ok:r.qs.filter(x=>x.res).length,n:r.qs.length,used:Math.min(Date.now(),r.deadline)-r.started,by})}
+  else r.qs=r.qs.filter(q=>q.res!==null);
+  r.done=true;T.showRes=!!r.qs.length;if(!r.qs.length)T.cur=null;tSave();tRender();goTo(0);
+}
 function tRender(){
-  const v=$('testView');
+  const v=$('testView');if(tTick){clearInterval(tTick);tTick=null}
   if(T.cur&&!T.cur.done)return tQuestion(v);
   if(T.cur&&T.cur.done&&T.showRes)return tResults(v);
   return tSetup(v);
@@ -17902,7 +18087,15 @@ function tSetup(v){
   const W=weakList(),cfg=T.cfg;
   const avail=POOL.filter(c=>cfg.secs.includes(c.sec)).length;
   const anySeen=W.some(w=>w.seen);
+  const M=T.mocks,last=M[M.length-1],best=M.length?Math.max(...M.map(m=>Math.round(m.ok/m.n*100))):null;
   v.innerHTML=`
+  <div class="tpanel">
+    <h2>Mock exam</h2>
+    <p class="tsub">The instructor's 50-question practice exam, weighted like the real one (Routing 13, Campus 12, WAN 10, Network Services 10, Automation 5). ${MOCKMIN} minutes, marked at the end. Options are shuffled each time.</p>
+    ${last?`<p class="tsub" style="color:var(--ink)">Last: <b style="color:var(--tan)">${Math.round(last.ok/last.n*100)}%</b> (${last.ok}/${last.n}, ${fmtT(last.used)}) · Best: <b style="color:var(--tan)">${best}%</b> · ${M.length} attempt${M.length>1?'s':''}</p>
+    <div class="weak">${DOMS.filter(d=>last.by[d]).map(d=>{const [c,n]=last.by[d],p=Math.round(c/n*100),lo=p<60;return `<div class="wrow" style="cursor:default"><span class="nm">${d}</span><span class="pc${lo?' lo':''}">${p}%</span><span class="wb"><i class="${lo?'lo':''}" style="width:${p}%"></i></span><span class="dt">${c} of ${n} right on your last attempt</span></div>`}).join('')}</div>`:''}
+    <div class="btnrow"><button type="button" class="go" id="tMock">Start mock exam</button></div>
+  </div>
   <div class="tpanel">
     <h2>Weak areas</h2>
     <p class="tsub">Weakest sections first, then ones you haven't started. Each question counts as known from your latest practice-test answer, or your flash-card mark if you haven't tested it yet. Tap a section to test just that one.</p>
@@ -17934,12 +18127,13 @@ function tSetup(v){
   $('tCount').onclick=e=>{const b=e.target.closest('button');if(!b)return;cfg.count=b.dataset.n==='all'?'all':+b.dataset.n;tSave();tSetup(v)};
   $('tFb').onclick=e=>{const b=e.target.closest('button');if(!b)return;cfg.fb=b.dataset.f;tSave();tSetup(v)};
   $('tGo').onclick=()=>tStart(tPickIds(cfg.secs,cfg.count),cfg.fb);
+  $('tMock').onclick=()=>tStart(EXAM.map(e=>'mock#'+e.n),'exam',true);
   if($('tLast'))$('tLast').onclick=()=>{T.showRes=true;tSave();tRender();goTo(0)};
   v.querySelectorAll('.wrow').forEach(b=>b.onclick=()=>tStart(tPickIds([b.dataset.sec],cfg.count),cfg.fb));
   $('tWeak').onclick=()=>{const ws=(anySeen?W.filter(w=>w.seen):W).slice(0,3).map(w=>w.name);tStart(tPickIds(ws,cfg.count),cfg.fb)};
   $('tReset').onclick=()=>{
     if(!tArmed){tArmed=true;$('tReset').textContent='Tap again to confirm';$('tReset').style.color='var(--red)';setTimeout(()=>{tArmed=false;if($('tReset')){$('tReset').textContent='Reset test history';$('tReset').style.color=''}},3000);return}
-    tArmed=false;T.hist={};T.cur=null;T.showRes=false;tSave();tSetup(v)};
+    tArmed=false;T.hist={};T.mocks=[];T.cur=null;T.showRes=false;tSave();tSetup(v)};
 }
 
 function isRight(c,x){
@@ -17949,10 +18143,10 @@ function isRight(c,x){
 function tSubmit(){
   const r=T.cur,x=r.qs[r.i],c=BYID[x.id];if(x.res!==null)return;
   x.res=isRight(c,x);
-  const h=T.hist[c.id]||{n:0,c:0};h.n++;if(x.res)h.c++;h.last=x.res?1:0;T.hist[c.id]=h;
+  if(!c.mock){const h=T.hist[c.id]||{n:0,c:0};h.n++;if(x.res)h.c++;h.last=x.res?1:0;T.hist[c.id]=h}
   if(r.fb==='exam')tNext();else{tSave();tRender()}
 }
-function tNext(){const r=T.cur;r.i++;if(r.i>=r.qs.length){r.done=true;T.showRes=true}tSave();tRender();goTo(0)}
+function tNext(){const r=T.cur;r.i++;if(r.i>=r.qs.length){r.i=r.qs.length-1;return tEnd()}tSave();tRender();goTo(0)}
 
 function tQuestion(v){
   const r=T.cur,x=r.qs[r.i],c=BYID[x.id],shown=x.res!==null&&r.fb==='instant';
@@ -17969,10 +18163,10 @@ function tQuestion(v){
   }
   const ready=x.sel.length===need;
   v.innerHTML=`
-  <div class="tally"><span><b>${r.i+1}</b> of ${r.qs.length}</span><span>${r.fb==='exam'?'Exam style':'Feedback after each'}</span></div>
+  <div class="tally"><span><b>${r.i+1}</b> of ${r.qs.length}</span><span>${r.mock?`Mock exam · <b id="tClock">${fmtT(r.deadline-Date.now())}</b> left`:r.fb==='exam'?'Exam style':'Feedback after each'}</span></div>
   <div class="bar"><i style="width:${r.i/r.qs.length*100}%"></i></div>
   <div class="card" style="cursor:default;min-height:0">
-    <div class="meta"><span>${esc(SHORT[c.sec]||c.sec)} · Q${c.num}${c.src?' · '+esc(c.src):''}</span></div>
+    <div class="meta"><span>${esc(SHORT[c.sec]||c.sec)} · Q${c.num}${c.src&&!r.mock?' · '+esc(c.src):''}</span></div>
     <p class="q">${esc(c.q)}</p>
     ${c.dia?`<div class="dia">${c.dia}</div>`:''}
     ${body}
@@ -17991,29 +18185,31 @@ function tQuestion(v){
   if($('tS'))$('tS').onclick=tSubmit;
   if($('tN'))$('tN').onclick=tNext;
   let qa=false;
-  $('tQuit').onclick=()=>{if(!qa){qa=true;$('tQuit').textContent='Tap again to end and mark';$('tQuit').style.color='var(--red)';return}
-    r.qs=r.qs.filter(q=>q.res!==null);r.done=true;T.showRes=!!r.qs.length;if(!r.qs.length)T.cur=null;tSave();tRender();goTo(0)};
+  $('tQuit').onclick=()=>{if(!qa){qa=true;$('tQuit').textContent=r.mock?'Tap again: unanswered count as wrong':'Tap again to end and mark';$('tQuit').style.color='var(--red)';return}tEnd()};
+  if(r.mock){const tick=()=>{const left=r.deadline-Date.now();if(left<=0){tEnd();return}const el=$('tClock');if(el){el.textContent=fmtT(left);el.style.color=left<5*60000?'var(--red)':''}};
+    if(r.deadline-Date.now()<=0)return tEnd();tTick=setInterval(tick,1000);tick()}
 }
 
 function tResults(v){
   const r=T.cur,qs=r.qs,ok=qs.filter(x=>x.res).length,pct=qs.length?Math.round(ok/qs.length*100):0;
   const by={};qs.forEach(x=>{const s=BYID[x.id].sec;by[s]=by[s]||{n:0,c:0};by[s].n++;if(x.res)by[s].c++});
-  const secs=Object.keys(by).sort((a,b)=>by[a].c/by[a].n-by[b].c/by[b].n);
+  const secs=r.mock?DOMS.filter(d=>by[d]):Object.keys(by).sort((a,b)=>by[a].c/by[a].n-by[b].c/by[b].n);
+  const lastM=r.mock?T.mocks[T.mocks.length-1]:null;
   const missed=qs.filter(x=>!x.res);
   v.innerHTML=`
   <div class="tpanel" style="align-items:flex-start">
-    <span class="label">Result</span>
+    <span class="label">${r.mock?'Mock exam result':'Result'}</span>
     <p class="score">${pct}%</p>
-    <p class="tsub">${ok} of ${qs.length} right${pct>=80?' · solid work':pct>=60?' · getting there':' · keep drilling the weak sections'}</p>
-    <div class="btnrow" style="width:100%">${missed.length?`<button type="button" class="go" id="tRetry">Retry missed (${missed.length})</button>`:''}<button type="button" class="go alt" id="tNew">New test</button></div>
+    <p class="tsub">${ok} of ${qs.length} right${lastM?' in '+fmtT(lastM.used):''}${pct>=80?' · solid work':pct>=60?' · getting there':' · keep drilling the weak sections'}</p>
+    <div class="btnrow" style="width:100%">${missed.length?`<button type="button" class="go" id="tRetry">Retry missed (${missed.length})</button>`:''}<button type="button" class="go alt" id="tNew">${r.mock?'Back to tests':'New test'}</button></div>
   </div>
-  <div class="tpanel"><h2>By section</h2><div class="weak">${secs.map(s=>{const p=Math.round(by[s].c/by[s].n*100),lo=p<60;
+  <div class="tpanel"><h2>${r.mock?'By exam area':'By section'}</h2><div class="weak">${secs.map(s=>{const p=Math.round(by[s].c/by[s].n*100),lo=p<60;
     return `<div class="wrow" style="cursor:default"><span class="nm">${esc(SHORT[s]||s)}</span><span class="pc${lo?' lo':''}">${p}%</span><span class="wb"><i class="${lo?'lo':''}" style="width:${p}%"></i></span><span class="dt">${by[s].c} of ${by[s].n} right</span></div>`}).join('')}</div></div>
   ${missed.length?`<div class="tpanel"><h2>Missed questions</h2><div>${missed.map(x=>{const c=BYID[x.id];
     const yours=c.mc.order?x.sel.map(k=>c.a[k].replace(/^\d+\.\s*/,'')).join(' → '):x.sel.map(k=>c.mc.o[k]).join(' / ');
     const right=c.mc.order?c.a:c.mc.c.map(k=>c.mc.o[k]);
-    return `<div class="miss"><p class="mq">${esc(c.q)}</p><p class="yp">You picked: ${esc(yours||'nothing')}</p><ul>${right.map(a=>`<li>${esc(a)}</li>`).join('')}</ul>${c.why?`<p class="why"><b>Why</b>${esc(c.why)}</p>`:''}<p class="ref">${esc(SHORT[c.sec]||c.sec)} · Q${c.num}</p></div>`}).join('')}</div></div>`:''}`;
-  if($('tRetry'))$('tRetry').onclick=()=>{T.showRes=false;tStart(shuf(missed.map(x=>x.id)),r.fb)};
+    return `<div class="miss"><p class="mq">${esc(c.q)}</p><p class="yp">You picked: ${esc(yours||'nothing')}</p><ul>${right.map(a=>`<li>${esc(a)}</li>`).join('')}</ul>${c.why?`<p class="why"><b>Why</b>${esc(c.why)}</p>`:''}<p class="ref">${esc(SHORT[c.sec]||c.sec)} · ${c.mock?'Mock Q':'Q'}${c.num}</p></div>`}).join('')}</div></div>`:''}`;
+  if($('tRetry'))$('tRetry').onclick=()=>{T.showRes=false;tStart(shuf(missed.map(x=>x.id)),r.mock?'instant':r.fb)};
   $('tNew').onclick=()=>{T.showRes=false;tSave();tRender();goTo(0)};
 }
 

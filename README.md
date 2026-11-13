@@ -9,6 +9,7 @@ A self-contained study course for the Cisco ENSLD 300-420 (Designing Cisco Enter
 - **Study guide** – the course sections grouped by topic. Each question hides its answer until you tap it, and comes with a short "Why", wording notes where the answer key is loose, and Cert Guide page references.
 - **Flash cards** – questions rewritten so they can be answered without the multiple-choice options. Mark each card "Got it" or "Review again".
 - **Practice test** – the original multiple-choice questions with shuffled options, instant or exam-style feedback, results by section, and "retry missed".
+- **Mock exam** – the instructor's 50-question practice exam, timed at 90 minutes, scored by exam area.
 - **Weak areas** – mastery per section, weakest first, with a one-tap drill.
 - **Cheat sheet** – key terms, design comparisons, ports and exam tips by topic, with a filter box.
 
