@@ -177,6 +177,23 @@ button.wrow:hover .nm{color:var(--tan)}
 .miss .yp{margin:0;color:var(--red);font-size:.86rem}
 .miss ul{margin:0;padding-left:16px;color:var(--tan);font-weight:600}
 @media (max-width:480px){.views button{padding:8px 9px;font-size:.86rem;letter-spacing:.06em}}
+.cfold>summary{display:flex;align-items:baseline;gap:10px;font-size:.78rem;letter-spacing:.14em;color:var(--tan)}
+.cfold>summary::after{margin-left:auto}
+.cfold .cn{font:500 .75rem var(--mono);color:var(--red);letter-spacing:0}
+.cfold .cc{font:500 .68rem var(--mono);color:var(--muted);letter-spacing:0;text-transform:none;white-space:nowrap}
+.terms{margin:0;display:flex;flex-direction:column}
+.terms>div{display:grid;grid-template-columns:minmax(7.5em,32%) 1fr;gap:12px;padding:8px 0;border-top:1px solid var(--line)}
+.terms dt{font-weight:600;color:var(--tan);font-size:.9rem}
+.terms dd{margin:0;font-size:.92rem;color:var(--ink)}
+.clist{margin:0;padding-left:16px;display:flex;flex-direction:column;gap:2px;font-family:var(--mono);font-size:.82rem}
+.ctip{margin:4px 0 0;padding:10px 12px;background:var(--red-soft);border-left:3px solid var(--red);font-size:.9rem}
+.ctip b{display:block;font:500 .66rem var(--label);text-transform:uppercase;letter-spacing:.22em;color:var(--red);margin-bottom:3px}
+.cq{display:flex;flex-direction:column;gap:8px;padding:10px 0;border-top:1px solid var(--line)}
+.cq .mq{margin:0;font-weight:500}
+@media (max-width:480px){.terms>div{grid-template-columns:1fr;gap:2px}}
+.views{display:grid;grid-template-columns:repeat(4,auto)}
+.views button+button{border-left:1px solid var(--tan-dim)}
+@media (max-width:560px){.views{grid-template-columns:1fr 1fr;width:100%}.views button:nth-child(3){border-left:0}.views button:nth-child(n+3){border-top:1px solid var(--tan-dim)}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style><style>body{margin:0}img{max-width:100%}</style></head><body>
 
@@ -187,6 +204,7 @@ button.wrow:hover .nm{color:var(--tan)}
       <button type="button" id="v-guide" data-v="guide">Study guide</button>
       <button type="button" id="v-cards" data-v="cards">Flash cards</button>
       <button type="button" id="v-test" data-v="test">Practice test</button>
+      <button type="button" id="v-cheat" data-v="cheat">Cheat sheet</button>
     </div>
   </header>
 
@@ -223,6 +241,8 @@ button.wrow:hover .nm{color:var(--tan)}
   </section>
 
   <section id="testView" class="wrap" hidden></section>
+
+  <section id="cheatView" class="wrap" hidden></section>
 </div>
 <button type="button" class="top" id="toTop" hidden>Top ↑</button>
 
@@ -8849,6 +8869,195 @@ const DATA = [
       1
      ]
     }
+   },
+   {
+    "q": "What is the primary purpose of Cisco SD-WAN?",
+    "a": [
+     "Provide centrally managed, policy-based connectivity over multiple WAN transports"
+    ],
+    "why": "SD-WAN builds one centrally managed, policy-driven overlay across whatever transports a site has (MPLS, internet, LTE) instead of tying sites to one circuit.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "Replace all physical WAN circuits with wireless connections",
+      "Provide centrally managed, policy-based connectivity over multiple WAN transports",
+      "Eliminate the need for IP routing",
+      "Force all traffic through headquarters"
+     ],
+     "c": [
+      1
+     ]
+    }
+   },
+   {
+    "q": "Which statement best describes the SD-WAN underlay?",
+    "a": [
+     "The transport infrastructure providing IP reachability"
+    ],
+    "why": "The underlay is the real transport (MPLS, broadband, cellular) that gives IP reachability. The overlay is the IPsec tunnel fabric built on top of it.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "The secure logical tunnel between WAN Edge devices",
+      "The application-aware routing policy",
+      "The transport infrastructure providing IP reachability",
+      "The vSmart routing database"
+     ],
+     "c": [
+      2
+     ]
+    }
+   },
+   {
+    "q": "Which technology commonly secures data-plane tunnels between Cisco SD-WAN WAN Edge routers?",
+    "a": [
+     "IPsec"
+    ],
+    "why": "Data-plane tunnels between WAN Edges are IPsec, which gives confidentiality and integrity over untrusted transports like the internet.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "Telnet",
+      "IPsec",
+      "SNMPv2c",
+      "FTP"
+     ],
+     "c": [
+      1
+     ]
+    }
+   },
+   {
+    "q": "What is the main function of vSmart controllers?",
+    "a": [
+     "Distribute overlay routing information and centralized policies"
+    ],
+    "why": "vSmart is the control plane: it runs OMP with every WAN Edge, distributes routes, TLOCs and keys, and pushes centralized policy. It never forwards user traffic.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "Forward every application packet",
+      "Assign public IP addresses to users",
+      "Distribute overlay routing information and centralized policies",
+      "Encrypt endpoint hard drives"
+     ],
+     "c": [
+      2
+     ]
+    }
+   },
+   {
+    "q": "Which statement about OMP peers and data-plane tunnels is correct?",
+    "a": [
+     "OMP control-plane topology and data-plane tunnel topology can differ"
+    ],
+    "why": "WAN Edges peer with the vSmarts over OMP (control plane), while IPsec data tunnels form directly between WAN Edges. So the control topology (hub-like) and data topology (mesh, partial or hub) can differ.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "Every OMP peer relationship is an IPsec data tunnel",
+      "WAN Edge devices must peer with all other WAN Edge devices using OMP",
+      "OMP control-plane topology and data-plane tunnel topology can differ",
+      "vManage must forward all branch-to-branch traffic"
+     ],
+     "c": [
+      2
+     ]
+    }
+   },
+   {
+    "q": "A WAN Edge has MPLS and broadband internet connections. How can the SD-WAN fabric distinguish their transport endpoints?",
+    "a": [
+     "By using different TLOC colors"
+    ],
+    "why": "A TLOC is system IP + colour + encapsulation, so giving the MPLS and internet links different colours (for example mpls and biz-internet) makes them separate transport endpoints.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "By assigning a different organization name to each link",
+      "By requiring different site IDs for each link",
+      "By using different TLOC colors",
+      "By disabling OMP on one connection"
+     ],
+     "c": [
+      2
+     ]
+    }
+   },
+   {
+    "q": "Which identifier uniquely identifies an individual SD-WAN device within the fabric?",
+    "a": [
+     "System IP"
+    ],
+    "why": "The system IP is a logical, unique ID for each device (like a router ID). It doesn't need to be a WAN interface address.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "Site ID",
+      "System IP",
+      "Application SLA",
+      "Transport color alone"
+     ],
+     "c": [
+      1
+     ]
+    }
+   },
+   {
+    "q": "Two WAN Edge routers are deployed at the same branch for redundancy. Which identifier would they normally share?",
+    "a": [
+     "Site ID"
+    ],
+    "why": "Both routers at one branch share the site ID, which also stops them building tunnels to each other, but each keeps its own unique system IP.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "System IP",
+      "Physical WAN IP address",
+      "Site ID",
+      "TLOC three-tuple"
+     ],
+     "c": [
+      2
+     ]
+    }
+   },
+   {
+    "q": "What is a useful function of SD-WAN analytics?",
+    "a": [
+     "Detect utilization anomalies and SLA violation trends"
+    ],
+    "why": "vAnalytics uses telemetry to spot utilization anomalies, application experience problems and SLA-violation trends across the fabric.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "Physically repair damaged fiber",
+      "Replace IPsec encryption",
+      "Detect utilization anomalies and SLA violation trends",
+      "Act as the default gateway for every branch"
+     ],
+     "c": [
+      2
+     ]
+    }
    }
   ]
  },
@@ -16450,12 +16659,12 @@ build();
 
 // ----- view switch + study guide -----
 S.view=S.view||'guide';
-function setView(v){S.view=v;save();$('guideView').hidden=v!=='guide';$('cardsView').hidden=v!=='cards';$('testView').hidden=v!=='test';
-  ['guide','cards','test'].forEach(x=>$('v-'+x).setAttribute('aria-pressed',v===x));if(v==='test')tRender();if(v==='guide')renderGuide();
-  $('toTop').hidden=v!=='guide'||scrollY<600;window.scrollTo(0,0)}
-$('v-guide').onclick=()=>setView('guide');$('v-cards').onclick=()=>setView('cards');$('v-test').onclick=()=>setView('test');
+function setView(v){S.view=v;save();$('guideView').hidden=v!=='guide';$('cardsView').hidden=v!=='cards';$('testView').hidden=v!=='test';$('cheatView').hidden=v!=='cheat';
+  ['guide','cards','test','cheat'].forEach(x=>$('v-'+x).setAttribute('aria-pressed',v===x));if(v==='test')tRender();if(v==='guide')renderGuide();if(v==='cheat')renderCheat();
+  $('toTop').hidden=!(v==='guide'||v==='cheat')||scrollY<600;window.scrollTo(0,0)}
+$('v-guide').onclick=()=>setView('guide');$('v-cards').onclick=()=>setView('cards');$('v-test').onclick=()=>setView('test');$('v-cheat').onclick=()=>setView('cheat');
 $('toTop').onclick=()=>goTo(0);
-addEventListener('scroll',()=>{$('toTop').hidden=S.view!=='guide'||scrollY<600},{passive:true});
+addEventListener('scroll',()=>{$('toTop').hidden=!(S.view==='guide'||S.view==='cheat')||scrollY<600},{passive:true});
 function goTo(y){y=Math.max(0,Math.round(y));const se=document.scrollingElement||document.documentElement;
   try{window.scrollTo(0,y)}catch(e){}se.scrollTop=y;document.body.scrollTop=y}
 function jumpTo(id){const el=document.getElementById(id);if(!el)return;
@@ -16681,6 +16890,38 @@ document.addEventListener('keydown',e=>{
   if(n>=1&&n<=9){const b=$('testView').querySelectorAll('.opt')[n-1];if(b&&!b.disabled){e.preventDefault();b.click()}}
   else if(e.key==='Enter'){const b=$('tS')||$('tN');if(b&&!b.disabled){e.preventDefault();b.click()}}
 });
+
+// ----- cheat sheet tab -----
+const CHEAT=[{"n": 1, "title": "Enterprise network architecture", "rows": [["Campus network", "Connects endpoints and services within a site or group of buildings."], ["Access layer", "Connects endpoints, phones, APs and printers."], ["Distribution layer", "Aggregates access, applies policy and supports routing and redundancy."], ["Core layer", "High-speed, resilient backbone connecting distribution blocks."], ["Two-tier / collapsed core", "Combines core and distribution functions, often for smaller campuses."], ["Three-tier", "Separate access, distribution and core layers for scale."], ["Fault domain", "Network portion affected by a failure."], ["High availability (HA)", "Redundancy and recovery design to minimize downtime."], ["ECMP", "Equal-Cost Multipath: uses multiple equal-cost Layer 3 paths."], ["Oversubscription", "Potential downstream demand relative to uplink capacity."]], "tip": "Prefer modularity, fault isolation and predictable convergence.", "qs": [], "key": [], "pri": []}, {"n": 2, "title": "Layer 2 campus design", "rows": [["STP", "Spanning Tree Protocol: prevents Layer 2 loops."], ["RSTP / 802.1w", "Rapid Spanning Tree Protocol; faster convergence than legacy STP."], ["MST", "Multiple Spanning Tree; maps VLANs to spanning-tree instances."], ["PVST+ / Rapid PVST+", "Cisco per-VLAN spanning-tree variants."], ["BPDU", "Bridge Protocol Data Unit; STP control message."], ["Root bridge", "Logical reference point for spanning-tree paths."], ["Root Guard", "Prevents superior BPDUs from changing the intended root placement."], ["BPDU Guard", "Disables protected edge ports receiving BPDUs."], ["PortFast", "Rapid forwarding transition on designated edge ports."], ["EtherChannel / LACP", "Logical link aggregation / standards-based negotiation."], ["VSS / StackWise", "Cisco logical switch virtualization / stacking technologies."]], "tip": "Layer 3 links can use redundant routed paths without STP blocking those paths.", "qs": [], "key": [], "pri": []}, {"n": 3, "title": "Layer 3 campus design", "rows": [["SVI", "Switched Virtual Interface; routed VLAN interface."], ["Routed access", "Layer 3 routing at the access tier rather than extended VLANs."], ["FHRP", "First Hop Redundancy Protocol; resilient default gateway."], ["HSRP / VRRP", "Cisco / standards-based first-hop redundancy protocols."], ["GLBP", "Cisco gateway redundancy with load sharing."], ["Route summarization", "Aggregates prefixes and can limit propagation of routing changes."], ["Redistribution", "Introduces routes between routing protocols."], ["Administrative Distance", "Local trust ranking of route sources; lower wins."]], "tip": "Use Layer 3 boundaries to limit broadcast and failure domains.", "qs": [], "key": [], "pri": []}, {"n": 4, "title": "EIGRP", "rows": [["DUAL", "Diffusing Update Algorithm; loop-free route calculation."], ["Successor", "Best EIGRP next-hop path."], ["Feasible successor", "Prequalified loop-free backup meeting feasibility condition."], ["FD / Feasible Distance", "Best known local metric to destination."], ["RD / Reported Distance", "Neighbor advertised metric to destination."], ["Feasibility condition", "Neighbor RD strictly less than local successor FD."], ["Stub router", "Limits transit routing and query scope."], ["K values", "Weights in EIGRP metric calculation."], ["SIA", "Stuck in Active; route computation fails to finish on time."], ["Variance", "Enables unequal-cost load sharing within conditions."]], "tip": "Classic EIGRP metric defaults to bandwidth and delay; a backup path need not qualify as a feasible successor.", "qs": [], "key": [], "pri": []}, {"n": 5, "title": "OSPF", "rows": [["LSA / LSDB", "Link-State Advertisement / Link-State Database."], ["SPF", "Shortest Path First (Dijkstra) route calculation."], ["ABR", "Area Border Router; joins OSPF areas to backbone."], ["ASBR", "Autonomous System Boundary Router; injects external routes."], ["DR / BDR", "Designated / Backup Designated Router on multiaccess networks."], ["Area 0", "OSPF backbone."], ["Stub / Totally stubby", "Restrict external routes / also suppress most interarea summaries."], ["NSSA", "Not-So-Stubby Area; accepts external routes using Type 7 LSAs."], ["LSA Type 1 / 2", "Router / Network LSA."], ["LSA Type 3 / 4", "Interarea prefix / reachability to ASBR."], ["LSA Type 5 / 7", "AS-external / NSSA-external routes."], ["E1 vs E2", "E1 includes internal and external metric; E2 prioritizes external metric."]], "tip": "Type 1 and 2 LSAs stay within an area; distinguish ABR from ASBR.", "qs": [], "key": [], "pri": []}, {"n": 6, "title": "IS-IS", "rows": [["Level 1", "Intra-area routing."], ["Level 2", "Interarea backbone routing."], ["L1/L2 router", "Participates in both levels."], ["DIS", "Designated Intermediate System on broadcast networks."], ["LSP", "Link-State PDU distributing topology information."], ["CSNP / PSNP", "Complete / Partial Sequence Number PDU."], ["TLV", "Type-Length-Value extensible data structure."], ["NET", "Network Entity Title; IS-IS identity."], ["ATT bit", "Attached indication used for routing toward other areas."]], "tip": "IS-IS runs directly over Layer 2; OSPF uses IP protocol 89. IS-IS has no backup DIS equivalent.", "qs": [], "key": [], "pri": []}, {"n": 7, "title": "BGP", "rows": [["AS / ASN", "Autonomous System / its number."], ["eBGP / iBGP", "Between ASs / within an AS."], ["MP-BGP", "BGP supporting multiple address families."], ["AFI / SAFI", "Address Family Identifier / Subsequent AFI."], ["RR / RR client", "Route Reflector / neighbor using route reflection."], ["Confederation", "Subdivides a BGP AS internally for scale."], ["Weight", "Cisco-local path preference; higher wins."], ["Local Preference", "AS-wide outbound preference; higher wins."], ["MED", "Suggested inbound entry preference; lower usually wins."], ["AS_PATH", "Sequence of ASs, used for policy and loop prevention."], ["NEXT_HOP", "BGP attribute identifying next-hop reachability."], ["Community", "Policy tag attached to routes."], ["Prefix list / Route map", "Prefix filtering / match-and-set routing policy."]], "tip": "Simplified selection: Weight, Local Preference, locally originated, AS_PATH, Origin, MED (conditional), eBGP, IGP metric, tie-breakers. iBGP routes are not normally re-advertised to iBGP peers without RR/confederation mechanisms.", "qs": [], "key": [], "pri": []}, {"n": 8, "title": "Cisco SD-Access", "rows": [["SDA", "Software-Defined Access campus fabric."], ["Underlay / Overlay", "IP transport infrastructure / logical virtual fabric."], ["VXLAN", "Data-plane encapsulation over IP."], ["LISP", "Endpoint-to-location mapping and control-plane reachability."], ["Fabric Edge", "Fabric node attaching endpoints."], ["Control Plane Node", "Maintains endpoint location mappings."], ["Border Node", "Connects fabric to outside networks."], ["VN", "Virtual Network; macrosegmentation."], ["SGT / Cisco TrustSec", "Security Group Tag / group-based access policy."], ["ISE", "Identity Services Engine for identity and policy."], ["Anycast gateway", "Common distributed default gateway at fabric edges."]], "tip": "LISP = where; VXLAN = transport; SGT = policy. Allow MTU headroom for VXLAN encapsulation.", "qs": [], "key": [], "pri": []}, {"n": 9, "title": "MPLS and provider VPNs", "rows": [["MPLS", "Multiprotocol Label Switching; label-based forwarding."], ["LER / LSR", "Label Edge Router / Label Switch Router."], ["PE / P / CE", "Provider Edge / provider core / Customer Edge."], ["LSP / LDP", "Label Switched Path / Label Distribution Protocol."], ["VRF", "Virtual Routing and Forwarding; independent routing tables."], ["RD", "Route Distinguisher; makes VPN routes unique."], ["RT", "Route Target; controls VPN route import/export."], ["VPNv4", "MP-BGP family for IPv4 VPN routes."], ["PHP", "Penultimate Hop Popping; removes transport label before egress."], ["L2VPN / L3VPN", "Provider Layer 2 service / provider Layer 3 routed VPN."]], "tip": "RD is uniqueness; RT is membership/policy. MPLS labels alone do not encrypt traffic.", "qs": [], "key": [], "pri": []}, {"n": 10, "title": "Enterprise-managed VPNs", "rows": [["GRE", "Generic Routing Encapsulation; tunnels traffic but does not encrypt."], ["IPsec", "Confidentiality, integrity and authentication services."], ["IKEv2", "Negotiates IPsec security associations."], ["ESP", "Encapsulating Security Payload for IPsec protection."], ["DMVPN", "Dynamic Multipoint VPN with spoke-to-spoke capability."], ["NHRP", "Next Hop Resolution Protocol used in DMVPN."], ["mGRE", "Multipoint GRE interface supporting multiple peers."], ["VTI", "Virtual Tunnel Interface for route-based IPsec."], ["GETVPN", "Group Encrypted Transport VPN; group-based encryption without conventional tunnel overlay."], ["NBMA", "Non-Broadcast Multiple Access network type."]], "tip": "GRE over IPsec combines flexible encapsulation with security. VTIs do not inherently prohibit multicast; support depends on design/platform.", "qs": [], "key": [], "pri": []}, {"n": 11, "title": "WAN resiliency and SD-WAN", "rows": [["Single-homed / Dual-homed", "One uplink / two links to same upstream provider."], ["Multihomed", "Connections to multiple providers or upstreams."], ["BFD", "Bidirectional Forwarding Detection; rapid failure detection."], ["SLA / SLA probe", "Service-Level Agreement / path-performance measurement."], ["TLOC", "Transport Locator; SD-WAN transport endpoint."], ["OMP", "Overlay Management Protocol; SD-WAN route/policy exchange."], ["ZTP", "Zero-Touch Provisioning."], ["DIA", "Direct Internet Access from branch."], ["NAT-T", "NAT Traversal for IPsec, typically UDP 4500."], ["SD-WAN Manager (vManage)", "Management and monitoring plane."], ["SD-WAN Controller (vSmart)", "Control plane, routes and policy."], ["SD-WAN Validator (vBond)", "Onboarding/orchestration and connectivity discovery."], ["WAN Edge (cEdge/vEdge)", "Data-plane forwarding and tunnel termination."]], "tip": "Separate control, management, orchestration and data-plane functions.", "qs": [], "key": [], "pri": []}, {"n": 12, "title": "Quality of Service", "rows": [["QoS", "Quality of Service; differentiated traffic handling."], ["Classification / Marking", "Identify traffic / set traffic class fields."], ["DSCP / CoS", "6-bit IP marking / 3-bit 802.1Q priority."], ["EF (46)", "Expedited Forwarding; commonly voice bearer."], ["AF41 (34)", "Assured Forwarding; often interactive video."], ["CS6 (48) / CS3 (24)", "Common network control / signaling markings."], ["LLQ", "Low Latency Queuing; priority scheduling."], ["CBWFQ", "Class-Based Weighted Fair Queuing."], ["WRED", "Weighted Random Early Detection; congestion avoidance."], ["Shaping", "Buffers and delays excess traffic."], ["Policing", "Drops or remarks traffic above rate."], ["Trust boundary", "Point where QoS markings are accepted or rewritten."]], "tip": "Shaping smooths; policing enforces. Markings are design conventions, not universally mandatory.", "qs": [], "key": [], "pri": []}, {"n": 13, "title": "Multicast and PIM", "rows": [["IGMP / MLD", "IPv4 / IPv6 multicast receiver membership."], ["PIM / PIM-SM", "Protocol Independent Multicast / Sparse Mode."], ["RP", "Rendezvous Point for shared-tree ASM multicast."], ["RPF", "Reverse Path Forwarding; expected incoming interface check."], ["SPT / RPT", "Shortest Path Tree / RP-rooted shared tree."], ["SSM", "Source-Specific Multicast; joins source and group."], ["ASM", "Any-Source Multicast."], ["BSR", "Bootstrap Router for RP discovery."], ["Anycast RP", "Multiple RPs sharing an address for resiliency."]], "tip": "SSM does not need an RP; RPF prevents multicast loops.", "qs": [], "key": [], "pri": []}, {"n": 14, "title": "IPv4 and IPv6 addressing", "rows": [["CIDR / VLSM", "Prefix-based routing / variable subnet lengths."], ["ULA / GUA", "IPv6 Unique Local / Global Unicast Addresses."], ["SLAAC / RA", "Stateless Address Autoconfiguration / Router Advertisement."], ["NDP / DHCPv6", "Neighbor Discovery / IPv6 dynamic configuration."], ["Dual stack", "Simultaneous IPv4 and IPv6."], ["NAT64 / DNS64", "IPv6-to-IPv4 translation / synthesized AAAA records."], ["6PE", "IPv6 Provider Edge over IPv4 MPLS core."], ["IPv4 private blocks", "10.0.0.0/8; 172.16.0.0/12; 192.168.0.0/16."], ["IPv6 key prefixes", "2000::/3 global allocation; fe80::/10 link-local; fc00::/7 ULA; ff00::/8 multicast; ::1/128 loopback; ::/0 default."]], "tip": "Typical SLAAC LANs use /64; use hierarchical allocation to enable summarization.", "qs": [], "key": [], "pri": []}, {"n": 15, "title": "Network automation and telemetry", "rows": [["API / REST", "Software interface / web API architectural style."], ["RESTCONF", "HTTP-based access to YANG-modeled data."], ["NETCONF", "XML RPC-based network management protocol."], ["YANG", "Network data modeling language."], ["JSON / XML", "Structured data encodings."], ["gRPC / gNMI", "Remote procedure call framework / network management interface."], ["MDT", "Model-Driven Telemetry; streaming operational data."], ["OpenConfig", "Vendor-neutral network data models."], ["SaaS / PaaS / IaaS", "Software / Platform / Infrastructure as a Service."], ["Important ports", "BGP TCP 179; NETCONF TCP 830; RESTCONF HTTPS 443; SSH TCP 22; SNMP UDP 161/162; IKE UDP 500; NAT-T UDP 4500; LISP UDP 4342; VXLAN UDP 4789."]], "tip": "NETCONF commonly uses XML; RESTCONF uses HTTP and JSON/XML; gNMI supports streaming telemetry.", "qs": [], "key": [], "pri": []}, {"n": 16, "title": "Important design comparisons", "rows": [["EIGRP vs OSPF", "DUAL-based advanced distance vector vs link-state."], ["OSPF vs IS-IS", "IP-encapsulated link-state vs directly Layer 2 carried link-state."], ["iBGP vs eBGP", "Same autonomous system vs different autonomous systems."], ["RR vs Confederation", "Reflect iBGP routes vs internally subdivide AS."], ["MPLS L3VPN vs IPsec", "Provider route isolation vs cryptographic protection."], ["GRE vs IPsec", "Encapsulation vs encryption/integrity."], ["LISP vs VXLAN", "Mapping/control vs data encapsulation."], ["HSRP vs ECMP", "Gateway redundancy vs multiple routed next hops."], ["Shaping vs Policing", "Buffer/delay vs drop/remark."], ["ABR vs ASBR", "OSPF interarea vs external redistribution."], ["RD vs RT", "Uniqueness vs import/export membership."], ["Underlay vs Overlay", "Transport network vs virtualized logical network."]], "tip": "", "qs": [], "key": [], "pri": []}, {"n": 17, "title": "Practice: Design decisions", "rows": [], "tip": "", "qs": [{"q": "A campus has excessive spanning-tree dependencies and needs faster failover. Which design is most appropriate?", "o": ["Extend VLANs throughout the core", "Introduce routed Layer 3 access links", "Disable STP globally"], "a": 1, "why": "Routed access limits Layer 2 failure domains and enables routing protocols to handle redundant paths."}, {"q": "An enterprise needs to reduce the number of iBGP peer sessions. What should it consider?", "o": ["Route reflectors", "More full-mesh peers", "OSPF stub areas"], "a": 0, "why": "Route reflectors remove the need for a full mesh of iBGP sessions."}, {"q": "An organization wants to keep two departments logically isolated within an SD-Access fabric. Which feature provides macrosegmentation?", "o": ["DSCP", "Virtual Networks (VNs)", "BFD"], "a": 1, "why": "VNs provide distinct routing domains; SGT policy can provide microsegmentation."}, {"q": "A WAN design requires encrypted connectivity over the public Internet. Which technology provides confidentiality?", "o": ["GRE alone", "MPLS labels alone", "IPsec"], "a": 2, "why": "IPsec provides encryption and integrity; GRE and MPLS labels alone do not."}, {"q": "A multicast design uses SSM. Which component is not required?", "o": ["Rendezvous Point", "RPF checking", "Receiver membership signaling"], "a": 0, "why": "SSM uses source-specific distribution and does not need a Rendezvous Point."}], "key": [], "pri": []}, {"n": 18, "title": "Final ENSLD exam study priorities", "rows": [], "tip": "", "qs": [], "key": [], "pri": [["Routing design", "EIGRP feasibility condition, OSPF areas, IS-IS levels, BGP policy, summarization and redistribution."], ["Campus design", "Layer 2 vs Layer 3 boundaries, FHRPs, STP, BFD, redundancy and convergence."], ["SD-Access", "LISP, VXLAN, SGT, fabric edge/border, VNs and underlay MTU."], ["WAN", "MPLS VPNs, DMVPN, GRE, IPsec, SD-WAN controllers, OMP, TLOC, NAT and resiliency."], ["Network services", "QoS, PIM-SM, RP, RPF, IPv6 planning and transition."], ["Automation", "YANG, NETCONF, RESTCONF, gRPC, gNMI, telemetry and cloud."]], "foot": "Official references: Cisco ENSLD 300-420 exam topics and Cisco ENSLD course outline. Verify the latest exam blueprint before sitting the exam."}];
+let cExpand=false;
+function cList(t,q){const p=t.replace(/\.$/,'').split(/;\s*/);return p.length>=3?`<ul class="clist">${p.map(x=>`<li>${hl(x,q)}</li>`).join('')}</ul>`:hl(t,q)}
+function renderCheat(){
+  const v=$('cheatView'),q=($('cq')?$('cq').value.trim():''),ql=q.toLowerCase();
+  if(!$('cq')){
+    v.innerHTML=`<input class="search" id="cq" type="search" placeholder="Filter terms and definitions" autocomplete="off">
+    <div class="secnav"><p class="tsub" style="flex:1 1 200px">Key terms, design trade-offs and exam tips from the course's ENSLD 300-420 cheat sheet. Tap a topic to open it.</p><button type="button" class="tool" id="cExp">Expand all</button></div>
+    <div id="cBody" style="display:flex;flex-direction:column;gap:10px"></div>`;
+    $('cq').oninput=renderCheat;
+    $('cExp').onclick=()=>{cExpand=!cExpand;v.querySelectorAll('#cBody details').forEach(d=>d.open=cExpand);$('cExp').textContent=cExpand?'Collapse all':'Expand all'};
+  }
+  const hit=t=>!ql||t.toLowerCase().includes(ql);
+  let shown=0;
+  const html=CHEAT.map(s=>{
+    let inner='',count='';
+    if(s.rows.length){const rows=s.rows.filter(r=>hit(r[0]+' '+r[1])||hit(s.title));if(ql&&!rows.length&&!hit(s.tip))return'';
+      inner=`<dl class="terms">${rows.map(r=>`<div><dt>${hl(r[0],q)}</dt><dd>${cList(r[1],q)}</dd></div>`).join('')}</dl>`+(s.tip?`<p class="ctip"><b>Exam tip</b>${hl(s.tip,q)}</p>`:'');
+      count=`${rows.length} ${s.n===16?'comparisons':'terms'}`}
+    else if(s.qs.length){if(ql&&!s.qs.some(x=>hit(x.q+' '+x.o.join(' ')+' '+x.why)))return'';
+      inner=s.qs.map((x,i)=>`<div class="cq" data-i="${i}"><p class="mq">${i+1}. ${hl(x.q,q)}</p><div class="opts">${x.o.map((o,k)=>`<button type="button" class="opt radio" data-k="${k}"><span class="bx"></span><span>${esc(o)}</span></button>`).join('')}</div><p class="why" hidden><b>Why</b>${esc(x.why)}</p></div>`).join('');
+      count=`${s.qs.length} questions`}
+    else if(s.pri.length){const ps=s.pri.filter(p=>hit(p[0]+' '+p[1]));if(ql&&!ps.length)return'';
+      inner=`<dl class="terms">${ps.map(p=>`<div><dt>${hl(p[0],q)}</dt><dd>${hl(p[1],q)}</dd></div>`).join('')}</dl>${s.foot?`<p class="tsub">${esc(s.foot)}</p>`:''}`;count=`${ps.length} areas`}
+    shown++;
+    return `<details class="fold cfold"${(ql||cExpand)?' open':''}><summary><span class="cn">${String(s.n).padStart(2,'0')}</span>${esc(s.title)}<span class="cc">${count.replace(/^1 (\w+)s$/,'1 $1')}</span></summary>${inner}</details>`}).join('');
+  $('cBody').innerHTML=shown?html:`<p class="empty">Nothing matches "${esc(q)}".</p>`;
+  $('cBody').querySelectorAll('.cq').forEach(box=>{const s=CHEAT.find(c=>c.qs.length),x=s.qs[+box.dataset.i];
+    box.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{box.querySelectorAll('.opt').forEach(o=>{o.disabled=true;const k=+o.dataset.k;if(k===x.a){o.classList.add('ok');o.querySelector('.bx').textContent='✓'}else if(o===b)o.classList.add('bad')});box.querySelector('.why').hidden=false})});
+}
 
 renderGuide();setView(S.view);
 </script>

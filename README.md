@@ -10,6 +10,7 @@ A self-contained study course for the Cisco ENSLD 300-420 (Designing Cisco Enter
 - **Flash cards** – questions rewritten so they can be answered without the multiple-choice options. Mark each card "Got it" or "Review again".
 - **Practice test** – the original multiple-choice questions with shuffled options, instant or exam-style feedback, results by section, and "retry missed".
 - **Weak areas** – mastery per section, weakest first, with a one-tap drill.
+- **Cheat sheet** – key terms, design comparisons, ports and exam tips by topic, with a filter box.
 
 Everything lives in one file (`index.html`) with no build step. Progress is saved in your own browser (localStorage), so it stays on your device and isn't shared.
 
