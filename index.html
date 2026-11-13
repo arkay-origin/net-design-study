@@ -10147,6 +10147,237 @@ const DATA = [
       0
      ]
     }
+   },
+   {
+    "q": "Which statement best describes the primary function of NAT in an IPv4 branch network?",
+    "a": [
+     "It translates addresses between address spaces"
+    ],
+    "why": "NAT translates addresses between address spaces (for example private to public). Security filtering is a firewall job, not something NAT guarantees.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "It encrypts traffic across the WAN",
+      "It translates addresses between address spaces",
+      "It distributes OMP routes",
+      "It guarantees inbound firewall protection"
+     ],
+     "c": [
+      1
+     ]
+    }
+   },
+   {
+    "q": "A WAN Edge router uses a private transport IP behind a firewall. What must be considered when establishing tunnels to remote WAN Edges?",
+    "a": [
+     "NAT mapping and filtering behavior"
+    ],
+    "why": "A WAN Edge behind NAT is reached through its translated address and port, so the NAT type (how it maps and filters) decides whether remote WAN Edges can build tunnels to it.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "NAT mapping and filtering behavior",
+      "STP root bridge priority",
+      "DHCP snooping bindings only",
+      "VLAN pruning on access switches"
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "What does STUN help a device determine?",
+    "a": [
+     "Its externally observed IP address and port mapping"
+    ],
+    "why": "A STUN server tells a device what its address and port look like from outside the NAT. SD-WAN uses this (vBond acts as the STUN server) so WAN Edges can learn their public mappings.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "The best OSPF area design",
+      "Its externally observed IP address and port mapping",
+      "Its BGP local preference",
+      "Its application QoS queue"
+     ],
+     "c": [
+      1
+     ]
+    }
+   },
+   {
+    "q": "In the course's NAT traversal matrix, which pairing supports a direct IPsec tunnel?",
+    "a": [
+     "Full-cone NAT with symmetric NAT"
+    ],
+    "why": "Full-cone NAT accepts traffic from anyone once a mapping exists, so even a symmetric-NAT peer can reach it directly. Symmetric with symmetric, or symmetric with port-restricted, can't.",
+    "note": "The instructor's key notes this follows the course matrix's assumptions; real behaviour depends on the NAT devices.",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "Symmetric NAT with symmetric NAT",
+      "Port-restricted NAT with port-restricted NAT",
+      "Full-cone NAT with symmetric NAT",
+      "Symmetric NAT with port-restricted NAT"
+     ],
+     "c": [
+      2
+     ]
+    }
+   },
+   {
+    "q": "If direct branch-to-branch IPsec tunnels cannot form due to restrictive NAT behavior, what is a possible design alternative?",
+    "a": [
+     "Forward through a reachable SD-WAN hub"
+    ],
+    "why": "If restrictive NAT blocks a direct tunnel, the two branches can still talk through a hub both can reach (hub-and-spoke for that traffic).",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "Disable routing at both sites",
+      "Forward through a reachable SD-WAN hub",
+      "Convert all LANs to public addressing",
+      "Remove all encryption"
+     ],
+     "c": [
+      1
+     ]
+    }
+   },
+   {
+    "q": "What is the principal purpose of zero-touch provisioning (ZTP)?",
+    "a": [
+     "Automatically onboard and provision new WAN Edge devices"
+    ],
+    "why": "ZTP lets a new WAN Edge find the controllers, authenticate and pull its configuration automatically when it's plugged in, with no one configuring it on site.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "Eliminate all WAN security policies",
+      "Automatically onboard and provision new WAN Edge devices",
+      "Replace physical Internet circuits",
+      "Prevent all controller outages"
+     ],
+     "c": [
+      1
+     ]
+    }
+   },
+   {
+    "q": "During a typical ZTP startup, which service resolves a provisioning hostname such as ztp.viptela.com?",
+    "a": [
+     "DNS"
+    ],
+    "why": "The first ZTP step is a DNS lookup of the ZTP server name (ztp.viptela.com). DHCP usually gives the interface its address and DNS server first.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "DNS",
+      "NTP",
+      "SNMP",
+      "OSPF"
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "An enterprise uses MPLS for critical applications and broadband Internet for SaaS traffic. What design is this?",
+    "a": [
+     "Hybrid WAN"
+    ],
+    "why": "Hybrid WAN means mixing transport types (here MPLS for critical apps and internet for SaaS).",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "Single-transport WAN",
+      "Hybrid WAN",
+      "Layer 2-only campus",
+      "Isolated LAN"
+     ],
+     "c": [
+      1
+     ]
+    }
+   },
+   {
+    "q": "What distinguishes active-active from active-standby WAN redundancy?",
+    "a": [
+     "Active-active can carry production traffic over multiple links simultaneously"
+    ],
+    "why": "Active-active sends production traffic over both links at once. Active-standby keeps one link mostly idle for failover.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "Active-active can carry production traffic over multiple links simultaneously",
+      "Active-standby always has lower latency",
+      "Active-active requires a single circuit",
+      "Active-standby prevents failover"
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "What is a potential disadvantage of backhauling all branch SaaS traffic through a distant data center?",
+    "a": [
+     "Added path length and latency"
+    ],
+    "why": "Backhauling SaaS traffic to a distant data center adds distance and delay. Local or regional internet breakout avoids that.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "Reduced need for routing",
+      "Added path length and latency",
+      "Automatic local Internet breakout",
+      "Guaranteed application performance"
+     ],
+     "c": [
+      1
+     ]
+    }
+   },
+   {
+    "q": "During a phased legacy-WAN-to-SD-WAN migration, which design consideration is most important?",
+    "a": [
+     "Planning routing, interim traffic paths, and policy boundaries"
+    ],
+    "why": "A phased migration means legacy and SD-WAN sites coexist for a while, so routing between them, the interim traffic paths and security/policy boundaries must be planned to avoid loops and gaps.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "Assuming all branches migrate at once",
+      "Ignoring route redistribution and security",
+      "Planning routing, interim traffic paths, and policy boundaries",
+      "Disabling application-aware routing permanently"
+     ],
+     "c": [
+      2
+     ]
+    }
    }
   ]
  },
