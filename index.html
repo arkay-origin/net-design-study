@@ -295,32 +295,358 @@ button.wrow:hover .nm{color:var(--tan)}
 <script>
 const DATA = [
  {
-  "name": "EIGRP Design",
+  "name": "Designing an IPv4 Address Plan",
   "intro": [],
+  "refs": [
+   {
+    "ch": "Ch 1",
+    "t": "IPv4 Addressing Design",
+    "p": 76
+   },
+   {
+    "ch": "Ch 1",
+    "t": "Route Summarization",
+    "p": 78
+   },
+   {
+    "ch": "Ch 1",
+    "t": "Steps for Creating an IPv4 Address Plan",
+    "p": 81
+   },
+   {
+    "ch": "Ch 1",
+    "t": "Loopback and IP Telephony Addresses",
+    "p": 73
+   },
+   {
+    "ch": "Ch 1",
+    "t": "IPv4 Header",
+    "p": 44
+   },
+   {
+    "ch": "Ch 1",
+    "t": "IPv4 Addressing and Private Ranges",
+    "p": 54
+   },
+   {
+    "ch": "Ch 1",
+    "t": "Subnets and VLSM",
+    "p": 64
+   },
+   {
+    "ch": "Ch 1",
+    "t": "Address Assignment (DHCP, DNS)",
+    "p": 85
+   }
+  ],
+  "notes": [
+   "Start from the topology: count the locations and devices that need addresses, then leave room to grow.",
+   "Build the plan hierarchically so each area can be summarized. Use 10.x.x.x/24 for user subnets, and match subnet numbers to VLAN IDs where you can.",
+   "Use /30 on point-to-point router links and /32 loopbacks for router IDs and services, since loopbacks never go down.",
+   "Overlapping ranges are cleanest to fix by readdressing; NAT is a workaround. DMZ servers can use public addresses instead of NAT.",
+   "Overlay subnets (for example a separate voice range) let you add new services to a network that wasn't planned for them."
+  ],
   "qs": [
    {
-    "q": "Which three design considerations limit the scope of EIGRP queries?",
+    "q": "A topology diagram will help with which IP addressing consideration?",
     "a": [
-     "Summarize spoke networks towards the core.",
-     "Ensure that leaf nodes are configured as stub routers.",
-     "Use equal cost routing to ensure that a feasible successor is available."
+     "Determining how many locations will require IP addresses"
     ],
-    "why": "Summarization and stubs stop queries from spreading. A router with a feasible successor never goes active, so it sends no queries. The wrong options (non-stub leaf nodes, avoiding summarization at hubs) would let queries spread further.",
+    "why": "The diagram shows every site and segment, which is the starting point for sizing the address plan.",
     "note": "",
     "dup": false,
-    "card": "Name the three design choices that limit the scope of EIGRP queries.",
     "ref": {
-     "ch": "Ch 3",
-     "t": "DUAL and queries",
-     "p": 215
+     "ch": "Ch 1",
+     "t": "Planning for Future Use of IPv4 Addresses",
+     "p": 77
     },
     "mc": {
      "o": [
-      "Summarize spoke networks towards the core.",
-      "Ensure that leaf nodes are configured as stub routers.",
-      "Use equal cost routing to ensure that a feasible successor is available.",
-      "Ensure that leaf nodes are configured as non-stub routers.",
-      "Avoid route summarization at hub routers."
+      "Determining how many locations will require IP addresses",
+      "Determining which subnet to assign to loopback interfaces",
+      "Determining how large each subnet must be",
+      "Determining if DHCP is to be used"
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "While summarizing IPv4 addresses, how would you determine the subnet mask value?",
+    "a": [
+     "Subtract the first octet that is different between the first and last address, and round it up to a power of 2."
+    ],
+    "why": "Example: 10.3.8.0 to 10.3.15.0 differ in the third octet; 15 − 8 = 7, round up to 8 = 2³, so 3 bits come off the /24, giving /21.",
+    "note": "",
+    "dup": false,
+    "ref": {
+     "ch": "Ch 1",
+     "t": "Performing Route Summarization",
+     "p": 78
+    },
+    "card": "How do you work out the mask when summarizing a range of IPv4 subnets?",
+    "mc": {
+     "o": [
+      "Subtract the first octet that is different between the first and last address, and round it up to a power of 2.",
+      "Add the first octet that is different between the first and last address, and round it down.",
+      "Count the number of subnets and double it.",
+      "Use the mask of the largest subnet in the range."
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "For ease of use, user subnets should be assigned an address from which network with which subnet mask?",
+    "a": [
+     "10.x.x.x/24"
+    ],
+    "why": "10.0.0.0/8 has plenty of room for a hierarchy, and /24 subnets line up with octet boundaries, which makes them easy to read and troubleshoot.",
+    "note": "",
+    "dup": false,
+    "ref": {
+     "ch": "Ch 1",
+     "t": "Private and Public IP Address and NAT",
+     "p": 80
+    },
+    "mc": {
+     "o": [
+      "10.x.x.x/24",
+      "172.16.x.x/16",
+      "192.168.x.x/30",
+      "10.x.x.x/8"
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "Which one of the following is required when implementing overlay subnets when running out of addresses?",
+    "a": [
+     "An extra private address space"
+    ],
+    "why": "An overlay adds a second (often secondary) subnet on top of the existing one, so you need another unused private range to draw it from.",
+    "note": "",
+    "dup": false,
+    "ref": {
+     "ch": "Ch 1",
+     "t": "IP Telephony Networks",
+     "p": 73
+    },
+    "mc": {
+     "o": [
+      "Extra private address space",
+      "Static NAT",
+      "Readdressing",
+      "A longer subnet mask"
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "Why would you want to use loopback addresses for services like voice gateways?",
+    "a": [
+     "Since they are always up, they are more resilient than physical interfaces."
+    ],
+    "why": "A loopback stays reachable as long as any path to the router works, so services bound to it survive a single link failure.",
+    "note": "",
+    "dup": false,
+    "ref": {
+     "ch": "Ch 1",
+     "t": "Loopback Addresses",
+     "p": 73
+    },
+    "mc": {
+     "o": [
+      "Since they are always up, they are more resilient than physical interfaces.",
+      "They are more secure, since they do not have private IP addresses.",
+      "Loopback interfaces save address space.",
+      "They are the only interfaces that support DHCP."
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "While making an addressing plan, what would you recommend as an alternative to NAT for devices in the DMZ?",
+    "a": [
+     "Use only public IP addresses."
+    ],
+    "why": "DMZ servers are meant to be reached from the internet, so giving them public addresses avoids NAT altogether.",
+    "note": "",
+    "dup": false,
+    "ref": {
+     "ch": "Ch 1",
+     "t": "Private and Public IP Address and NAT",
+     "p": 80
+    },
+    "mc": {
+     "o": [
+      "Use only public IP addresses.",
+      "Use only private IP addresses.",
+      "Use a /24 subnet mask.",
+      "Use the same IP address subnet as the internal networks."
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "DNS names for DHCP-assigned address ranges should be based upon which of the following?",
+    "a": [
+     "Location name"
+    ],
+    "why": "DHCP hosts change addresses, so naming the range by location (for example bldg2-floor3) keeps names meaningful.",
+    "note": "",
+    "dup": false,
+    "ref": {
+     "ch": "Ch 1",
+     "t": "Address Assignment and Name Resolution",
+     "p": 85
+    },
+    "mc": {
+     "o": [
+      "Location name",
+      "Department name",
+      "User name",
+      "Device name"
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "Ideally, subnet numbering should correspond with which of the following?",
+    "a": [
+     "VLAN"
+    ],
+    "why": "If VLAN 20 uses 10.x.20.0/24, anyone can tell the subnet from the VLAN and vice versa.",
+    "note": "",
+    "dup": false,
+    "ref": {
+     "ch": "Ch 1",
+     "t": "Planning for a Hierarchical IP Address Network",
+     "p": 79
+    },
+    "mc": {
+     "o": [
+      "VLAN",
+      "Building",
+      "Department",
+      "Location"
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "Which subnet mask should be used on inter-router connections?",
+    "a": [
+     "/30"
+    ],
+    "why": "A point-to-point link needs only two host addresses, and /30 gives exactly two. (/31 also works on modern gear.)",
+    "note": "",
+    "dup": false,
+    "ref": {
+     "ch": "Ch 1",
+     "t": "Variable-Length Subnet Masking",
+     "p": 69
+    },
+    "mc": {
+     "o": [
+      "/30",
+      "/24",
+      "/28",
+      "/16"
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "Which of the following is the cleanest solution when solving overlapping address ranges?",
+    "a": [
+     "Readdressing"
+    ],
+    "why": "Renumbering removes the overlap for good. NAT hides it but adds complexity and breaks some applications.",
+    "note": "",
+    "dup": false,
+    "ref": {
+     "ch": "Ch 1",
+     "t": "Private and Public IP Address and NAT",
+     "p": 80
+    },
+    "mc": {
+     "o": [
+      "Readdressing",
+      "Implementing NAT",
+      "Expanding the subnet masks",
+      "Adding new IP address ranges"
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "Why would you want to use voice overlay subnets?",
+    "a": [
+     "They offer scalability in networks that were not designed to accommodate new services."
+    ],
+    "why": "Adding a separate voice range on top of the existing plan avoids readdressing the data network just to bring in IP phones.",
+    "note": "",
+    "dup": false,
+    "ref": {
+     "ch": "Ch 1",
+     "t": "IP Telephony Networks",
+     "p": 73
+    },
+    "mc": {
+     "o": [
+      "They offer scalability in networks that were not designed to accommodate new services.",
+      "They solve call-quality problems for voice and video traffic.",
+      "They provide a layer of security between departments.",
+      "They remove the need for DHCP on the new subnets."
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "What are the three RFC 1918 private IPv4 address ranges?",
+    "a": [
+     "10.0.0.0/8",
+     "172.16.0.0/12",
+     "192.168.0.0/16"
+    ],
+    "why": "These ranges aren't routed on the internet, so they need NAT/PAT to reach it.",
+    "note": "",
+    "dup": false,
+    "ref": {
+     "ch": "Ch 1",
+     "t": "IPv4 Design",
+     "p": 60
+    },
+    "src": "Cert Guide",
+    "mc": {
+     "o": [
+      "10.0.0.0/8",
+      "172.16.0.0/12",
+      "192.168.0.0/16",
+      "169.254.0.0/16",
+      "100.64.0.0/10",
+      "172.32.0.0/12"
      ],
      "c": [
       0,
@@ -330,30 +656,53 @@ const DATA = [
     }
    },
    {
-    "q": "Which two statements are true about using multiple autonomous systems to limit EIGRP query propagation?",
+    "q": "How big is the IPv4 header without options?",
     "a": [
-     "Using multiple autonomous systems does not stop query propagation from one AS to the other.",
-     "To limit query propagation from one AS to another, use route summarization on the edge routers between the autonomous systems."
+     "20 bytes"
     ],
-    "why": "With redistribution between autonomous systems, a query in one AS triggers a new query in the other. Summarizing at the boundary routers is what contains it.",
+    "why": "With options it can grow to 60 bytes. The Internet Header Length field is counted in 32-bit words.",
     "note": "",
     "dup": false,
-    "card": "Does splitting a network into multiple EIGRP autonomous systems stop queries from crossing between them? If not, what does?",
-    "ca": [
-     "No. Queries still cross from one AS to the other.",
-     "Route summarization on the edge routers between the autonomous systems limits it."
-    ],
     "ref": {
-     "ch": "Ch 3",
-     "t": "DUAL and queries",
-     "p": 215
+     "ch": "Ch 1",
+     "t": "IPv4 Design",
+     "p": 44
     },
+    "src": "Cert Guide",
     "mc": {
      "o": [
-      "Using multiple autonomous systems does not stop query propagation from one AS to the other.",
-      "To limit query propagation from one AS to another, use route summarization on the edge routers between the autonomous systems.",
-      "Using multiple autonomous systems stops query propagation from one AS to the other.",
-      "Route summarization at the edge routers between the autonomous systems does not limit query propagation; redistribute the entire routes of each AS on the edge routers instead."
+      "20 bytes",
+      "40 bytes",
+      "8 bytes",
+      "60 bytes"
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "Which field in the IPv4 header carries QoS marking, and how many bits does DSCP use?",
+    "a": [
+     "The ToS byte (DiffServ field)",
+     "DSCP uses the upper 6 bits"
+    ],
+    "why": "The remaining 2 bits are used for ECN. The older IP Precedence used only the top 3 bits.",
+    "note": "",
+    "dup": false,
+    "ref": {
+     "ch": "Ch 1",
+     "t": "IPv4 Design",
+     "p": 45
+    },
+    "src": "Cert Guide",
+    "mc": {
+     "o": [
+      "The ToS byte (DiffServ field)",
+      "DSCP uses the upper 6 bits",
+      "The TTL field",
+      "DSCP uses the lower 3 bits",
+      "The Protocol field"
      ],
      "c": [
       0,
@@ -362,76 +711,26 @@ const DATA = [
     }
    },
    {
-    "q": "In an EIGRP hierarchical design, where should you apply route summarization and traffic policies?",
+    "q": "What mask should you use for a point-to-point link to save addresses, and what for a loopback?",
     "a": [
-     "On the routers representing the choke points."
+     "/30 (or /31) for point-to-point links",
+     "/32 for loopbacks"
     ],
-    "why": "Choke points are where traffic and routes naturally funnel between parts of the network. Summarizing and applying policy there hides detail from the rest of the network and stops queries at that boundary.",
+    "why": "VLSM lets each subnet be sized to its need. A loopback identifies one router, so it needs one address.",
     "note": "",
     "dup": false,
     "ref": {
-     "ch": "Ch 3",
-     "t": "EIGRP Design",
-     "p": 221
+     "ch": "Ch 1",
+     "t": "IPv4 Design",
+     "p": 73
     },
+    "src": "Cert Guide",
     "mc": {
      "o": [
-      "On the routers representing the choke points.",
-      "On all the internal routers in a particular zone.",
-      "On all the routers in a particular layer.",
-      "On all the external routers in the external zone."
-     ],
-     "c": [
-      0
-     ]
-    }
-   },
-   {
-    "q": "In a three-layer EIGRP hierarchical design, which layer's routers should be configured as EIGRP stubs?",
-    "a": [
-     "Access layer."
-    ],
-    "why": "Access switches are the leaves of the network and should never be a transit path. Making them stubs means distribution never queries them, which keeps query scope small.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 3",
-     "t": "EIGRP Stub Routers",
-     "p": 222
-    },
-    "mc": {
-     "o": [
-      "Access layer.",
-      "Core layer.",
-      "Distribution layer.",
-      "Aggregation layer."
-     ],
-     "c": [
-      0
-     ]
-    }
-   },
-   {
-    "q": "In a dual-homed hub-and-spoke design where both hubs summarize to Null0, a spoke link failure can black-hole traffic. Which two options solve this?",
-    "a": [
-     "Interconnect the two hub routers in the EIGRP domain, so the hub that lost the spoke connection can still receive the route from the other hub.",
-     "Do not summarize EIGRP routes between the two hub routers."
-    ],
-    "why": "The hub that lost the spoke learns the specific route from the other hub. That route is more specific than its own Null0 summary, so traffic is forwarded instead of dropped.",
-    "note": "",
-    "dup": false,
-    "card": "Dual-homed hub-and-spoke: both hubs summarize to Null0, and one hub loses its link to a spoke, black-holing traffic. What two changes fix it?",
-    "ref": {
-     "ch": "Ch 3",
-     "t": "EIGRP Design",
-     "p": 221
-    },
-    "mc": {
-     "o": [
-      "Interconnect the two hub routers in the EIGRP domain, so the hub that lost the spoke connection can still receive the route from the other hub.",
-      "Do not summarize EIGRP routes between the two hub routers.",
-      "Summarize the EIGRP routes from the hub to the spokes.",
-      "Inject a default route into the core to access the hubs."
+      "/30 (or /31) for point-to-point links",
+      "/32 for loopbacks",
+      "/24 for point-to-point links",
+      "/30 for loopbacks"
      ],
      "c": [
       0,
@@ -440,24 +739,25 @@ const DATA = [
     }
    },
    {
-    "q": "How is hierarchy created in an EIGRP network?",
+    "q": "Why should an IPv4 address plan be hierarchical?",
     "a": [
-     "By manually designing the EIGRP network using zones and summarizing at choke points."
+     "So contiguous blocks can be summarized at each layer, which shrinks routing tables and contains changes"
     ],
-    "why": "EIGRP has no built-in areas like OSPF, so hierarchy only comes from deliberate design.",
+    "why": "Assign address blocks by region, site and function so each boundary router can advertise one summary.",
     "note": "",
     "dup": false,
     "ref": {
-     "ch": "Ch 3",
-     "t": "EIGRP Design",
-     "p": 221
+     "ch": "Ch 1",
+     "t": "IPv4 Design",
+     "p": 79
     },
+    "src": "Cert Guide",
     "mc": {
      "o": [
-      "By manually designing the EIGRP network using zones and summarizing at choke points.",
-      "By enabling areas in EIGRP to automatically filter routes on border routers.",
-      "By using multiple AS numbers and enabling route redistribution between different ASs.",
-      "By using a hub-and-spoke design and ensuring that spokes never participate in the EIGRP topology."
+      "So contiguous blocks can be summarized at each layer, which shrinks routing tables and contains changes",
+      "So every subnet can use the same mask, which removes the need for VLSM",
+      "So NAT is no longer needed at the internet edge",
+      "So DHCP scopes are larger and need fewer servers"
      ],
      "c": [
       0
@@ -465,26 +765,26 @@ const DATA = [
     }
    },
    {
-    "q": "Which two statements about EIGRP Graceful Restart are correct?",
+    "q": "What is the difference between NAT and PAT?",
     "a": [
-     "Graceful Restart allows forwarding of data packets to continue along known routes while routing protocol information is restored after a processor switchover.",
-     "Graceful Restart reduces EIGRP convergence times."
+     "NAT maps one private address to one public address",
+     "PAT maps many private addresses to one public address using different port numbers"
     ],
-    "why": "Neighbours keep the adjacency and existing routes in place, so the network avoids a reconvergence. The distractors are wrong because Graceful Restart doesn't increase convergence times, and neighbours don't switch to feasible successor routes during a restart.",
-    "note": "\"Reduces convergence times\" is loose. Graceful Restart doesn't make convergence faster; it avoids having to reconverge at all. It's still the right pick because the other options are clearly wrong.",
+    "why": "PAT (NAT overload) is what lets a whole site share one public IP.",
+    "note": "",
     "dup": false,
-    "card": "What two benefits does EIGRP Graceful Restart provide after a processor switchover?",
     "ref": {
-     "ch": "Ch 4",
-     "t": "Graceful Restart",
-     "p": 312
+     "ch": "Ch 1",
+     "t": "IPv4 Design",
+     "p": 80
     },
+    "src": "Cert Guide",
     "mc": {
      "o": [
-      "Graceful Restart allows forwarding of data packets to continue along known routes while routing protocol information is restored after a processor switchover.",
-      "Graceful Restart reduces EIGRP convergence times.",
-      "Graceful Restart increases EIGRP convergence times.",
-      "During Graceful Restart, neighbouring routers immediately install feasible successor routes into their routing tables to ensure smooth convergence."
+      "NAT maps one private address to one public address",
+      "PAT maps many private addresses to one public address using different port numbers",
+      "NAT maps many private addresses to one public address using port numbers",
+      "PAT maps one private address to one public address"
      ],
      "c": [
       0,
@@ -493,210 +793,25 @@ const DATA = [
     }
    },
    {
-    "q": "Which two statements regarding EIGRP queries are true?",
+    "q": "How many usable host addresses does a /26 subnet give you?",
     "a": [
-     "When EIGRP does not have a feasible successor, it sends queries to its neighbors.",
-     "The router has to wait for replies to all the queries that it sends out to the network, thus increasing the convergence time."
+     "62"
     ],
-    "why": "With no feasible successor the route goes active and queries go to every neighbour, which pass them on. The router must hear back from all of them before it can converge, which is why limiting query scope matters.",
+    "why": "A /26 has 64 addresses (2^6). Subtract the network and broadcast addresses to get 62.",
     "note": "",
     "dup": false,
-    "src": "Answer key",
-    "mc": {
-     "o": [
-      "When EIGRP does not have a feasible successor, it sends queries to its neighbors.",
-      "The router floods queries only to its neighbors in the network and the neighbors do not forward the queries to other routers in the network.",
-      "The router has to wait for replies to all the queries that it sends out to the network, thus increasing the convergence time.",
-      "The router floods queries to all routers in the network, thus increasing the convergence time.",
-      "The router does not wait for replies to all the queries that it sends out to the network, when the first neighbor router replies to the query, the process ends."
-     ],
-     "c": [
-      0,
-      2
-     ]
+    "ref": {
+     "ch": "Ch 1",
+     "t": "IPv4 Design",
+     "p": 65
     },
-    "card": "When does EIGRP send queries, and how do they affect convergence time?"
-   },
-   {
-    "q": "Which three statements about the three-layer EIGRP hierarchy are correct?",
-    "a": [
-     "Security policies are applied in the access layer.",
-     "Summarization and aggregation happen in the distribution layer.",
-     "High-speed switching is in the core layer."
-    ],
-    "why": "Access is where users connect and policy is enforced, distribution summarizes and aggregates, and the core just switches fast. The distractors swap these roles between layers.",
-    "note": "",
-    "dup": false,
-    "src": "Answer key",
+    "src": "Cert Guide",
     "mc": {
      "o": [
-      "The aggregation layer is responsible for high-speed switching.",
-      "The core layer is responsible for summarization and aggregation.",
-      "Security policies are applied in the access layer.",
-      "Summarization and aggregation happen in the distribution layer.",
-      "The access layer is responsible for high-speed switching.",
-      "High-speed switching is in the core layer."
-     ],
-     "c": [
-      2,
-      3,
-      5
-     ]
-    },
-    "card": "In the three-layer EIGRP hierarchy, what job does each layer (access, distribution, core) do?"
-   },
-   {
-    "q": "Identify three of the factors that EIGRP hub-and-spoke scalability relies on.",
-    "a": [
-     "You must configure spokes as stubs.",
-     "You must minimize advertisements to spokes.",
-     "You must test topology failover convergence after the primary hub has failed."
-    ],
-    "why": "Stub spokes keep queries off them, sending spokes only a summary or default keeps updates small, and the design has to be proven by failing the primary hub.",
-    "note": "The \"memory is the primary limiting factor\" option is wrong because the lesson says CPU is the limit with many interfaces, not memory.",
-    "dup": false,
-    "src": "Answer key",
-    "mc": {
-     "o": [
-      "You must configure spokes as stubs.",
-      "You must configure the hub as a stub.",
-      "You must minimize advertisements to spokes.",
-      "You must maximize advertisements to spokes.",
-      "When spokes are connected to the hub over multiple interfaces, memory is the primary limiting factor.",
-      "You must test topology failover convergence after the primary hub has failed."
-     ],
-     "c": [
-      0,
-      2,
-      5
-     ]
-    },
-    "card": "Name three factors that EIGRP hub-and-spoke scalability relies on."
-   },
-   {
-    "q": "Which two statements regarding BFD are true?",
-    "a": [
-     "If a BFD device fails to receive a BFD control packet within the detect timer, it informs its client protocol about the failure.",
-     "BFD can provide fast failure detection times for all media types, encapsulations, topologies, and routing protocols."
-    ],
-    "why": "BFD is a lightweight hello that tells its client (EIGRP, OSPF and so on) as soon as packets stop arriving, and it works the same way whatever the media or protocol. It runs over UDP, not TCP, and one session is shared by all clients.",
-    "note": "",
-    "dup": false,
-    "src": "Answer key",
-    "mc": {
-     "o": [
-      "BFD requires manual peer configuration.",
-      "There are two BFD sessions per client protocol.",
-      "If a BFD device fails to receive a BFD control packet within the detect timer, it informs its client protocol about the failure.",
-      "BFD can provide fast failure detection times for all media types, encapsulations, topologies, and routing protocols.",
-      "The Cisco BFD implementation encapsulates BFD control packets in TCP packets."
-     ],
-     "c": [
-      2,
-      3
-     ]
-    },
-    "card": "What does BFD do when it misses packets within the detect timer, and what does it work with?"
-   },
-   {
-    "q": "Which design technique helps limit EIGRP topology changes from propagating throughout an enterprise network?",
-    "a": [
-     "Route summarization at distribution boundaries"
-    ],
-    "why": "Summarizing at distribution boundaries hides the detailed prefixes behind them, so a flap inside one block doesn't ripple (or drive queries) across the whole network.",
-    "note": "",
-    "dup": false,
-    "src": "Practice set",
-    "mc": {
-     "o": [
-      "Disabling DUAL",
-      "Route summarization at distribution boundaries",
-      "Using a single flat routing topology",
-      "Increasing the number of non-stub neighbors"
-     ],
-     "c": [
-      1
-     ]
-    }
-   },
-   {
-    "q": "What is an EIGRP feasible successor?",
-    "a": [
-     "A loop-free backup route meeting the feasibility condition"
-    ],
-    "why": "A feasible successor is a backup path whose reported distance is lower than the current feasible distance (the feasibility condition), which guarantees it's loop-free and usable instantly.",
-    "note": "",
-    "dup": false,
-    "src": "Practice set",
-    "mc": {
-     "o": [
-      "Any route with a lower administrative distance",
-      "The route with the highest bandwidth",
-      "A loop-free backup route meeting the feasibility condition",
-      "A route learned exclusively from BGP"
-     ],
-     "c": [
-      2
-     ]
-    }
-   },
-   {
-    "q": "When does an EIGRP route typically enter the active state?",
-    "a": [
-     "When its successor is lost and no suitable feasible successor is available"
-    ],
-    "why": "A route goes active when the successor is lost and no feasible successor exists, so DUAL has to send queries to find a new path.",
-    "note": "",
-    "dup": false,
-    "src": "Practice set",
-    "mc": {
-     "o": [
-      "When a router has two equal-cost successors",
-      "When its successor is lost and no suitable feasible successor is available",
-      "Whenever a hello packet arrives",
-      "Whenever route summarization is enabled"
-     ],
-     "c": [
-      1
-     ]
-    }
-   },
-   {
-    "q": "What is the primary design benefit of configuring branch routers as EIGRP stubs?",
-    "a": [
-     "They reduce unnecessary query propagation toward branch sites"
-    ],
-    "why": "Stub branches aren't used as transit and aren't queried, so a failure elsewhere doesn't send queries out to every branch.",
-    "note": "",
-    "dup": false,
-    "src": "Practice set",
-    "mc": {
-     "o": [
-      "They become preferred transit routers",
-      "They automatically disable all routing advertisements",
-      "They prevent all interface failures",
-      "They reduce unnecessary query propagation toward branch sites"
-     ],
-     "c": [
-      3
-     ]
-    }
-   },
-   {
-    "q": "Which route does a hub commonly advertise to spokes to minimize spoke routing-table size?",
-    "a": [
-     "0.0.0.0/0"
-    ],
-    "why": "The hub can send spokes just a default route (0.0.0.0/0), keeping spoke routing tables tiny while still reaching everything through the hub.",
-    "note": "",
-    "dup": false,
-    "src": "Practice set",
-    "mc": {
-     "o": [
-      "0.0.0.0/0",
-      "255.255.255.255/32",
-      "Every corporate /24 prefix",
-      "Only the WAN transit subnet"
+      "62",
+      "64",
+      "30",
+      "126"
      ],
      "c": [
       0
@@ -704,83 +819,25 @@ const DATA = [
     }
    },
    {
-    "q": "Which aggregate covers 10.1.0.0/24 through 10.1.3.0/24?",
+    "q": "Which DHCP messages make up the normal lease process, in order?",
     "a": [
-     "10.1.0.0/22"
+     "Discover, Offer, Request, Acknowledge (DORA)"
     ],
-    "why": "10.1.0.0 to 10.1.3.255 is four /24s, which is exactly one /22 (255.255.252.0).",
+    "why": "Discover and Request are broadcasts from the client. A relay agent (ip helper-address) forwards them to a DHCP server on another subnet.",
     "note": "",
     "dup": false,
-    "src": "Practice set",
+    "ref": {
+     "ch": "Ch 1",
+     "t": "IPv4 Design",
+     "p": 88
+    },
+    "src": "Cert Guide",
     "mc": {
      "o": [
-      "10.1.0.0/23",
-      "10.1.0.0/22",
-      "10.1.0.0/25",
-      "10.1.0.0/16 only"
-     ],
-     "c": [
-      1
-     ]
-    }
-   },
-   {
-    "q": "What is a major concern when redistributing routes between multiple EIGRP autonomous systems?",
-    "a": [
-     "Route feedback, loops, and unintended route selection"
-    ],
-    "why": "Redistributing between EIGRP ASes can feed routes back into the domain they came from, causing loops and odd path choices, so it needs filtering or tagging.",
-    "note": "",
-    "dup": false,
-    "src": "Practice set",
-    "mc": {
-     "o": [
-      "EIGRP stops supporting IPv4",
-      "All routes automatically become connected",
-      "Route feedback, loops, and unintended route selection",
-      "DUAL is disabled across the enterprise"
-     ],
-     "c": [
-      2
-     ]
-    }
-   },
-   {
-    "q": "What is the main role of Bidirectional Forwarding Detection (BFD) when integrated with EIGRP?",
-    "a": [
-     "Detect forwarding-path failures quickly and notify EIGRP"
-    ],
-    "why": "BFD detects a broken forwarding path in milliseconds and tells EIGRP, which then reconverges. BFD itself doesn't do any routing.",
-    "note": "",
-    "dup": false,
-    "src": "Practice set",
-    "mc": {
-     "o": [
-      "Calculate EIGRP composite metrics",
-      "Replace the routing table",
-      "Detect forwarding-path failures quickly and notify EIGRP",
-      "Redistribute routes between EIGRP processes"
-     ],
-     "c": [
-      2
-     ]
-    }
-   },
-   {
-    "q": "How does Cisco Nonstop Forwarding (NSF) differ from ordinary EIGRP failover?",
-    "a": [
-     "NSF seeks to preserve packet forwarding during supported control-plane switchover events"
-    ],
-    "why": "NSF (with graceful restart) keeps forwarding packets on known routes during a supervisor or control-plane switchover. Normal failover reconverges onto a new path after a failure.",
-    "note": "",
-    "dup": false,
-    "src": "Practice set",
-    "mc": {
-     "o": [
-      "NSF seeks to preserve packet forwarding during supported control-plane switchover events",
-      "NSF makes every route a feasible successor",
-      "NSF replaces the need for redundant hardware",
-      "NSF guarantees zero loss during any physical link failure"
+      "Discover, Offer, Request, Acknowledge (DORA)",
+      "Request, Offer, Discover, Acknowledge",
+      "Discover, Request, Offer, Acknowledge",
+      "Offer, Discover, Acknowledge, Request"
      ],
      "c": [
       0
@@ -788,74 +845,1207 @@ const DATA = [
     }
    },
    {
-    "q": "An EIGRP router has a successor feasible distance of 900. A neighbor reports a distance of 850 and a total metric of 1200. How is the neighbor route classified?",
+    "q": "A company allocates a /16 to 16 branches. Each branch must receive a summarizable block supporting up to 12 /24 networks. Which allocation best meets the requirement?",
     "a": [
-     "Feasible successor"
+     "Assign one /20 per branch"
     ],
-    "why": "Feasibility condition: the neighbour's reported distance (850) is less than the current feasible distance (900), so the path is loop-free and becomes a feasible successor, even though its total metric (1200) is higher.",
+    "why": "A /20 holds sixteen /24s, enough for 12 with room to grow, and summarizes as one route. Sixteen /20s fit exactly in a /16.",
     "note": "",
     "dup": false,
     "src": "Mock exam",
     "mc": {
      "o": [
-      "Not loop-free",
-      "Feasible successor",
-      "Successor regardless of metric",
-      "External route only"
+      "Assign one /24 per branch",
+      "Assign one /20 per branch",
+      "Assign one /22 per branch",
+      "Assign one /28 per branch"
      ],
      "c": [
       1
      ]
     }
+   }
+  ]
+ },
+ {
+  "name": "Exploring IPv6",
+  "intro": [],
+  "refs": [
+   {
+    "ch": "Ch 2",
+    "t": "IPv6 Address Representation",
+    "p": 120
    },
    {
-    "q": "A redistribution boundary connects OSPF and EIGRP domains. Which two controls most directly reduce route feedback loops?",
+    "ch": "Ch 2",
+    "t": "IPv6 Addressing Design",
+    "p": 145
+   },
+   {
+    "ch": "Ch 2",
+    "t": "IPv6 for the Enterprise (allocation methods)",
+    "p": 147
+   },
+   {
+    "ch": "Ch 2",
+    "t": "IPv6 Header",
+    "p": 117
+   },
+   {
+    "ch": "Ch 2",
+    "t": "Address Scope Types",
+    "p": 123
+   },
+   {
+    "ch": "Ch 2",
+    "t": "IPv6 Mechanisms (ND, SLAAC, DHCPv6)",
+    "p": 133
+   },
+   {
+    "ch": "Ch 2",
+    "t": "IPv4-to-IPv6 Migration",
+    "p": 149
+   },
+   {
+    "ch": "Ch 2",
+    "t": "IPv6 Deployment Models",
+    "p": 158
+   }
+  ],
+  "notes": [
+   "Shorten IPv6 addresses by dropping leading zeros in each group and replacing one run of all-zero groups with ::.",
+   "Registries hand out provider-independent (PI) space as a /48 by default. PI suits multihoming but adds routes to the global table because it can't be aggregated.",
+   "A /48 site leaves 16 bits for subnets (65,536 /64s). A /64 is a single subnet.",
+   "Build the subnet ID hierarchically: location first, then type or VLAN. A 12-bit VLAN ID leaves 4 bits for location/type.",
+   "Linking IPv4 into IPv6 (for example reusing the third octet or the last octet as written) makes troubleshooting easier.",
+   "ULAs (fc00::/7) are IPv6's private addresses. Renumbering is the main pain point when providers change."
+  ],
+  "qs": [
+   {
+    "q": "Which of the following is a problem that you might encounter while using IPv6 addressing?",
     "a": [
-     "Route tagging with matching filters",
-     "Explicit prefix filtering"
+     "Renumbering"
     ],
-    "why": "Tagging routes as they're redistributed, and filtering on those tags (plus explicit prefix filters), stops routes leaking back into the domain they came from.",
+    "why": "Address space isn't a concern in IPv6, but changing providers (and their PA prefix) means renumbering everything, which is why PI space or careful design matters.",
     "note": "",
     "dup": false,
-    "src": "Mock exam",
+    "ref": {
+     "ch": "Ch 2",
+     "t": "IPv6 Addressing Design",
+     "p": 145
+    },
     "mc": {
      "o": [
-      "Route tagging with matching filters",
-      "Unrestricted bidirectional redistribution",
-      "Explicit prefix filtering",
-      "Disabling administrative distance globally",
-      "Increasing OSPF hello timers"
+      "Renumbering",
+      "Address exhaustion",
+      "ISP lock-in",
+      "Too few subnets"
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "Which is the recommended way to implement a multihomed IPv6 address space?",
+    "a": [
+     "Use provider-independent addressing."
+    ],
+    "why": "PI space belongs to you, so both ISPs can advertise it. NAT is discouraged in IPv6.",
+    "note": "",
+    "dup": false,
+    "ref": {
+     "ch": "Ch 2",
+     "t": "IPv6 Address Allocation",
+     "p": 147
+    },
+    "mc": {
+     "o": [
+      "Use provider-independent addressing.",
+      "Use private addresses internally and NAT64 to reach the public internet.",
+      "Use provider-assigned addressing with LISP.",
+      "Use provider-assigned addressing with policy-based routing."
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "What is the best way to link static IPv4 host addresses into IPv6 for devices such as servers?",
+    "a": [
+     "Use the last octet of the IPv4 address in the IPv6 address."
+    ],
+    "why": "For example, server 10.1.20.25 becomes 2001:db8:...:20::25, so the IPv6 host ID matches the familiar IPv4 one.",
+    "note": "",
+    "dup": false,
+    "ref": {
+     "ch": "Ch 2",
+     "t": "Whole IPv4 Address Linked to IPv6",
+     "p": 148
+    },
+    "card": "How do you link a server's static IPv4 address into its IPv6 address so it's easy to recognize?",
+    "mc": {
+     "o": [
+      "Use the last octet of the IPv4 address in the IPv6 address.",
+      "Translate the IPv4 host portion to hexadecimal.",
+      "Linking is not possible; use a random IPv6 host portion.",
+      "Translate the second octet of the IPv4 address into the IPv6 host portion."
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "When incorporating VLAN numbers into IPv6 subnets using a /64 mask, how many bits are left over to identify location or type?",
+    "a": [
+     "4 bits"
+    ],
+    "why": "A /48 site has 16 subnet bits. VLAN IDs need 12 bits (up to 4,096), which leaves 4 bits for location or type.",
+    "note": "",
+    "dup": false,
+    "ref": {
+     "ch": "Ch 2",
+     "t": "IPv6 Addresses Allocated per Location and/or Type",
+     "p": 149
+    },
+    "card": "With a /48 site and 12 bits used for the VLAN ID, how many subnet bits are left for location or type?",
+    "mc": {
+     "o": [
+      "4 bits",
+      "6 bits",
+      "8 bits",
+      "2 bits"
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "Which is the most efficient and correct way of representing the IPv6 address 2001:db8:0000:0001:0abc:0000:0000:ab01?",
+    "a": [
+     "2001:db8:0:1:abc::ab01"
+    ],
+    "why": "Drop leading zeros in each group and replace the run of zero groups with ::. Leaving 0:0 is valid but not shortest, and dropping the zeros without :: changes the address.",
+    "note": "",
+    "dup": false,
+    "ref": {
+     "ch": "Ch 2",
+     "t": "IPv6 Address Representation",
+     "p": 120
+    },
+    "mc": {
+     "o": [
+      "2001:db8:0:1:abc::ab01",
+      "2001:db8::1:abc::ab01",
+      "2001:db8:0:1:abc:0:ab01",
+      "2001:db8:0:1:0abc::ab1"
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "By default, the regional registrars allocate which prefix for provider-independent allocation?",
+    "a": [
+     "/48"
+    ],
+    "why": "A /48 gives a site 65,536 /64 subnets, which suits most organizations.",
+    "note": "",
+    "dup": false,
+    "ref": {
+     "ch": "Ch 2",
+     "t": "IPv6 Address Allocation",
+     "p": 147
+    },
+    "mc": {
+     "o": [
+      "/48",
+      "/32",
+      "/56",
+      "/64"
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "What is the downside of provider-independent IPv6 prefix assignment?",
+    "a": [
+     "The service provider has to advertise your prefix alongside its own, increasing the global routing table; it can't be aggregated."
+    ],
+    "why": "PA space rolls up into the provider's block, but PI space is a separate route everyone on the internet must carry.",
+    "note": "",
+    "dup": false,
+    "ref": {
+     "ch": "Ch 2",
+     "t": "IPv6 Address Allocation",
+     "p": 147
+    },
+    "card": "What is the main downside of provider-independent IPv6 space?",
+    "mc": {
+     "o": [
+      "The provider must advertise your prefix separately, growing the global routing table",
+      "You can never change providers without renumbering",
+      "PI space cannot be used for multihoming",
+      "Your prefix cannot be summarized inside your own network"
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "IPv6 private addresses, or ULAs, are which of the following?",
+    "a": [
+     "fc00::/7"
+    ],
+    "why": "Unique local addresses are routable inside an organization but not on the internet. ::/128 is unspecified, ::1 is loopback, ::/0 is the default route.",
+    "note": "",
+    "dup": false,
+    "ref": {
+     "ch": "Ch 2",
+     "t": "Unique Local IPv6 Address",
+     "p": 127
+    },
+    "mc": {
+     "o": [
+      "fc00::/7",
+      "fe80::/10",
+      "ff00::/8",
+      "2001:db8::/32"
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "If an ISP assigns you an IPv6 address space with a /64 mask, how many subnets can you configure with it?",
+    "a": [
+     "1"
+    ],
+    "why": "A /64 is the standard size of one LAN segment; the remaining 64 bits are the interface ID. You need a shorter prefix (like /48 or /56) for more subnets.",
+    "note": "",
+    "dup": false,
+    "ref": {
+     "ch": "Ch 2",
+     "t": "IPv6 Addressing Design",
+     "p": 145
+    },
+    "mc": {
+     "o": [
+      "1",
+      "256",
+      "65,536",
+      "16"
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "When assigning IPv6 addresses using location and type, which should you use first?",
+    "a": [
+     "Location"
+    ],
+    "why": "Putting location in the higher bits lets each site be summarized as one route. Type comes next within the site.",
+    "note": "",
+    "dup": false,
+    "ref": {
+     "ch": "Ch 2",
+     "t": "IPv6 Addresses Allocated per Location and/or Type",
+     "p": 149
+    },
+    "mc": {
+     "o": [
+      "Location",
+      "Type",
+      "The remaining 4 bits",
+      "The remaining 3 bits"
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "Using IPv4 /24 subnets and partially linking them to IPv6, which approach is best for quick troubleshooting?",
+    "a": [
+     "Use the value in the third octet of the /24 directly in the IPv6 address."
+    ],
+    "why": "Subnet 10.1.45.0/24 becomes ...:45::/64, so you can read the IPv4 subnet straight off the IPv6 one. Converting to hex (2d) is valid but harder to read.",
+    "note": "",
+    "dup": false,
+    "ref": {
+     "ch": "Ch 2",
+     "t": "Partly Linked IPv4 Address into IPv6",
+     "p": 147
+    },
+    "card": "When partly linking IPv4 /24 subnets into IPv6, how should the third octet appear for easy troubleshooting?",
+    "mc": {
+     "o": [
+      "Use the value in the third octet of the /24 directly in the IPv6 address.",
+      "Convert the third octet to hexadecimal before using it.",
+      "Use the first octet of the /24 in the IPv6 address.",
+      "Use a random value and keep a mapping spreadsheet."
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "How big is the fixed IPv6 header?",
+    "a": [
+     "40 bytes"
+    ],
+    "why": "It's simpler than IPv4: no fragmentation fields and no checksum, plus a Flow Label field. Optional info goes in extension headers.",
+    "note": "",
+    "dup": false,
+    "ref": {
+     "ch": "Ch 2",
+     "t": "IPv6 Design",
+     "p": 117
+    },
+    "src": "Cert Guide",
+    "mc": {
+     "o": [
+      "40 bytes",
+      "20 bytes",
+      "60 bytes",
+      "128 bytes"
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "Which prefix identifies IPv6 link-local addresses, and can routers forward them?",
+    "a": [
+     "FE80::/10",
+     "No, they stay on the local link"
+    ],
+    "why": "Every IPv6 interface has a link-local address. Routing protocols like OSPFv3 use them for neighbour communication.",
+    "note": "",
+    "dup": false,
+    "ref": {
+     "ch": "Ch 2",
+     "t": "IPv6 Design",
+     "p": 126
+    },
+    "src": "Cert Guide",
+    "mc": {
+     "o": [
+      "FE80::/10",
+      "No, they stay on the local link",
+      "FC00::/7",
+      "FF02::/16",
+      "Yes, routers forward them within the same site"
      ],
      "c": [
       0,
-      2
+      1
      ]
     }
+   },
+   {
+    "q": "What are unique local addresses (ULAs) and what prefix do they use?",
+    "a": [
+     "Private IPv6 addresses not routed on the internet",
+     "FC00::/7"
+    ],
+    "why": "ULAs replaced the deprecated site-local addresses (FEC0::/10). They're the IPv6 counterpart to RFC 1918 space.",
+    "note": "",
+    "dup": false,
+    "ref": {
+     "ch": "Ch 2",
+     "t": "IPv6 Design",
+     "p": 127
+    },
+    "src": "Cert Guide",
+    "mc": {
+     "o": [
+      "Private IPv6 addresses not routed on the internet",
+      "FC00::/7",
+      "Public IPv6 addresses assigned by the ISP",
+      "FE80::/10",
+      "2000::/3"
+     ],
+     "c": [
+      0,
+      1
+     ]
+    }
+   },
+   {
+    "q": "Which prefix marks IPv6 multicast addresses, and what replaces broadcast?",
+    "a": [
+     "FF00::/8",
+     "Multicast replaces broadcast (IPv6 has no broadcast)"
+    ],
+    "why": "For example, FF02::1 is all nodes and FF02::2 is all routers on the local link.",
+    "note": "",
+    "dup": false,
+    "ref": {
+     "ch": "Ch 2",
+     "t": "IPv6 Design",
+     "p": 129
+    },
+    "src": "Cert Guide",
+    "mc": {
+     "o": [
+      "FF00::/8",
+      "Multicast replaces broadcast (IPv6 has no broadcast)",
+      "FE80::/10",
+      "FF02::FFFF is the IPv6 broadcast address",
+      "Anycast replaces broadcast"
+     ],
+     "c": [
+      0,
+      1
+     ]
+    }
+   },
+   {
+    "q": "How does SLAAC build a host's interface ID from a MAC address?",
+    "a": [
+     "EUI-64: split the 48-bit MAC, insert FFFE in the middle, and flip the 7th bit"
+    ],
+    "why": "The router advertises the /64 prefix in a Router Advertisement, and the host appends its own 64-bit interface ID.",
+    "note": "",
+    "dup": false,
+    "ref": {
+     "ch": "Ch 2",
+     "t": "IPv6 Design",
+     "p": 126
+    },
+    "src": "Cert Guide",
+    "mc": {
+     "o": [
+      "EUI-64: split the 48-bit MAC, insert FFFE in the middle, and flip the 7th bit",
+      "Append FFFF to the end of the 48-bit MAC",
+      "Use the MAC address unchanged and pad it with zeros",
+      "Insert FEFE in the middle and flip the 1st bit"
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "What replaces ARP in IPv6?",
+    "a": [
+     "Neighbor Discovery (ICMPv6 Neighbor Solicitation and Neighbor Advertisement)"
+    ],
+    "why": "ND also handles router discovery, duplicate address detection and redirects.",
+    "note": "",
+    "dup": false,
+    "ref": {
+     "ch": "Ch 2",
+     "t": "IPv6 Design",
+     "p": 136
+    },
+    "src": "Cert Guide",
+    "mc": {
+     "o": [
+      "Neighbor Discovery (ND)",
+      "ARPv6",
+      "DHCPv6 relay",
+      "Inverse ARP"
+     ],
+     "c": [
+      0
+     ]
+    }
+   }
+  ]
+ },
+ {
+  "name": "Deploying IPv6",
+  "intro": [
+   {
+    "row": [
+     "Phase",
+     "What happens"
+    ]
+   },
+   {
+    "row": [
+     "Discovery",
+     "Learn the business goals and what IPv6 needs to support (first step of planning)"
+    ]
+   },
+   {
+    "row": [
+     "Assessment",
+     "Inventory devices: does the OS/hardware support IPv6, are upgrades or licences needed"
+    ]
+   },
+   {
+    "row": [
+     "Planning and design",
+     "Address plan, routing, security and transition design"
+    ]
+   },
+   {
+    "row": [
+     "Implementation and optimization",
+     "Lab and pilot, measure, tune, then roll out"
+    ]
    }
   ],
   "refs": [
    {
-    "ch": "Ch 3",
-    "t": "EIGRP",
-    "p": 212
+    "ch": "Ch 2",
+    "t": "IPv6 Mechanisms (SLAAC, ND)",
+    "p": 133
    },
    {
-    "ch": "Ch 3",
-    "t": "EIGRP Design and Stub Routers",
-    "p": 221
+    "ch": "Ch 2",
+    "t": "IPv6 Security",
+    "p": 142
    },
    {
-    "ch": "Ch 4",
-    "t": "Graceful Restart and Non-Stop Routing",
-    "p": 311
+    "ch": "Ch 2",
+    "t": "IPv4-to-IPv6 Migration",
+    "p": 149
+   },
+   {
+    "ch": "Ch 2",
+    "t": "Tunnels, 6rd, ISATAP",
+    "p": 151
+   },
+   {
+    "ch": "Ch 2",
+    "t": "NAT64 / DNS64",
+    "p": 154
+   },
+   {
+    "ch": "Ch 2",
+    "t": "IPv6 Header",
+    "p": 117
+   },
+   {
+    "ch": "Ch 2",
+    "t": "Address Scope Types",
+    "p": 123
+   },
+   {
+    "ch": "Ch 2",
+    "t": "IPv6 Deployment Models",
+    "p": 158
    }
   ],
   "notes": [
-   "EIGRP is an advanced distance-vector protocol using DUAL. A route with a feasible successor never goes active, so it sends no queries.",
-   "When a route goes active, the router queries its neighbours. Uncontained queries can cause stuck-in-active problems in large networks.",
-   "Stub routers (receive-only, connected, static, summary, redistributed) are never queried, which keeps queries off WAN links to branches.",
-   "Summarization at choke points also stops queries: a router that only knows a summary answers right away instead of passing the query on.",
-   "Hello/hold timers are 5/15 s on fast links and 60/180 s on slow multipoint links. Internal AD 90, summary 5, external 170."
+   "Dual stack is the recommended transition method. Tunnels (manual, 6to4, 6rd, ISATAP, DS-Lite) and translation (NAT64/DNS64) fill gaps.",
+   "Manual tunnels terminate on dual-stacked edge routers. A tunnel broker gives an IPv6 tunnel to a site whose ISP only offers IPv4.",
+   "6rd uses the provider's own IPv6 prefix (unlike 6to4's 2002::/16). DS-Lite carries IPv4 traffic across an IPv6-only provider network.",
+   "SLAAC needs a /64 and uses the router's ICMPv6 Router Advertisement. AAAA records map names to IPv6 addresses.",
+   "Security: RA Guard blocks rogue router advertisements, SEND/CGA secures ND with certificates, and the IPv6 policy must match the existing IPv4 policy. Tunnels have no built-in security, so add IPsec."
+  ],
+  "qs": [
+   {
+    "q": "You inspect existing routers, switches, firewalls and servers to check IPv6 support and whether OS, hardware or licensing upgrades are needed. Which phase is this?",
+    "a": [
+     "IPv6 assessment"
+    ],
+    "why": "Assessment is the inventory step: what you have and what needs upgrading before you can plan.",
+    "note": "",
+    "dup": false,
+    "ref": {
+     "ch": "Ch 2",
+     "t": "IPv4-to-IPv6 Migration",
+     "p": 149
+    },
+    "card": "Which IPv6 adoption phase inventories devices for IPv6 support and needed upgrades?",
+    "mc": {
+     "o": [
+      "IPv6 assessment",
+      "IPv6 discovery",
+      "IPv6 implementation",
+      "Network optimization"
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "Which of the following uses the ICMPv6 RA message to provide addressing?",
+    "a": [
+     "SLAAC"
+    ],
+    "why": "The router advertises the prefix in a Router Advertisement, and hosts build their own address from it.",
+    "note": "",
+    "dup": false,
+    "ref": {
+     "ch": "Ch 2",
+     "t": "SLAAC",
+     "p": 139
+    },
+    "mc": {
+     "o": [
+      "SLAAC",
+      "Stateful DHCPv6",
+      "DNS AAAA",
+      "DNS PTR"
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "Which part of an enterprise network is typically left as the last part of the network to migrate to IPv6?",
+    "a": [
+     "LAN"
+    ],
+    "why": "The many end devices and access switches make the campus LAN the biggest, slowest piece to convert, so it usually comes last.",
+    "note": "",
+    "dup": false,
+    "ref": {
+     "ch": "Ch 2",
+     "t": "IPv4-to-IPv6 Migration",
+     "p": 149
+    },
+    "mc": {
+     "o": [
+      "LAN",
+      "WAN",
+      "Data center",
+      "DMZ"
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "Which transition mechanism is recommended as you migrate from IPv4 to IPv6?",
+    "a": [
+     "Dual stack"
+    ],
+    "why": "Running both protocols natively avoids tunnel and translation overhead and lets IPv4 be retired gradually.",
+    "note": "",
+    "dup": false,
+    "ref": {
+     "ch": "Ch 2",
+     "t": "Dual-Stack Migration Strategy",
+     "p": 150
+    },
+    "mc": {
+     "o": [
+      "Dual stack",
+      "Tunnelling",
+      "Translation",
+      "Proxying"
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "Which DNS record maps a domain name to an IPv6 address?",
+    "a": [
+     "AAAA record"
+    ],
+    "why": "A records are IPv4, AAAA (\"quad-A\") are IPv6, PTR records do reverse lookups.",
+    "note": "",
+    "dup": false,
+    "ref": {
+     "ch": "Ch 2",
+     "t": "IPv6 Name Resolution",
+     "p": 136
+    },
+    "mc": {
+     "o": [
+      "AAAA record",
+      "A record",
+      "PTR record",
+      "MX record"
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "Which device is required to be dual-stacked to establish a manual tunnel?",
+    "a": [
+     "Edge router"
+    ],
+    "why": "The tunnel endpoints are the edge routers: they speak IPv6 on the inside and IPv4 across the transport. Hosts don't need to change.",
+    "note": "",
+    "dup": false,
+    "ref": {
+     "ch": "Ch 2",
+     "t": "Manual Configured Tunnels",
+     "p": 152
+    },
+    "mc": {
+     "o": [
+      "Edge router",
+      "Sending host",
+      "Receiving host",
+      "Default gateway"
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "Why would a site require a tunnel broker?",
+    "a": [
+     "It wants to reach the internet via IPv6, but its ISP only supports IPv4."
+    ],
+    "why": "A tunnel broker provides an IPv6-over-IPv4 tunnel to an IPv6-connected provider.",
+    "note": "",
+    "dup": false,
+    "ref": {
+     "ch": "Ch 2",
+     "t": "Automatic Tunnel Mechanisms",
+     "p": 152
+    },
+    "mc": {
+     "o": [
+      "It wants to reach the internet via IPv6, but its ISP only supports IPv4.",
+      "It wants to reach the internet via IPv4, but its ISP only supports IPv6.",
+      "It only has a PA address allocation.",
+      "It only has a PI address allocation."
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "Which statement correctly describes the IPv6 prefix of 6rd?",
+    "a": [
+     "The prefix comes from the provider (its own IPv6 block), not a fixed one."
+    ],
+    "why": "6rd (\"rapid deployment\") is 6to4 reworked so the ISP uses its own prefix instead of 2002::/16, keeping routing under the ISP's control.",
+    "note": "",
+    "dup": false,
+    "ref": {
+     "ch": "Ch 2",
+     "t": "Automatic Tunnel Mechanisms",
+     "p": 152
+    },
+    "card": "How does the 6rd prefix differ from 6to4's 2002::/16?",
+    "mc": {
+     "o": [
+      "The prefix comes from the provider (its own IPv6 block), not a fixed one.",
+      "It uses the fixed 2002::/16 prefix, like 6to4.",
+      "It uses a ULA prefix from FC00::/7.",
+      "It uses the link-local FE80::/10 prefix."
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "Which statement correctly identifies the capabilities of DS-Lite?",
+    "a": [
+     "It allows an IPv4 host to communicate with another IPv4 host across an IPv6 network."
+    ],
+    "why": "DS-Lite tunnels IPv4 inside IPv6 to a provider NAT, so an ISP can run an IPv6-only network while customers keep IPv4.",
+    "note": "",
+    "dup": false,
+    "ref": {
+     "ch": "Ch 2",
+     "t": "IPv6 over IPv4 Tunneling Strategy",
+     "p": 151
+    },
+    "mc": {
+     "o": [
+      "It allows an IPv4 host to communicate with another IPv4 host across an IPv6 network.",
+      "It allows an IPv6 host to communicate with another IPv6 host across an IPv4 network.",
+      "It allows an IPv6 host to communicate with an IPv4 host across an IPv6 network.",
+      "It translates IPv6 headers to IPv4 headers at the host."
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "Which LISP device contains the EID prefixes for which the registering ETRs are authoritative?",
+    "a": [
+     "MS (map server)"
+    ],
+    "why": "ETRs register their EID prefixes with the map server. The map resolver takes lookups from ITRs.",
+    "note": "",
+    "dup": false,
+    "ref": {
+     "ch": "Ch 2",
+     "t": "IPv6 Deployment Models",
+     "p": 158
+    },
+    "mc": {
+     "o": [
+      "MS (map server)",
+      "ETR",
+      "MR (map resolver)",
+      "ITR"
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "Which application workaround uses a server to handle IPv6 requests for IPv4 devices that haven't been transitioned?",
+    "a": [
+     "Proxying"
+    ],
+    "why": "A proxy server accepts the IPv6 request and makes the IPv4 request on the client's behalf. NAT64 and DNS64 translate rather than proxy.",
+    "note": "",
+    "dup": false,
+    "ref": {
+     "ch": "Ch 2",
+     "t": "IPv6/IPv4 Translation Strategy",
+     "p": 154
+    },
+    "mc": {
+     "o": [
+      "Proxying",
+      "Tunnelling",
+      "Translation",
+      "Dual stack"
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "Which feature blocks or rejects rogue router advertisement messages sent by IPv6 hosts?",
+    "a": [
+     "RA Guard"
+    ],
+    "why": "The switch only allows RAs on ports facing real routers, stopping hosts from posing as a gateway.",
+    "note": "",
+    "dup": false,
+    "ref": {
+     "ch": "Ch 2",
+     "t": "IPv6 Security",
+     "p": 142
+    },
+    "mc": {
+     "o": [
+      "RA Guard",
+      "DHCP snooping",
+      "RA rate limiting",
+      "CGA"
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "In the plan, build and manage model for adopting IPv6, which step is first in the plan phase?",
+    "a": [
+     "IPv6 discovery"
+    ],
+    "why": "Discovery comes before assessment: understand the business drivers first, then inventory the network.",
+    "note": "",
+    "dup": false,
+    "ref": {
+     "ch": "Ch 2",
+     "t": "IPv4-to-IPv6 Migration",
+     "p": 149
+    },
+    "mc": {
+     "o": [
+      "IPv6 discovery",
+      "IPv6 assessment",
+      "IPv6 implementation",
+      "Network optimization"
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "You deployed IPv6 in a lab, simulated production and improved the design based on operational metrics. Which phase is this?",
+    "a": [
+     "IPv6 implementation and optimization"
+    ],
+    "why": "Building, measuring and tuning (in the lab or production) is the implementation and optimization phase.",
+    "note": "",
+    "dup": false,
+    "ref": {
+     "ch": "Ch 2",
+     "t": "IPv4-to-IPv6 Migration",
+     "p": 149
+    },
+    "card": "Which IPv6 adoption phase covers building a lab, measuring it and tuning the design?",
+    "mc": {
+     "o": [
+      "IPv6 implementation and optimization",
+      "IPv6 discovery and assessment",
+      "IPv6 planning and design",
+      "IPv4 readdressing and cleanup"
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "Which mask must a LAN segment have to use SLAAC?",
+    "a": [
+     "/64"
+    ],
+    "why": "SLAAC builds a 64-bit interface ID, so the prefix must be exactly 64 bits.",
+    "note": "",
+    "dup": false,
+    "ref": {
+     "ch": "Ch 2",
+     "t": "SLAAC",
+     "p": 139
+    },
+    "mc": {
+     "o": [
+      "/64",
+      "/48",
+      "/56",
+      "/128"
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "Which area of the network is most often the first to be transitioned to IPv6 because it requires the least modification?",
+    "a": [
+     "WAN"
+    ],
+    "why": "WAN and core routers already support IPv6 and are few in number, so they're the easiest place to start.",
+    "note": "",
+    "dup": false,
+    "ref": {
+     "ch": "Ch 2",
+     "t": "IPv4-to-IPv6 Migration",
+     "p": 149
+    },
+    "mc": {
+     "o": [
+      "WAN",
+      "LAN",
+      "Data center",
+      "Remote access"
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "Which mechanism secures ND messages between hosts and routers through a public key infrastructure?",
+    "a": [
+     "SEND/CGA"
+    ],
+    "why": "Secure Neighbor Discovery signs ND messages, and Cryptographically Generated Addresses tie the address to a public key.",
+    "note": "",
+    "dup": false,
+    "ref": {
+     "ch": "Ch 2",
+     "t": "IPv6 Security",
+     "p": 142
+    },
+    "mc": {
+     "o": [
+      "SEND/CGA",
+      "RA Guard",
+      "ND rate limiting",
+      "DHCPv6 guard"
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "Which statement correctly describes a dual-stack security consideration?",
+    "a": [
+     "Configure the IPv6 security policy on the security devices to work with the existing IPv4 policy."
+    ],
+    "why": "With both protocols running, an attacker can use whichever is less protected, so IPv6 needs matching rules. The IPv4 policy alone doesn't cover IPv6.",
+    "note": "",
+    "dup": false,
+    "ref": {
+     "ch": "Ch 2",
+     "t": "IPv6 Security",
+     "p": 142
+    },
+    "card": "What must you do with security policy in a dual-stack network?",
+    "mc": {
+     "o": [
+      "Configure the IPv6 security policy on the security devices to work with the existing IPv4 policy.",
+      "Enable IPv6 on hosts before the production rollout.",
+      "Disable IPv4 on hosts before the production rollout.",
+      "A dual-stack network logically separates IPv4 and IPv6, so the existing IPv4 policy protects both."
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "Which type of security offers no built-in mechanisms and would benefit from IPsec to avoid traffic interception?",
+    "a": [
+     "Tunneling security"
+    ],
+    "why": "IPv6-over-IPv4 tunnels carry traffic in the clear and can be spoofed, so protect them with IPsec.",
+    "note": "",
+    "dup": false,
+    "ref": {
+     "ch": "Ch 2",
+     "t": "IPv6 Security",
+     "p": 142
+    },
+    "mc": {
+     "o": [
+      "Tunneling security",
+      "Link-layer security",
+      "Control plane security",
+      "Dual-stack security"
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "What are the three IPv4-to-IPv6 migration strategies?",
+    "a": [
+     "Dual stack",
+     "Tunnelling IPv6 over IPv4",
+     "Translation (NAT64/DNS64)"
+    ],
+    "why": "Dual stack is preferred. Tunnels (manual, GRE, 6to4, ISATAP, 6RD) carry IPv6 across IPv4-only parts. Translation lets IPv6-only hosts reach IPv4-only servers.",
+    "note": "",
+    "dup": false,
+    "ref": {
+     "ch": "Ch 2",
+     "t": "IPv6 Design",
+     "p": 149
+    },
+    "src": "Cert Guide",
+    "mc": {
+     "o": [
+      "Dual stack",
+      "Tunnelling IPv6 over IPv4",
+      "Translation (NAT64/DNS64)",
+      "NAT44",
+      "Readdressing all hosts to IPv6 only in one cutover",
+      "GRE over IPsec"
+     ],
+     "c": [
+      0,
+      1,
+      2
+     ]
+    }
+   },
+   {
+    "q": "What well-known prefix does NAT64/DNS64 use to represent IPv4 addresses?",
+    "a": [
+     "64:FF9B::/96"
+    ],
+    "why": "DNS64 builds a AAAA record from the server's A record using this prefix, and the NAT64 router translates the traffic.",
+    "note": "",
+    "dup": false,
+    "ref": {
+     "ch": "Ch 2",
+     "t": "IPv6 Design",
+     "p": 155
+    },
+    "src": "Cert Guide",
+    "mc": {
+     "o": [
+      "64:FF9B::/96",
+      "2002::/16",
+      "FC00::/7",
+      "::FFFF:0:0/96"
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "Stateless vs stateful NAT64: which one lets many IPv6 hosts share a single IPv4 address?",
+    "a": [
+     "Stateful NAT64"
+    ],
+    "why": "Stateless NAT64 uses one IPv4 address per IPv6 host. Stateful NAT64 keeps per-flow state and multiplexes many IPv6 hosts onto one IPv4 address.",
+    "note": "",
+    "dup": false,
+    "ref": {
+     "ch": "Ch 2",
+     "t": "IPv6 Design",
+     "p": 156
+    },
+    "src": "Cert Guide",
+    "mc": {
+     "o": [
+      "Stateful NAT64",
+      "Stateless NAT64",
+      "DNS64 on its own",
+      "NAT-PT with no state"
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "What are the three IPv6 enterprise deployment models?",
+    "a": [
+     "Dual-stack model",
+     "Hybrid model",
+     "Service block model"
+    ],
+    "why": "Dual stack runs both protocols end to end. Hybrid tunnels across parts that can't run IPv6. Service block centralizes IPv6 services on dedicated devices.",
+    "note": "",
+    "dup": false,
+    "ref": {
+     "ch": "Ch 2",
+     "t": "IPv6 Design",
+     "p": 158
+    },
+    "src": "Cert Guide",
+    "mc": {
+     "o": [
+      "Dual-stack model",
+      "Hybrid model",
+      "Service block model",
+      "Tunnel-only model",
+      "Translation-only model",
+      "Overlay model"
+     ],
+     "c": [
+      0,
+      1,
+      2
+     ]
+    }
+   }
   ]
  },
  {
@@ -2125,6 +3315,570 @@ const DATA = [
    "NET address: AFI, area ID, system ID (6 bytes on Cisco) and SEL 00, 8 to 20 bytes total, for example 49.0001.1290.6600.1001.00.",
    "Default metric 10 per interface. Wide metrics (24-bit) are recommended. AD is 115. Authentication levels: link, area and domain.",
    "Topologies: flat (small networks), hierarchical (large networks), and hybrid."
+  ]
+ },
+ {
+  "name": "EIGRP Design",
+  "intro": [],
+  "qs": [
+   {
+    "q": "Which three design considerations limit the scope of EIGRP queries?",
+    "a": [
+     "Summarize spoke networks towards the core.",
+     "Ensure that leaf nodes are configured as stub routers.",
+     "Use equal cost routing to ensure that a feasible successor is available."
+    ],
+    "why": "Summarization and stubs stop queries from spreading. A router with a feasible successor never goes active, so it sends no queries. The wrong options (non-stub leaf nodes, avoiding summarization at hubs) would let queries spread further.",
+    "note": "",
+    "dup": false,
+    "card": "Name the three design choices that limit the scope of EIGRP queries.",
+    "ref": {
+     "ch": "Ch 3",
+     "t": "DUAL and queries",
+     "p": 215
+    },
+    "mc": {
+     "o": [
+      "Summarize spoke networks towards the core.",
+      "Ensure that leaf nodes are configured as stub routers.",
+      "Use equal cost routing to ensure that a feasible successor is available.",
+      "Ensure that leaf nodes are configured as non-stub routers.",
+      "Avoid route summarization at hub routers."
+     ],
+     "c": [
+      0,
+      1,
+      2
+     ]
+    }
+   },
+   {
+    "q": "Which two statements are true about using multiple autonomous systems to limit EIGRP query propagation?",
+    "a": [
+     "Using multiple autonomous systems does not stop query propagation from one AS to the other.",
+     "To limit query propagation from one AS to another, use route summarization on the edge routers between the autonomous systems."
+    ],
+    "why": "With redistribution between autonomous systems, a query in one AS triggers a new query in the other. Summarizing at the boundary routers is what contains it.",
+    "note": "",
+    "dup": false,
+    "card": "Does splitting a network into multiple EIGRP autonomous systems stop queries from crossing between them? If not, what does?",
+    "ca": [
+     "No. Queries still cross from one AS to the other.",
+     "Route summarization on the edge routers between the autonomous systems limits it."
+    ],
+    "ref": {
+     "ch": "Ch 3",
+     "t": "DUAL and queries",
+     "p": 215
+    },
+    "mc": {
+     "o": [
+      "Using multiple autonomous systems does not stop query propagation from one AS to the other.",
+      "To limit query propagation from one AS to another, use route summarization on the edge routers between the autonomous systems.",
+      "Using multiple autonomous systems stops query propagation from one AS to the other.",
+      "Route summarization at the edge routers between the autonomous systems does not limit query propagation; redistribute the entire routes of each AS on the edge routers instead."
+     ],
+     "c": [
+      0,
+      1
+     ]
+    }
+   },
+   {
+    "q": "In an EIGRP hierarchical design, where should you apply route summarization and traffic policies?",
+    "a": [
+     "On the routers representing the choke points."
+    ],
+    "why": "Choke points are where traffic and routes naturally funnel between parts of the network. Summarizing and applying policy there hides detail from the rest of the network and stops queries at that boundary.",
+    "note": "",
+    "dup": false,
+    "ref": {
+     "ch": "Ch 3",
+     "t": "EIGRP Design",
+     "p": 221
+    },
+    "mc": {
+     "o": [
+      "On the routers representing the choke points.",
+      "On all the internal routers in a particular zone.",
+      "On all the routers in a particular layer.",
+      "On all the external routers in the external zone."
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "In a three-layer EIGRP hierarchical design, which layer's routers should be configured as EIGRP stubs?",
+    "a": [
+     "Access layer."
+    ],
+    "why": "Access switches are the leaves of the network and should never be a transit path. Making them stubs means distribution never queries them, which keeps query scope small.",
+    "note": "",
+    "dup": false,
+    "ref": {
+     "ch": "Ch 3",
+     "t": "EIGRP Stub Routers",
+     "p": 222
+    },
+    "mc": {
+     "o": [
+      "Access layer.",
+      "Core layer.",
+      "Distribution layer.",
+      "Aggregation layer."
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "In a dual-homed hub-and-spoke design where both hubs summarize to Null0, a spoke link failure can black-hole traffic. Which two options solve this?",
+    "a": [
+     "Interconnect the two hub routers in the EIGRP domain, so the hub that lost the spoke connection can still receive the route from the other hub.",
+     "Do not summarize EIGRP routes between the two hub routers."
+    ],
+    "why": "The hub that lost the spoke learns the specific route from the other hub. That route is more specific than its own Null0 summary, so traffic is forwarded instead of dropped.",
+    "note": "",
+    "dup": false,
+    "card": "Dual-homed hub-and-spoke: both hubs summarize to Null0, and one hub loses its link to a spoke, black-holing traffic. What two changes fix it?",
+    "ref": {
+     "ch": "Ch 3",
+     "t": "EIGRP Design",
+     "p": 221
+    },
+    "mc": {
+     "o": [
+      "Interconnect the two hub routers in the EIGRP domain, so the hub that lost the spoke connection can still receive the route from the other hub.",
+      "Do not summarize EIGRP routes between the two hub routers.",
+      "Summarize the EIGRP routes from the hub to the spokes.",
+      "Inject a default route into the core to access the hubs."
+     ],
+     "c": [
+      0,
+      1
+     ]
+    }
+   },
+   {
+    "q": "How is hierarchy created in an EIGRP network?",
+    "a": [
+     "By manually designing the EIGRP network using zones and summarizing at choke points."
+    ],
+    "why": "EIGRP has no built-in areas like OSPF, so hierarchy only comes from deliberate design.",
+    "note": "",
+    "dup": false,
+    "ref": {
+     "ch": "Ch 3",
+     "t": "EIGRP Design",
+     "p": 221
+    },
+    "mc": {
+     "o": [
+      "By manually designing the EIGRP network using zones and summarizing at choke points.",
+      "By enabling areas in EIGRP to automatically filter routes on border routers.",
+      "By using multiple AS numbers and enabling route redistribution between different ASs.",
+      "By using a hub-and-spoke design and ensuring that spokes never participate in the EIGRP topology."
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "Which two statements about EIGRP Graceful Restart are correct?",
+    "a": [
+     "Graceful Restart allows forwarding of data packets to continue along known routes while routing protocol information is restored after a processor switchover.",
+     "Graceful Restart reduces EIGRP convergence times."
+    ],
+    "why": "Neighbours keep the adjacency and existing routes in place, so the network avoids a reconvergence. The distractors are wrong because Graceful Restart doesn't increase convergence times, and neighbours don't switch to feasible successor routes during a restart.",
+    "note": "\"Reduces convergence times\" is loose. Graceful Restart doesn't make convergence faster; it avoids having to reconverge at all. It's still the right pick because the other options are clearly wrong.",
+    "dup": false,
+    "card": "What two benefits does EIGRP Graceful Restart provide after a processor switchover?",
+    "ref": {
+     "ch": "Ch 4",
+     "t": "Graceful Restart",
+     "p": 312
+    },
+    "mc": {
+     "o": [
+      "Graceful Restart allows forwarding of data packets to continue along known routes while routing protocol information is restored after a processor switchover.",
+      "Graceful Restart reduces EIGRP convergence times.",
+      "Graceful Restart increases EIGRP convergence times.",
+      "During Graceful Restart, neighbouring routers immediately install feasible successor routes into their routing tables to ensure smooth convergence."
+     ],
+     "c": [
+      0,
+      1
+     ]
+    }
+   },
+   {
+    "q": "Which two statements regarding EIGRP queries are true?",
+    "a": [
+     "When EIGRP does not have a feasible successor, it sends queries to its neighbors.",
+     "The router has to wait for replies to all the queries that it sends out to the network, thus increasing the convergence time."
+    ],
+    "why": "With no feasible successor the route goes active and queries go to every neighbour, which pass them on. The router must hear back from all of them before it can converge, which is why limiting query scope matters.",
+    "note": "",
+    "dup": false,
+    "src": "Answer key",
+    "mc": {
+     "o": [
+      "When EIGRP does not have a feasible successor, it sends queries to its neighbors.",
+      "The router floods queries only to its neighbors in the network and the neighbors do not forward the queries to other routers in the network.",
+      "The router has to wait for replies to all the queries that it sends out to the network, thus increasing the convergence time.",
+      "The router floods queries to all routers in the network, thus increasing the convergence time.",
+      "The router does not wait for replies to all the queries that it sends out to the network, when the first neighbor router replies to the query, the process ends."
+     ],
+     "c": [
+      0,
+      2
+     ]
+    },
+    "card": "When does EIGRP send queries, and how do they affect convergence time?"
+   },
+   {
+    "q": "Which three statements about the three-layer EIGRP hierarchy are correct?",
+    "a": [
+     "Security policies are applied in the access layer.",
+     "Summarization and aggregation happen in the distribution layer.",
+     "High-speed switching is in the core layer."
+    ],
+    "why": "Access is where users connect and policy is enforced, distribution summarizes and aggregates, and the core just switches fast. The distractors swap these roles between layers.",
+    "note": "",
+    "dup": false,
+    "src": "Answer key",
+    "mc": {
+     "o": [
+      "The aggregation layer is responsible for high-speed switching.",
+      "The core layer is responsible for summarization and aggregation.",
+      "Security policies are applied in the access layer.",
+      "Summarization and aggregation happen in the distribution layer.",
+      "The access layer is responsible for high-speed switching.",
+      "High-speed switching is in the core layer."
+     ],
+     "c": [
+      2,
+      3,
+      5
+     ]
+    },
+    "card": "In the three-layer EIGRP hierarchy, what job does each layer (access, distribution, core) do?"
+   },
+   {
+    "q": "Identify three of the factors that EIGRP hub-and-spoke scalability relies on.",
+    "a": [
+     "You must configure spokes as stubs.",
+     "You must minimize advertisements to spokes.",
+     "You must test topology failover convergence after the primary hub has failed."
+    ],
+    "why": "Stub spokes keep queries off them, sending spokes only a summary or default keeps updates small, and the design has to be proven by failing the primary hub.",
+    "note": "The \"memory is the primary limiting factor\" option is wrong because the lesson says CPU is the limit with many interfaces, not memory.",
+    "dup": false,
+    "src": "Answer key",
+    "mc": {
+     "o": [
+      "You must configure spokes as stubs.",
+      "You must configure the hub as a stub.",
+      "You must minimize advertisements to spokes.",
+      "You must maximize advertisements to spokes.",
+      "When spokes are connected to the hub over multiple interfaces, memory is the primary limiting factor.",
+      "You must test topology failover convergence after the primary hub has failed."
+     ],
+     "c": [
+      0,
+      2,
+      5
+     ]
+    },
+    "card": "Name three factors that EIGRP hub-and-spoke scalability relies on."
+   },
+   {
+    "q": "Which two statements regarding BFD are true?",
+    "a": [
+     "If a BFD device fails to receive a BFD control packet within the detect timer, it informs its client protocol about the failure.",
+     "BFD can provide fast failure detection times for all media types, encapsulations, topologies, and routing protocols."
+    ],
+    "why": "BFD is a lightweight hello that tells its client (EIGRP, OSPF and so on) as soon as packets stop arriving, and it works the same way whatever the media or protocol. It runs over UDP, not TCP, and one session is shared by all clients.",
+    "note": "",
+    "dup": false,
+    "src": "Answer key",
+    "mc": {
+     "o": [
+      "BFD requires manual peer configuration.",
+      "There are two BFD sessions per client protocol.",
+      "If a BFD device fails to receive a BFD control packet within the detect timer, it informs its client protocol about the failure.",
+      "BFD can provide fast failure detection times for all media types, encapsulations, topologies, and routing protocols.",
+      "The Cisco BFD implementation encapsulates BFD control packets in TCP packets."
+     ],
+     "c": [
+      2,
+      3
+     ]
+    },
+    "card": "What does BFD do when it misses packets within the detect timer, and what does it work with?"
+   },
+   {
+    "q": "Which design technique helps limit EIGRP topology changes from propagating throughout an enterprise network?",
+    "a": [
+     "Route summarization at distribution boundaries"
+    ],
+    "why": "Summarizing at distribution boundaries hides the detailed prefixes behind them, so a flap inside one block doesn't ripple (or drive queries) across the whole network.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "Disabling DUAL",
+      "Route summarization at distribution boundaries",
+      "Using a single flat routing topology",
+      "Increasing the number of non-stub neighbors"
+     ],
+     "c": [
+      1
+     ]
+    }
+   },
+   {
+    "q": "What is an EIGRP feasible successor?",
+    "a": [
+     "A loop-free backup route meeting the feasibility condition"
+    ],
+    "why": "A feasible successor is a backup path whose reported distance is lower than the current feasible distance (the feasibility condition), which guarantees it's loop-free and usable instantly.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "Any route with a lower administrative distance",
+      "The route with the highest bandwidth",
+      "A loop-free backup route meeting the feasibility condition",
+      "A route learned exclusively from BGP"
+     ],
+     "c": [
+      2
+     ]
+    }
+   },
+   {
+    "q": "When does an EIGRP route typically enter the active state?",
+    "a": [
+     "When its successor is lost and no suitable feasible successor is available"
+    ],
+    "why": "A route goes active when the successor is lost and no feasible successor exists, so DUAL has to send queries to find a new path.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "When a router has two equal-cost successors",
+      "When its successor is lost and no suitable feasible successor is available",
+      "Whenever a hello packet arrives",
+      "Whenever route summarization is enabled"
+     ],
+     "c": [
+      1
+     ]
+    }
+   },
+   {
+    "q": "What is the primary design benefit of configuring branch routers as EIGRP stubs?",
+    "a": [
+     "They reduce unnecessary query propagation toward branch sites"
+    ],
+    "why": "Stub branches aren't used as transit and aren't queried, so a failure elsewhere doesn't send queries out to every branch.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "They become preferred transit routers",
+      "They automatically disable all routing advertisements",
+      "They prevent all interface failures",
+      "They reduce unnecessary query propagation toward branch sites"
+     ],
+     "c": [
+      3
+     ]
+    }
+   },
+   {
+    "q": "Which route does a hub commonly advertise to spokes to minimize spoke routing-table size?",
+    "a": [
+     "0.0.0.0/0"
+    ],
+    "why": "The hub can send spokes just a default route (0.0.0.0/0), keeping spoke routing tables tiny while still reaching everything through the hub.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "0.0.0.0/0",
+      "255.255.255.255/32",
+      "Every corporate /24 prefix",
+      "Only the WAN transit subnet"
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "Which aggregate covers 10.1.0.0/24 through 10.1.3.0/24?",
+    "a": [
+     "10.1.0.0/22"
+    ],
+    "why": "10.1.0.0 to 10.1.3.255 is four /24s, which is exactly one /22 (255.255.252.0).",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "10.1.0.0/23",
+      "10.1.0.0/22",
+      "10.1.0.0/25",
+      "10.1.0.0/16 only"
+     ],
+     "c": [
+      1
+     ]
+    }
+   },
+   {
+    "q": "What is a major concern when redistributing routes between multiple EIGRP autonomous systems?",
+    "a": [
+     "Route feedback, loops, and unintended route selection"
+    ],
+    "why": "Redistributing between EIGRP ASes can feed routes back into the domain they came from, causing loops and odd path choices, so it needs filtering or tagging.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "EIGRP stops supporting IPv4",
+      "All routes automatically become connected",
+      "Route feedback, loops, and unintended route selection",
+      "DUAL is disabled across the enterprise"
+     ],
+     "c": [
+      2
+     ]
+    }
+   },
+   {
+    "q": "What is the main role of Bidirectional Forwarding Detection (BFD) when integrated with EIGRP?",
+    "a": [
+     "Detect forwarding-path failures quickly and notify EIGRP"
+    ],
+    "why": "BFD detects a broken forwarding path in milliseconds and tells EIGRP, which then reconverges. BFD itself doesn't do any routing.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "Calculate EIGRP composite metrics",
+      "Replace the routing table",
+      "Detect forwarding-path failures quickly and notify EIGRP",
+      "Redistribute routes between EIGRP processes"
+     ],
+     "c": [
+      2
+     ]
+    }
+   },
+   {
+    "q": "How does Cisco Nonstop Forwarding (NSF) differ from ordinary EIGRP failover?",
+    "a": [
+     "NSF seeks to preserve packet forwarding during supported control-plane switchover events"
+    ],
+    "why": "NSF (with graceful restart) keeps forwarding packets on known routes during a supervisor or control-plane switchover. Normal failover reconverges onto a new path after a failure.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "NSF seeks to preserve packet forwarding during supported control-plane switchover events",
+      "NSF makes every route a feasible successor",
+      "NSF replaces the need for redundant hardware",
+      "NSF guarantees zero loss during any physical link failure"
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "An EIGRP router has a successor feasible distance of 900. A neighbor reports a distance of 850 and a total metric of 1200. How is the neighbor route classified?",
+    "a": [
+     "Feasible successor"
+    ],
+    "why": "Feasibility condition: the neighbour's reported distance (850) is less than the current feasible distance (900), so the path is loop-free and becomes a feasible successor, even though its total metric (1200) is higher.",
+    "note": "",
+    "dup": false,
+    "src": "Mock exam",
+    "mc": {
+     "o": [
+      "Not loop-free",
+      "Feasible successor",
+      "Successor regardless of metric",
+      "External route only"
+     ],
+     "c": [
+      1
+     ]
+    }
+   },
+   {
+    "q": "A redistribution boundary connects OSPF and EIGRP domains. Which two controls most directly reduce route feedback loops?",
+    "a": [
+     "Route tagging with matching filters",
+     "Explicit prefix filtering"
+    ],
+    "why": "Tagging routes as they're redistributed, and filtering on those tags (plus explicit prefix filters), stops routes leaking back into the domain they came from.",
+    "note": "",
+    "dup": false,
+    "src": "Mock exam",
+    "mc": {
+     "o": [
+      "Route tagging with matching filters",
+      "Unrestricted bidirectional redistribution",
+      "Explicit prefix filtering",
+      "Disabling administrative distance globally",
+      "Increasing OSPF hello timers"
+     ],
+     "c": [
+      0,
+      2
+     ]
+    }
+   }
+  ],
+  "refs": [
+   {
+    "ch": "Ch 3",
+    "t": "EIGRP",
+    "p": 212
+   },
+   {
+    "ch": "Ch 3",
+    "t": "EIGRP Design and Stub Routers",
+    "p": 221
+   },
+   {
+    "ch": "Ch 4",
+    "t": "Graceful Restart and Non-Stop Routing",
+    "p": 311
+   }
+  ],
+  "notes": [
+   "EIGRP is an advanced distance-vector protocol using DUAL. A route with a feasible successor never goes active, so it sends no queries.",
+   "When a route goes active, the router queries its neighbours. Uncontained queries can cause stuck-in-active problems in large networks.",
+   "Stub routers (receive-only, connected, static, summary, redistributed) are never queried, which keeps queries off WAN links to branches.",
+   "Summarization at choke points also stops queries: a router that only knows a summary answers right away instead of passing the query on.",
+   "Hello/hold timers are 5/15 s on fast links and 60/180 s on slow multipoint links. Internal AD 90, summary 5, external 170."
   ]
  },
  {
@@ -14594,1760 +16348,6 @@ const DATA = [
   ]
  },
  {
-  "name": "Designing an IPv4 Address Plan",
-  "intro": [],
-  "refs": [
-   {
-    "ch": "Ch 1",
-    "t": "IPv4 Addressing Design",
-    "p": 76
-   },
-   {
-    "ch": "Ch 1",
-    "t": "Route Summarization",
-    "p": 78
-   },
-   {
-    "ch": "Ch 1",
-    "t": "Steps for Creating an IPv4 Address Plan",
-    "p": 81
-   },
-   {
-    "ch": "Ch 1",
-    "t": "Loopback and IP Telephony Addresses",
-    "p": 73
-   },
-   {
-    "ch": "Ch 1",
-    "t": "IPv4 Header",
-    "p": 44
-   },
-   {
-    "ch": "Ch 1",
-    "t": "IPv4 Addressing and Private Ranges",
-    "p": 54
-   },
-   {
-    "ch": "Ch 1",
-    "t": "Subnets and VLSM",
-    "p": 64
-   },
-   {
-    "ch": "Ch 1",
-    "t": "Address Assignment (DHCP, DNS)",
-    "p": 85
-   }
-  ],
-  "notes": [
-   "Start from the topology: count the locations and devices that need addresses, then leave room to grow.",
-   "Build the plan hierarchically so each area can be summarized. Use 10.x.x.x/24 for user subnets, and match subnet numbers to VLAN IDs where you can.",
-   "Use /30 on point-to-point router links and /32 loopbacks for router IDs and services, since loopbacks never go down.",
-   "Overlapping ranges are cleanest to fix by readdressing; NAT is a workaround. DMZ servers can use public addresses instead of NAT.",
-   "Overlay subnets (for example a separate voice range) let you add new services to a network that wasn't planned for them."
-  ],
-  "qs": [
-   {
-    "q": "A topology diagram will help with which IP addressing consideration?",
-    "a": [
-     "Determining how many locations will require IP addresses"
-    ],
-    "why": "The diagram shows every site and segment, which is the starting point for sizing the address plan.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 1",
-     "t": "Planning for Future Use of IPv4 Addresses",
-     "p": 77
-    },
-    "mc": {
-     "o": [
-      "Determining how many locations will require IP addresses",
-      "Determining which subnet to assign to loopback interfaces",
-      "Determining how large each subnet must be",
-      "Determining if DHCP is to be used"
-     ],
-     "c": [
-      0
-     ]
-    }
-   },
-   {
-    "q": "While summarizing IPv4 addresses, how would you determine the subnet mask value?",
-    "a": [
-     "Subtract the first octet that is different between the first and last address, and round it up to a power of 2."
-    ],
-    "why": "Example: 10.3.8.0 to 10.3.15.0 differ in the third octet; 15 − 8 = 7, round up to 8 = 2³, so 3 bits come off the /24, giving /21.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 1",
-     "t": "Performing Route Summarization",
-     "p": 78
-    },
-    "card": "How do you work out the mask when summarizing a range of IPv4 subnets?",
-    "mc": {
-     "o": [
-      "Subtract the first octet that is different between the first and last address, and round it up to a power of 2.",
-      "Add the first octet that is different between the first and last address, and round it down.",
-      "Count the number of subnets and double it.",
-      "Use the mask of the largest subnet in the range."
-     ],
-     "c": [
-      0
-     ]
-    }
-   },
-   {
-    "q": "For ease of use, user subnets should be assigned an address from which network with which subnet mask?",
-    "a": [
-     "10.x.x.x/24"
-    ],
-    "why": "10.0.0.0/8 has plenty of room for a hierarchy, and /24 subnets line up with octet boundaries, which makes them easy to read and troubleshoot.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 1",
-     "t": "Private and Public IP Address and NAT",
-     "p": 80
-    },
-    "mc": {
-     "o": [
-      "10.x.x.x/24",
-      "172.16.x.x/16",
-      "192.168.x.x/30",
-      "10.x.x.x/8"
-     ],
-     "c": [
-      0
-     ]
-    }
-   },
-   {
-    "q": "Which one of the following is required when implementing overlay subnets when running out of addresses?",
-    "a": [
-     "An extra private address space"
-    ],
-    "why": "An overlay adds a second (often secondary) subnet on top of the existing one, so you need another unused private range to draw it from.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 1",
-     "t": "IP Telephony Networks",
-     "p": 73
-    },
-    "mc": {
-     "o": [
-      "Extra private address space",
-      "Static NAT",
-      "Readdressing",
-      "A longer subnet mask"
-     ],
-     "c": [
-      0
-     ]
-    }
-   },
-   {
-    "q": "Why would you want to use loopback addresses for services like voice gateways?",
-    "a": [
-     "Since they are always up, they are more resilient than physical interfaces."
-    ],
-    "why": "A loopback stays reachable as long as any path to the router works, so services bound to it survive a single link failure.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 1",
-     "t": "Loopback Addresses",
-     "p": 73
-    },
-    "mc": {
-     "o": [
-      "Since they are always up, they are more resilient than physical interfaces.",
-      "They are more secure, since they do not have private IP addresses.",
-      "Loopback interfaces save address space.",
-      "They are the only interfaces that support DHCP."
-     ],
-     "c": [
-      0
-     ]
-    }
-   },
-   {
-    "q": "While making an addressing plan, what would you recommend as an alternative to NAT for devices in the DMZ?",
-    "a": [
-     "Use only public IP addresses."
-    ],
-    "why": "DMZ servers are meant to be reached from the internet, so giving them public addresses avoids NAT altogether.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 1",
-     "t": "Private and Public IP Address and NAT",
-     "p": 80
-    },
-    "mc": {
-     "o": [
-      "Use only public IP addresses.",
-      "Use only private IP addresses.",
-      "Use a /24 subnet mask.",
-      "Use the same IP address subnet as the internal networks."
-     ],
-     "c": [
-      0
-     ]
-    }
-   },
-   {
-    "q": "DNS names for DHCP-assigned address ranges should be based upon which of the following?",
-    "a": [
-     "Location name"
-    ],
-    "why": "DHCP hosts change addresses, so naming the range by location (for example bldg2-floor3) keeps names meaningful.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 1",
-     "t": "Address Assignment and Name Resolution",
-     "p": 85
-    },
-    "mc": {
-     "o": [
-      "Location name",
-      "Department name",
-      "User name",
-      "Device name"
-     ],
-     "c": [
-      0
-     ]
-    }
-   },
-   {
-    "q": "Ideally, subnet numbering should correspond with which of the following?",
-    "a": [
-     "VLAN"
-    ],
-    "why": "If VLAN 20 uses 10.x.20.0/24, anyone can tell the subnet from the VLAN and vice versa.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 1",
-     "t": "Planning for a Hierarchical IP Address Network",
-     "p": 79
-    },
-    "mc": {
-     "o": [
-      "VLAN",
-      "Building",
-      "Department",
-      "Location"
-     ],
-     "c": [
-      0
-     ]
-    }
-   },
-   {
-    "q": "Which subnet mask should be used on inter-router connections?",
-    "a": [
-     "/30"
-    ],
-    "why": "A point-to-point link needs only two host addresses, and /30 gives exactly two. (/31 also works on modern gear.)",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 1",
-     "t": "Variable-Length Subnet Masking",
-     "p": 69
-    },
-    "mc": {
-     "o": [
-      "/30",
-      "/24",
-      "/28",
-      "/16"
-     ],
-     "c": [
-      0
-     ]
-    }
-   },
-   {
-    "q": "Which of the following is the cleanest solution when solving overlapping address ranges?",
-    "a": [
-     "Readdressing"
-    ],
-    "why": "Renumbering removes the overlap for good. NAT hides it but adds complexity and breaks some applications.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 1",
-     "t": "Private and Public IP Address and NAT",
-     "p": 80
-    },
-    "mc": {
-     "o": [
-      "Readdressing",
-      "Implementing NAT",
-      "Expanding the subnet masks",
-      "Adding new IP address ranges"
-     ],
-     "c": [
-      0
-     ]
-    }
-   },
-   {
-    "q": "Why would you want to use voice overlay subnets?",
-    "a": [
-     "They offer scalability in networks that were not designed to accommodate new services."
-    ],
-    "why": "Adding a separate voice range on top of the existing plan avoids readdressing the data network just to bring in IP phones.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 1",
-     "t": "IP Telephony Networks",
-     "p": 73
-    },
-    "mc": {
-     "o": [
-      "They offer scalability in networks that were not designed to accommodate new services.",
-      "They solve call-quality problems for voice and video traffic.",
-      "They provide a layer of security between departments.",
-      "They remove the need for DHCP on the new subnets."
-     ],
-     "c": [
-      0
-     ]
-    }
-   },
-   {
-    "q": "What are the three RFC 1918 private IPv4 address ranges?",
-    "a": [
-     "10.0.0.0/8",
-     "172.16.0.0/12",
-     "192.168.0.0/16"
-    ],
-    "why": "These ranges aren't routed on the internet, so they need NAT/PAT to reach it.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 1",
-     "t": "IPv4 Design",
-     "p": 60
-    },
-    "src": "Cert Guide",
-    "mc": {
-     "o": [
-      "10.0.0.0/8",
-      "172.16.0.0/12",
-      "192.168.0.0/16",
-      "169.254.0.0/16",
-      "100.64.0.0/10",
-      "172.32.0.0/12"
-     ],
-     "c": [
-      0,
-      1,
-      2
-     ]
-    }
-   },
-   {
-    "q": "How big is the IPv4 header without options?",
-    "a": [
-     "20 bytes"
-    ],
-    "why": "With options it can grow to 60 bytes. The Internet Header Length field is counted in 32-bit words.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 1",
-     "t": "IPv4 Design",
-     "p": 44
-    },
-    "src": "Cert Guide",
-    "mc": {
-     "o": [
-      "20 bytes",
-      "40 bytes",
-      "8 bytes",
-      "60 bytes"
-     ],
-     "c": [
-      0
-     ]
-    }
-   },
-   {
-    "q": "Which field in the IPv4 header carries QoS marking, and how many bits does DSCP use?",
-    "a": [
-     "The ToS byte (DiffServ field)",
-     "DSCP uses the upper 6 bits"
-    ],
-    "why": "The remaining 2 bits are used for ECN. The older IP Precedence used only the top 3 bits.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 1",
-     "t": "IPv4 Design",
-     "p": 45
-    },
-    "src": "Cert Guide",
-    "mc": {
-     "o": [
-      "The ToS byte (DiffServ field)",
-      "DSCP uses the upper 6 bits",
-      "The TTL field",
-      "DSCP uses the lower 3 bits",
-      "The Protocol field"
-     ],
-     "c": [
-      0,
-      1
-     ]
-    }
-   },
-   {
-    "q": "What mask should you use for a point-to-point link to save addresses, and what for a loopback?",
-    "a": [
-     "/30 (or /31) for point-to-point links",
-     "/32 for loopbacks"
-    ],
-    "why": "VLSM lets each subnet be sized to its need. A loopback identifies one router, so it needs one address.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 1",
-     "t": "IPv4 Design",
-     "p": 73
-    },
-    "src": "Cert Guide",
-    "mc": {
-     "o": [
-      "/30 (or /31) for point-to-point links",
-      "/32 for loopbacks",
-      "/24 for point-to-point links",
-      "/30 for loopbacks"
-     ],
-     "c": [
-      0,
-      1
-     ]
-    }
-   },
-   {
-    "q": "Why should an IPv4 address plan be hierarchical?",
-    "a": [
-     "So contiguous blocks can be summarized at each layer, which shrinks routing tables and contains changes"
-    ],
-    "why": "Assign address blocks by region, site and function so each boundary router can advertise one summary.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 1",
-     "t": "IPv4 Design",
-     "p": 79
-    },
-    "src": "Cert Guide",
-    "mc": {
-     "o": [
-      "So contiguous blocks can be summarized at each layer, which shrinks routing tables and contains changes",
-      "So every subnet can use the same mask, which removes the need for VLSM",
-      "So NAT is no longer needed at the internet edge",
-      "So DHCP scopes are larger and need fewer servers"
-     ],
-     "c": [
-      0
-     ]
-    }
-   },
-   {
-    "q": "What is the difference between NAT and PAT?",
-    "a": [
-     "NAT maps one private address to one public address",
-     "PAT maps many private addresses to one public address using different port numbers"
-    ],
-    "why": "PAT (NAT overload) is what lets a whole site share one public IP.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 1",
-     "t": "IPv4 Design",
-     "p": 80
-    },
-    "src": "Cert Guide",
-    "mc": {
-     "o": [
-      "NAT maps one private address to one public address",
-      "PAT maps many private addresses to one public address using different port numbers",
-      "NAT maps many private addresses to one public address using port numbers",
-      "PAT maps one private address to one public address"
-     ],
-     "c": [
-      0,
-      1
-     ]
-    }
-   },
-   {
-    "q": "How many usable host addresses does a /26 subnet give you?",
-    "a": [
-     "62"
-    ],
-    "why": "A /26 has 64 addresses (2^6). Subtract the network and broadcast addresses to get 62.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 1",
-     "t": "IPv4 Design",
-     "p": 65
-    },
-    "src": "Cert Guide",
-    "mc": {
-     "o": [
-      "62",
-      "64",
-      "30",
-      "126"
-     ],
-     "c": [
-      0
-     ]
-    }
-   },
-   {
-    "q": "Which DHCP messages make up the normal lease process, in order?",
-    "a": [
-     "Discover, Offer, Request, Acknowledge (DORA)"
-    ],
-    "why": "Discover and Request are broadcasts from the client. A relay agent (ip helper-address) forwards them to a DHCP server on another subnet.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 1",
-     "t": "IPv4 Design",
-     "p": 88
-    },
-    "src": "Cert Guide",
-    "mc": {
-     "o": [
-      "Discover, Offer, Request, Acknowledge (DORA)",
-      "Request, Offer, Discover, Acknowledge",
-      "Discover, Request, Offer, Acknowledge",
-      "Offer, Discover, Acknowledge, Request"
-     ],
-     "c": [
-      0
-     ]
-    }
-   },
-   {
-    "q": "A company allocates a /16 to 16 branches. Each branch must receive a summarizable block supporting up to 12 /24 networks. Which allocation best meets the requirement?",
-    "a": [
-     "Assign one /20 per branch"
-    ],
-    "why": "A /20 holds sixteen /24s, enough for 12 with room to grow, and summarizes as one route. Sixteen /20s fit exactly in a /16.",
-    "note": "",
-    "dup": false,
-    "src": "Mock exam",
-    "mc": {
-     "o": [
-      "Assign one /24 per branch",
-      "Assign one /20 per branch",
-      "Assign one /22 per branch",
-      "Assign one /28 per branch"
-     ],
-     "c": [
-      1
-     ]
-    }
-   }
-  ]
- },
- {
-  "name": "Exploring IPv6",
-  "intro": [],
-  "refs": [
-   {
-    "ch": "Ch 2",
-    "t": "IPv6 Address Representation",
-    "p": 120
-   },
-   {
-    "ch": "Ch 2",
-    "t": "IPv6 Addressing Design",
-    "p": 145
-   },
-   {
-    "ch": "Ch 2",
-    "t": "IPv6 for the Enterprise (allocation methods)",
-    "p": 147
-   },
-   {
-    "ch": "Ch 2",
-    "t": "IPv6 Header",
-    "p": 117
-   },
-   {
-    "ch": "Ch 2",
-    "t": "Address Scope Types",
-    "p": 123
-   },
-   {
-    "ch": "Ch 2",
-    "t": "IPv6 Mechanisms (ND, SLAAC, DHCPv6)",
-    "p": 133
-   },
-   {
-    "ch": "Ch 2",
-    "t": "IPv4-to-IPv6 Migration",
-    "p": 149
-   },
-   {
-    "ch": "Ch 2",
-    "t": "IPv6 Deployment Models",
-    "p": 158
-   }
-  ],
-  "notes": [
-   "Shorten IPv6 addresses by dropping leading zeros in each group and replacing one run of all-zero groups with ::.",
-   "Registries hand out provider-independent (PI) space as a /48 by default. PI suits multihoming but adds routes to the global table because it can't be aggregated.",
-   "A /48 site leaves 16 bits for subnets (65,536 /64s). A /64 is a single subnet.",
-   "Build the subnet ID hierarchically: location first, then type or VLAN. A 12-bit VLAN ID leaves 4 bits for location/type.",
-   "Linking IPv4 into IPv6 (for example reusing the third octet or the last octet as written) makes troubleshooting easier.",
-   "ULAs (fc00::/7) are IPv6's private addresses. Renumbering is the main pain point when providers change."
-  ],
-  "qs": [
-   {
-    "q": "Which of the following is a problem that you might encounter while using IPv6 addressing?",
-    "a": [
-     "Renumbering"
-    ],
-    "why": "Address space isn't a concern in IPv6, but changing providers (and their PA prefix) means renumbering everything, which is why PI space or careful design matters.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 2",
-     "t": "IPv6 Addressing Design",
-     "p": 145
-    },
-    "mc": {
-     "o": [
-      "Renumbering",
-      "Address exhaustion",
-      "ISP lock-in",
-      "Too few subnets"
-     ],
-     "c": [
-      0
-     ]
-    }
-   },
-   {
-    "q": "Which is the recommended way to implement a multihomed IPv6 address space?",
-    "a": [
-     "Use provider-independent addressing."
-    ],
-    "why": "PI space belongs to you, so both ISPs can advertise it. NAT is discouraged in IPv6.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 2",
-     "t": "IPv6 Address Allocation",
-     "p": 147
-    },
-    "mc": {
-     "o": [
-      "Use provider-independent addressing.",
-      "Use private addresses internally and NAT64 to reach the public internet.",
-      "Use provider-assigned addressing with LISP.",
-      "Use provider-assigned addressing with policy-based routing."
-     ],
-     "c": [
-      0
-     ]
-    }
-   },
-   {
-    "q": "What is the best way to link static IPv4 host addresses into IPv6 for devices such as servers?",
-    "a": [
-     "Use the last octet of the IPv4 address in the IPv6 address."
-    ],
-    "why": "For example, server 10.1.20.25 becomes 2001:db8:...:20::25, so the IPv6 host ID matches the familiar IPv4 one.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 2",
-     "t": "Whole IPv4 Address Linked to IPv6",
-     "p": 148
-    },
-    "card": "How do you link a server's static IPv4 address into its IPv6 address so it's easy to recognize?",
-    "mc": {
-     "o": [
-      "Use the last octet of the IPv4 address in the IPv6 address.",
-      "Translate the IPv4 host portion to hexadecimal.",
-      "Linking is not possible; use a random IPv6 host portion.",
-      "Translate the second octet of the IPv4 address into the IPv6 host portion."
-     ],
-     "c": [
-      0
-     ]
-    }
-   },
-   {
-    "q": "When incorporating VLAN numbers into IPv6 subnets using a /64 mask, how many bits are left over to identify location or type?",
-    "a": [
-     "4 bits"
-    ],
-    "why": "A /48 site has 16 subnet bits. VLAN IDs need 12 bits (up to 4,096), which leaves 4 bits for location or type.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 2",
-     "t": "IPv6 Addresses Allocated per Location and/or Type",
-     "p": 149
-    },
-    "card": "With a /48 site and 12 bits used for the VLAN ID, how many subnet bits are left for location or type?",
-    "mc": {
-     "o": [
-      "4 bits",
-      "6 bits",
-      "8 bits",
-      "2 bits"
-     ],
-     "c": [
-      0
-     ]
-    }
-   },
-   {
-    "q": "Which is the most efficient and correct way of representing the IPv6 address 2001:db8:0000:0001:0abc:0000:0000:ab01?",
-    "a": [
-     "2001:db8:0:1:abc::ab01"
-    ],
-    "why": "Drop leading zeros in each group and replace the run of zero groups with ::. Leaving 0:0 is valid but not shortest, and dropping the zeros without :: changes the address.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 2",
-     "t": "IPv6 Address Representation",
-     "p": 120
-    },
-    "mc": {
-     "o": [
-      "2001:db8:0:1:abc::ab01",
-      "2001:db8::1:abc::ab01",
-      "2001:db8:0:1:abc:0:ab01",
-      "2001:db8:0:1:0abc::ab1"
-     ],
-     "c": [
-      0
-     ]
-    }
-   },
-   {
-    "q": "By default, the regional registrars allocate which prefix for provider-independent allocation?",
-    "a": [
-     "/48"
-    ],
-    "why": "A /48 gives a site 65,536 /64 subnets, which suits most organizations.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 2",
-     "t": "IPv6 Address Allocation",
-     "p": 147
-    },
-    "mc": {
-     "o": [
-      "/48",
-      "/32",
-      "/56",
-      "/64"
-     ],
-     "c": [
-      0
-     ]
-    }
-   },
-   {
-    "q": "What is the downside of provider-independent IPv6 prefix assignment?",
-    "a": [
-     "The service provider has to advertise your prefix alongside its own, increasing the global routing table; it can't be aggregated."
-    ],
-    "why": "PA space rolls up into the provider's block, but PI space is a separate route everyone on the internet must carry.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 2",
-     "t": "IPv6 Address Allocation",
-     "p": 147
-    },
-    "card": "What is the main downside of provider-independent IPv6 space?",
-    "mc": {
-     "o": [
-      "The provider must advertise your prefix separately, growing the global routing table",
-      "You can never change providers without renumbering",
-      "PI space cannot be used for multihoming",
-      "Your prefix cannot be summarized inside your own network"
-     ],
-     "c": [
-      0
-     ]
-    }
-   },
-   {
-    "q": "IPv6 private addresses, or ULAs, are which of the following?",
-    "a": [
-     "fc00::/7"
-    ],
-    "why": "Unique local addresses are routable inside an organization but not on the internet. ::/128 is unspecified, ::1 is loopback, ::/0 is the default route.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 2",
-     "t": "Unique Local IPv6 Address",
-     "p": 127
-    },
-    "mc": {
-     "o": [
-      "fc00::/7",
-      "fe80::/10",
-      "ff00::/8",
-      "2001:db8::/32"
-     ],
-     "c": [
-      0
-     ]
-    }
-   },
-   {
-    "q": "If an ISP assigns you an IPv6 address space with a /64 mask, how many subnets can you configure with it?",
-    "a": [
-     "1"
-    ],
-    "why": "A /64 is the standard size of one LAN segment; the remaining 64 bits are the interface ID. You need a shorter prefix (like /48 or /56) for more subnets.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 2",
-     "t": "IPv6 Addressing Design",
-     "p": 145
-    },
-    "mc": {
-     "o": [
-      "1",
-      "256",
-      "65,536",
-      "16"
-     ],
-     "c": [
-      0
-     ]
-    }
-   },
-   {
-    "q": "When assigning IPv6 addresses using location and type, which should you use first?",
-    "a": [
-     "Location"
-    ],
-    "why": "Putting location in the higher bits lets each site be summarized as one route. Type comes next within the site.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 2",
-     "t": "IPv6 Addresses Allocated per Location and/or Type",
-     "p": 149
-    },
-    "mc": {
-     "o": [
-      "Location",
-      "Type",
-      "The remaining 4 bits",
-      "The remaining 3 bits"
-     ],
-     "c": [
-      0
-     ]
-    }
-   },
-   {
-    "q": "Using IPv4 /24 subnets and partially linking them to IPv6, which approach is best for quick troubleshooting?",
-    "a": [
-     "Use the value in the third octet of the /24 directly in the IPv6 address."
-    ],
-    "why": "Subnet 10.1.45.0/24 becomes ...:45::/64, so you can read the IPv4 subnet straight off the IPv6 one. Converting to hex (2d) is valid but harder to read.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 2",
-     "t": "Partly Linked IPv4 Address into IPv6",
-     "p": 147
-    },
-    "card": "When partly linking IPv4 /24 subnets into IPv6, how should the third octet appear for easy troubleshooting?",
-    "mc": {
-     "o": [
-      "Use the value in the third octet of the /24 directly in the IPv6 address.",
-      "Convert the third octet to hexadecimal before using it.",
-      "Use the first octet of the /24 in the IPv6 address.",
-      "Use a random value and keep a mapping spreadsheet."
-     ],
-     "c": [
-      0
-     ]
-    }
-   },
-   {
-    "q": "How big is the fixed IPv6 header?",
-    "a": [
-     "40 bytes"
-    ],
-    "why": "It's simpler than IPv4: no fragmentation fields and no checksum, plus a Flow Label field. Optional info goes in extension headers.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 2",
-     "t": "IPv6 Design",
-     "p": 117
-    },
-    "src": "Cert Guide",
-    "mc": {
-     "o": [
-      "40 bytes",
-      "20 bytes",
-      "60 bytes",
-      "128 bytes"
-     ],
-     "c": [
-      0
-     ]
-    }
-   },
-   {
-    "q": "Which prefix identifies IPv6 link-local addresses, and can routers forward them?",
-    "a": [
-     "FE80::/10",
-     "No, they stay on the local link"
-    ],
-    "why": "Every IPv6 interface has a link-local address. Routing protocols like OSPFv3 use them for neighbour communication.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 2",
-     "t": "IPv6 Design",
-     "p": 126
-    },
-    "src": "Cert Guide",
-    "mc": {
-     "o": [
-      "FE80::/10",
-      "No, they stay on the local link",
-      "FC00::/7",
-      "FF02::/16",
-      "Yes, routers forward them within the same site"
-     ],
-     "c": [
-      0,
-      1
-     ]
-    }
-   },
-   {
-    "q": "What are unique local addresses (ULAs) and what prefix do they use?",
-    "a": [
-     "Private IPv6 addresses not routed on the internet",
-     "FC00::/7"
-    ],
-    "why": "ULAs replaced the deprecated site-local addresses (FEC0::/10). They're the IPv6 counterpart to RFC 1918 space.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 2",
-     "t": "IPv6 Design",
-     "p": 127
-    },
-    "src": "Cert Guide",
-    "mc": {
-     "o": [
-      "Private IPv6 addresses not routed on the internet",
-      "FC00::/7",
-      "Public IPv6 addresses assigned by the ISP",
-      "FE80::/10",
-      "2000::/3"
-     ],
-     "c": [
-      0,
-      1
-     ]
-    }
-   },
-   {
-    "q": "Which prefix marks IPv6 multicast addresses, and what replaces broadcast?",
-    "a": [
-     "FF00::/8",
-     "Multicast replaces broadcast (IPv6 has no broadcast)"
-    ],
-    "why": "For example, FF02::1 is all nodes and FF02::2 is all routers on the local link.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 2",
-     "t": "IPv6 Design",
-     "p": 129
-    },
-    "src": "Cert Guide",
-    "mc": {
-     "o": [
-      "FF00::/8",
-      "Multicast replaces broadcast (IPv6 has no broadcast)",
-      "FE80::/10",
-      "FF02::FFFF is the IPv6 broadcast address",
-      "Anycast replaces broadcast"
-     ],
-     "c": [
-      0,
-      1
-     ]
-    }
-   },
-   {
-    "q": "How does SLAAC build a host's interface ID from a MAC address?",
-    "a": [
-     "EUI-64: split the 48-bit MAC, insert FFFE in the middle, and flip the 7th bit"
-    ],
-    "why": "The router advertises the /64 prefix in a Router Advertisement, and the host appends its own 64-bit interface ID.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 2",
-     "t": "IPv6 Design",
-     "p": 126
-    },
-    "src": "Cert Guide",
-    "mc": {
-     "o": [
-      "EUI-64: split the 48-bit MAC, insert FFFE in the middle, and flip the 7th bit",
-      "Append FFFF to the end of the 48-bit MAC",
-      "Use the MAC address unchanged and pad it with zeros",
-      "Insert FEFE in the middle and flip the 1st bit"
-     ],
-     "c": [
-      0
-     ]
-    }
-   },
-   {
-    "q": "What replaces ARP in IPv6?",
-    "a": [
-     "Neighbor Discovery (ICMPv6 Neighbor Solicitation and Neighbor Advertisement)"
-    ],
-    "why": "ND also handles router discovery, duplicate address detection and redirects.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 2",
-     "t": "IPv6 Design",
-     "p": 136
-    },
-    "src": "Cert Guide",
-    "mc": {
-     "o": [
-      "Neighbor Discovery (ND)",
-      "ARPv6",
-      "DHCPv6 relay",
-      "Inverse ARP"
-     ],
-     "c": [
-      0
-     ]
-    }
-   }
-  ]
- },
- {
-  "name": "Deploying IPv6",
-  "intro": [
-   {
-    "row": [
-     "Phase",
-     "What happens"
-    ]
-   },
-   {
-    "row": [
-     "Discovery",
-     "Learn the business goals and what IPv6 needs to support (first step of planning)"
-    ]
-   },
-   {
-    "row": [
-     "Assessment",
-     "Inventory devices: does the OS/hardware support IPv6, are upgrades or licences needed"
-    ]
-   },
-   {
-    "row": [
-     "Planning and design",
-     "Address plan, routing, security and transition design"
-    ]
-   },
-   {
-    "row": [
-     "Implementation and optimization",
-     "Lab and pilot, measure, tune, then roll out"
-    ]
-   }
-  ],
-  "refs": [
-   {
-    "ch": "Ch 2",
-    "t": "IPv6 Mechanisms (SLAAC, ND)",
-    "p": 133
-   },
-   {
-    "ch": "Ch 2",
-    "t": "IPv6 Security",
-    "p": 142
-   },
-   {
-    "ch": "Ch 2",
-    "t": "IPv4-to-IPv6 Migration",
-    "p": 149
-   },
-   {
-    "ch": "Ch 2",
-    "t": "Tunnels, 6rd, ISATAP",
-    "p": 151
-   },
-   {
-    "ch": "Ch 2",
-    "t": "NAT64 / DNS64",
-    "p": 154
-   },
-   {
-    "ch": "Ch 2",
-    "t": "IPv6 Header",
-    "p": 117
-   },
-   {
-    "ch": "Ch 2",
-    "t": "Address Scope Types",
-    "p": 123
-   },
-   {
-    "ch": "Ch 2",
-    "t": "IPv6 Deployment Models",
-    "p": 158
-   }
-  ],
-  "notes": [
-   "Dual stack is the recommended transition method. Tunnels (manual, 6to4, 6rd, ISATAP, DS-Lite) and translation (NAT64/DNS64) fill gaps.",
-   "Manual tunnels terminate on dual-stacked edge routers. A tunnel broker gives an IPv6 tunnel to a site whose ISP only offers IPv4.",
-   "6rd uses the provider's own IPv6 prefix (unlike 6to4's 2002::/16). DS-Lite carries IPv4 traffic across an IPv6-only provider network.",
-   "SLAAC needs a /64 and uses the router's ICMPv6 Router Advertisement. AAAA records map names to IPv6 addresses.",
-   "Security: RA Guard blocks rogue router advertisements, SEND/CGA secures ND with certificates, and the IPv6 policy must match the existing IPv4 policy. Tunnels have no built-in security, so add IPsec."
-  ],
-  "qs": [
-   {
-    "q": "You inspect existing routers, switches, firewalls and servers to check IPv6 support and whether OS, hardware or licensing upgrades are needed. Which phase is this?",
-    "a": [
-     "IPv6 assessment"
-    ],
-    "why": "Assessment is the inventory step: what you have and what needs upgrading before you can plan.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 2",
-     "t": "IPv4-to-IPv6 Migration",
-     "p": 149
-    },
-    "card": "Which IPv6 adoption phase inventories devices for IPv6 support and needed upgrades?",
-    "mc": {
-     "o": [
-      "IPv6 assessment",
-      "IPv6 discovery",
-      "IPv6 implementation",
-      "Network optimization"
-     ],
-     "c": [
-      0
-     ]
-    }
-   },
-   {
-    "q": "Which of the following uses the ICMPv6 RA message to provide addressing?",
-    "a": [
-     "SLAAC"
-    ],
-    "why": "The router advertises the prefix in a Router Advertisement, and hosts build their own address from it.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 2",
-     "t": "SLAAC",
-     "p": 139
-    },
-    "mc": {
-     "o": [
-      "SLAAC",
-      "Stateful DHCPv6",
-      "DNS AAAA",
-      "DNS PTR"
-     ],
-     "c": [
-      0
-     ]
-    }
-   },
-   {
-    "q": "Which part of an enterprise network is typically left as the last part of the network to migrate to IPv6?",
-    "a": [
-     "LAN"
-    ],
-    "why": "The many end devices and access switches make the campus LAN the biggest, slowest piece to convert, so it usually comes last.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 2",
-     "t": "IPv4-to-IPv6 Migration",
-     "p": 149
-    },
-    "mc": {
-     "o": [
-      "LAN",
-      "WAN",
-      "Data center",
-      "DMZ"
-     ],
-     "c": [
-      0
-     ]
-    }
-   },
-   {
-    "q": "Which transition mechanism is recommended as you migrate from IPv4 to IPv6?",
-    "a": [
-     "Dual stack"
-    ],
-    "why": "Running both protocols natively avoids tunnel and translation overhead and lets IPv4 be retired gradually.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 2",
-     "t": "Dual-Stack Migration Strategy",
-     "p": 150
-    },
-    "mc": {
-     "o": [
-      "Dual stack",
-      "Tunnelling",
-      "Translation",
-      "Proxying"
-     ],
-     "c": [
-      0
-     ]
-    }
-   },
-   {
-    "q": "Which DNS record maps a domain name to an IPv6 address?",
-    "a": [
-     "AAAA record"
-    ],
-    "why": "A records are IPv4, AAAA (\"quad-A\") are IPv6, PTR records do reverse lookups.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 2",
-     "t": "IPv6 Name Resolution",
-     "p": 136
-    },
-    "mc": {
-     "o": [
-      "AAAA record",
-      "A record",
-      "PTR record",
-      "MX record"
-     ],
-     "c": [
-      0
-     ]
-    }
-   },
-   {
-    "q": "Which device is required to be dual-stacked to establish a manual tunnel?",
-    "a": [
-     "Edge router"
-    ],
-    "why": "The tunnel endpoints are the edge routers: they speak IPv6 on the inside and IPv4 across the transport. Hosts don't need to change.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 2",
-     "t": "Manual Configured Tunnels",
-     "p": 152
-    },
-    "mc": {
-     "o": [
-      "Edge router",
-      "Sending host",
-      "Receiving host",
-      "Default gateway"
-     ],
-     "c": [
-      0
-     ]
-    }
-   },
-   {
-    "q": "Why would a site require a tunnel broker?",
-    "a": [
-     "It wants to reach the internet via IPv6, but its ISP only supports IPv4."
-    ],
-    "why": "A tunnel broker provides an IPv6-over-IPv4 tunnel to an IPv6-connected provider.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 2",
-     "t": "Automatic Tunnel Mechanisms",
-     "p": 152
-    },
-    "mc": {
-     "o": [
-      "It wants to reach the internet via IPv6, but its ISP only supports IPv4.",
-      "It wants to reach the internet via IPv4, but its ISP only supports IPv6.",
-      "It only has a PA address allocation.",
-      "It only has a PI address allocation."
-     ],
-     "c": [
-      0
-     ]
-    }
-   },
-   {
-    "q": "Which statement correctly describes the IPv6 prefix of 6rd?",
-    "a": [
-     "The prefix comes from the provider (its own IPv6 block), not a fixed one."
-    ],
-    "why": "6rd (\"rapid deployment\") is 6to4 reworked so the ISP uses its own prefix instead of 2002::/16, keeping routing under the ISP's control.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 2",
-     "t": "Automatic Tunnel Mechanisms",
-     "p": 152
-    },
-    "card": "How does the 6rd prefix differ from 6to4's 2002::/16?",
-    "mc": {
-     "o": [
-      "The prefix comes from the provider (its own IPv6 block), not a fixed one.",
-      "It uses the fixed 2002::/16 prefix, like 6to4.",
-      "It uses a ULA prefix from FC00::/7.",
-      "It uses the link-local FE80::/10 prefix."
-     ],
-     "c": [
-      0
-     ]
-    }
-   },
-   {
-    "q": "Which statement correctly identifies the capabilities of DS-Lite?",
-    "a": [
-     "It allows an IPv4 host to communicate with another IPv4 host across an IPv6 network."
-    ],
-    "why": "DS-Lite tunnels IPv4 inside IPv6 to a provider NAT, so an ISP can run an IPv6-only network while customers keep IPv4.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 2",
-     "t": "IPv6 over IPv4 Tunneling Strategy",
-     "p": 151
-    },
-    "mc": {
-     "o": [
-      "It allows an IPv4 host to communicate with another IPv4 host across an IPv6 network.",
-      "It allows an IPv6 host to communicate with another IPv6 host across an IPv4 network.",
-      "It allows an IPv6 host to communicate with an IPv4 host across an IPv6 network.",
-      "It translates IPv6 headers to IPv4 headers at the host."
-     ],
-     "c": [
-      0
-     ]
-    }
-   },
-   {
-    "q": "Which LISP device contains the EID prefixes for which the registering ETRs are authoritative?",
-    "a": [
-     "MS (map server)"
-    ],
-    "why": "ETRs register their EID prefixes with the map server. The map resolver takes lookups from ITRs.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 2",
-     "t": "IPv6 Deployment Models",
-     "p": 158
-    },
-    "mc": {
-     "o": [
-      "MS (map server)",
-      "ETR",
-      "MR (map resolver)",
-      "ITR"
-     ],
-     "c": [
-      0
-     ]
-    }
-   },
-   {
-    "q": "Which application workaround uses a server to handle IPv6 requests for IPv4 devices that haven't been transitioned?",
-    "a": [
-     "Proxying"
-    ],
-    "why": "A proxy server accepts the IPv6 request and makes the IPv4 request on the client's behalf. NAT64 and DNS64 translate rather than proxy.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 2",
-     "t": "IPv6/IPv4 Translation Strategy",
-     "p": 154
-    },
-    "mc": {
-     "o": [
-      "Proxying",
-      "Tunnelling",
-      "Translation",
-      "Dual stack"
-     ],
-     "c": [
-      0
-     ]
-    }
-   },
-   {
-    "q": "Which feature blocks or rejects rogue router advertisement messages sent by IPv6 hosts?",
-    "a": [
-     "RA Guard"
-    ],
-    "why": "The switch only allows RAs on ports facing real routers, stopping hosts from posing as a gateway.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 2",
-     "t": "IPv6 Security",
-     "p": 142
-    },
-    "mc": {
-     "o": [
-      "RA Guard",
-      "DHCP snooping",
-      "RA rate limiting",
-      "CGA"
-     ],
-     "c": [
-      0
-     ]
-    }
-   },
-   {
-    "q": "In the plan, build and manage model for adopting IPv6, which step is first in the plan phase?",
-    "a": [
-     "IPv6 discovery"
-    ],
-    "why": "Discovery comes before assessment: understand the business drivers first, then inventory the network.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 2",
-     "t": "IPv4-to-IPv6 Migration",
-     "p": 149
-    },
-    "mc": {
-     "o": [
-      "IPv6 discovery",
-      "IPv6 assessment",
-      "IPv6 implementation",
-      "Network optimization"
-     ],
-     "c": [
-      0
-     ]
-    }
-   },
-   {
-    "q": "You deployed IPv6 in a lab, simulated production and improved the design based on operational metrics. Which phase is this?",
-    "a": [
-     "IPv6 implementation and optimization"
-    ],
-    "why": "Building, measuring and tuning (in the lab or production) is the implementation and optimization phase.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 2",
-     "t": "IPv4-to-IPv6 Migration",
-     "p": 149
-    },
-    "card": "Which IPv6 adoption phase covers building a lab, measuring it and tuning the design?",
-    "mc": {
-     "o": [
-      "IPv6 implementation and optimization",
-      "IPv6 discovery and assessment",
-      "IPv6 planning and design",
-      "IPv4 readdressing and cleanup"
-     ],
-     "c": [
-      0
-     ]
-    }
-   },
-   {
-    "q": "Which mask must a LAN segment have to use SLAAC?",
-    "a": [
-     "/64"
-    ],
-    "why": "SLAAC builds a 64-bit interface ID, so the prefix must be exactly 64 bits.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 2",
-     "t": "SLAAC",
-     "p": 139
-    },
-    "mc": {
-     "o": [
-      "/64",
-      "/48",
-      "/56",
-      "/128"
-     ],
-     "c": [
-      0
-     ]
-    }
-   },
-   {
-    "q": "Which area of the network is most often the first to be transitioned to IPv6 because it requires the least modification?",
-    "a": [
-     "WAN"
-    ],
-    "why": "WAN and core routers already support IPv6 and are few in number, so they're the easiest place to start.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 2",
-     "t": "IPv4-to-IPv6 Migration",
-     "p": 149
-    },
-    "mc": {
-     "o": [
-      "WAN",
-      "LAN",
-      "Data center",
-      "Remote access"
-     ],
-     "c": [
-      0
-     ]
-    }
-   },
-   {
-    "q": "Which mechanism secures ND messages between hosts and routers through a public key infrastructure?",
-    "a": [
-     "SEND/CGA"
-    ],
-    "why": "Secure Neighbor Discovery signs ND messages, and Cryptographically Generated Addresses tie the address to a public key.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 2",
-     "t": "IPv6 Security",
-     "p": 142
-    },
-    "mc": {
-     "o": [
-      "SEND/CGA",
-      "RA Guard",
-      "ND rate limiting",
-      "DHCPv6 guard"
-     ],
-     "c": [
-      0
-     ]
-    }
-   },
-   {
-    "q": "Which statement correctly describes a dual-stack security consideration?",
-    "a": [
-     "Configure the IPv6 security policy on the security devices to work with the existing IPv4 policy."
-    ],
-    "why": "With both protocols running, an attacker can use whichever is less protected, so IPv6 needs matching rules. The IPv4 policy alone doesn't cover IPv6.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 2",
-     "t": "IPv6 Security",
-     "p": 142
-    },
-    "card": "What must you do with security policy in a dual-stack network?",
-    "mc": {
-     "o": [
-      "Configure the IPv6 security policy on the security devices to work with the existing IPv4 policy.",
-      "Enable IPv6 on hosts before the production rollout.",
-      "Disable IPv4 on hosts before the production rollout.",
-      "A dual-stack network logically separates IPv4 and IPv6, so the existing IPv4 policy protects both."
-     ],
-     "c": [
-      0
-     ]
-    }
-   },
-   {
-    "q": "Which type of security offers no built-in mechanisms and would benefit from IPsec to avoid traffic interception?",
-    "a": [
-     "Tunneling security"
-    ],
-    "why": "IPv6-over-IPv4 tunnels carry traffic in the clear and can be spoofed, so protect them with IPsec.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 2",
-     "t": "IPv6 Security",
-     "p": 142
-    },
-    "mc": {
-     "o": [
-      "Tunneling security",
-      "Link-layer security",
-      "Control plane security",
-      "Dual-stack security"
-     ],
-     "c": [
-      0
-     ]
-    }
-   },
-   {
-    "q": "What are the three IPv4-to-IPv6 migration strategies?",
-    "a": [
-     "Dual stack",
-     "Tunnelling IPv6 over IPv4",
-     "Translation (NAT64/DNS64)"
-    ],
-    "why": "Dual stack is preferred. Tunnels (manual, GRE, 6to4, ISATAP, 6RD) carry IPv6 across IPv4-only parts. Translation lets IPv6-only hosts reach IPv4-only servers.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 2",
-     "t": "IPv6 Design",
-     "p": 149
-    },
-    "src": "Cert Guide",
-    "mc": {
-     "o": [
-      "Dual stack",
-      "Tunnelling IPv6 over IPv4",
-      "Translation (NAT64/DNS64)",
-      "NAT44",
-      "Readdressing all hosts to IPv6 only in one cutover",
-      "GRE over IPsec"
-     ],
-     "c": [
-      0,
-      1,
-      2
-     ]
-    }
-   },
-   {
-    "q": "What well-known prefix does NAT64/DNS64 use to represent IPv4 addresses?",
-    "a": [
-     "64:FF9B::/96"
-    ],
-    "why": "DNS64 builds a AAAA record from the server's A record using this prefix, and the NAT64 router translates the traffic.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 2",
-     "t": "IPv6 Design",
-     "p": 155
-    },
-    "src": "Cert Guide",
-    "mc": {
-     "o": [
-      "64:FF9B::/96",
-      "2002::/16",
-      "FC00::/7",
-      "::FFFF:0:0/96"
-     ],
-     "c": [
-      0
-     ]
-    }
-   },
-   {
-    "q": "Stateless vs stateful NAT64: which one lets many IPv6 hosts share a single IPv4 address?",
-    "a": [
-     "Stateful NAT64"
-    ],
-    "why": "Stateless NAT64 uses one IPv4 address per IPv6 host. Stateful NAT64 keeps per-flow state and multiplexes many IPv6 hosts onto one IPv4 address.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 2",
-     "t": "IPv6 Design",
-     "p": 156
-    },
-    "src": "Cert Guide",
-    "mc": {
-     "o": [
-      "Stateful NAT64",
-      "Stateless NAT64",
-      "DNS64 on its own",
-      "NAT-PT with no state"
-     ],
-     "c": [
-      0
-     ]
-    }
-   },
-   {
-    "q": "What are the three IPv6 enterprise deployment models?",
-    "a": [
-     "Dual-stack model",
-     "Hybrid model",
-     "Service block model"
-    ],
-    "why": "Dual stack runs both protocols end to end. Hybrid tunnels across parts that can't run IPv6. Service block centralizes IPv6 services on dedicated devices.",
-    "note": "",
-    "dup": false,
-    "ref": {
-     "ch": "Ch 2",
-     "t": "IPv6 Design",
-     "p": 158
-    },
-    "src": "Cert Guide",
-    "mc": {
-     "o": [
-      "Dual-stack model",
-      "Hybrid model",
-      "Service block model",
-      "Tunnel-only model",
-      "Translation-only model",
-      "Overlay model"
-     ],
-     "c": [
-      0,
-      1,
-      2
-     ]
-    }
-   }
-  ]
- },
- {
   "name": "Introducing Network APIs and Protocols",
   "intro": [
    {
@@ -18023,14 +18023,14 @@ function goTo(y){y=Math.max(0,Math.round(y));const se=document.scrollingElement|
 function jumpTo(id){const el=document.getElementById(id);if(!el)return;
   const y=el.getBoundingClientRect().top+(window.pageYOffset||document.documentElement.scrollTop||0)-8;goTo(y);
   setTimeout(()=>{const r=el.getBoundingClientRect().top;if(Math.abs(r-8)>40){try{el.scrollIntoView(true)}catch(e){}}},80)}
-const GROUPS=[["Routing",["EIGRP Design","OSPF Design","IS-IS Routing","BGP Routing","BGP Attributes, Communities and Path Selection"]],
+const GROUPS=[["Addressing",["Designing an IPv4 Address Plan","Exploring IPv6","Deploying IPv6"]],
+ ["Routing",["OSPF Design","IS-IS Routing","EIGRP Design","BGP Routing","BGP Attributes, Communities and Path Selection"]],
  ["Campus",["Designing Enterprise Campus LAN","Layer 2 Campus","Designing Layer 3 Campus"]],
  ["SD-Access",["Discovering the Cisco SD-Access Architecture","Exploring Cisco SD-Access Fabric Design","Exploring Cisco SD-Access Site Design Strategy and Considerations"]],
  ["WAN and VPN",["Discovering Service Provider-Managed VPNs","Designing Enterprise-Managed VPNs","Designing WAN Resiliency"]],
  ["SD-WAN",["Examining Cisco SD-WAN Architectures","Examining Cisco SD-WAN Deployment Design Considerations","Examining Cisco SD-WAN NAT and Hybrid Design Considerations","Designing Cisco SD-WAN Routing and High Availability"]],
  ["QoS",["Exploring QoS","Designing LAN and WAN QoS"]],
  ["Multicast",["Introducing Multicast","Exploring Multicast with PIM-SM","Designing Rendezvous Point Distribution Solutions"]],
- ["Addressing",["Designing an IPv4 Address Plan","Exploring IPv6","Deploying IPv6"]],
  ["Automation",["Introducing Network APIs and Protocols","Exploring YANG, NETCONF, RESTCONF and Model-Driven Telemetry"]]];
 {const named=new Set(GROUPS.flatMap(g=>g[1]));const rest=DATA.map(s=>s.name).filter(n=>!named.has(n));if(rest.length)GROUPS.push(["Other",rest])}
 const SECBY={};DATA.forEach((s,i)=>SECBY[s.name]=i);
@@ -18365,7 +18365,7 @@ function tSummary(v){
 }
 
 // ----- lessons -----
-const LESSONS={"OSPF Design": {"mins": 18, "intro": "How OSPF scales, and the design choices the exam asks about: areas, LSA types, stub area flavours, where to put the ABR, and how to keep a big OSPF network stable.", "parts": [{"h": "How OSPF works, in two minutes", "b": [{"p": "OSPF is a link-state interior gateway protocol. Instead of passing routing tables around like a distance-vector protocol, each router describes its own links in link-state advertisements (LSAs) and floods them to the other routers in its area."}, {"p": "Every router in an area ends up with an identical copy of that information, the link-state database (LSDB). Each router then runs Dijkstra's shortest path first (SPF) algorithm on its own copy to build a loop-free tree of best paths, and that becomes its routing table."}, {"ul": ["OSPFv2 is for IPv4; OSPFv3 is for IPv6 (and can now carry IPv4 too). The design ideas are the same in both.", "It runs directly over IP (protocol 89) and uses multicast: 224.0.0.5 for all OSPF routers and 224.0.0.6 for the DR and BDR (FF02::5 and FF02::6 in OSPFv3).", "The metric is cost. By default cost = 100 Mbps ÷ interface bandwidth, never lower than 1.", "Hellos every 10 seconds on broadcast and point-to-point links (30 on NBMA). Administrative distance is 110."]}, {"tip": "The default reference bandwidth makes every link of 100 Mbps or faster cost 1, so OSPF can't tell a 1 Gbps link from a 100 Gbps one. Raise the reference bandwidth, and do it the same on every router."}]}, {"h": "Why areas exist", "b": [{"p": "In one big area, every router stores every LSA and reruns SPF whenever any link anywhere changes. As the network grows, that costs memory, CPU and bandwidth, and one unstable link can keep the whole network busy."}, {"p": "Areas fix this by splitting the network into a two-level hierarchy. Area 0, the backbone, sits at the top, and every other area attaches to it. Traffic between two non-backbone areas always crosses Area 0."}, {"ul": ["Detailed topology (Type 1 and 2 LSAs) stays inside its area, so each LSDB is smaller.", "A change in one area triggers a full SPF only in that area. Other areas just see a changed summary.", "Less flooding, because LSAs don't cross area borders in detail.", "Area borders are where you can summarize, which shrinks routing tables everywhere else."]}, {"dia": "<svg viewBox=\"0 0 360 296\" role=\"img\" aria-label=\"Multi-area OSPF: Area 0 with two ABRs, a stub area and an NSSA with an ASBR\"><defs><marker id=\"ar\" viewBox=\"0 0 8 8\" refX=\"7\" refY=\"4\" markerWidth=\"7\" markerHeight=\"7\" orient=\"auto-start-reverse\"><path d=\"M0 0L8 4L0 8z\" class=\"d-arh\"/><\/marker><\/defs><rect class=\"d-box d-boxa\" x=\"60\" y=\"8\" width=\"240\" height=\"72\" rx=\"3\"/><text class=\"d-s\" x=\"66\" y=\"20\" text-anchor=\"start\">Area 0 (backbone)<\/text><line class=\"d-ln\" x1=\"180\" y1=\"44\" x2=\"110\" y2=\"80\"/><line class=\"d-ln\" x1=\"180\" y1=\"44\" x2=\"250\" y2=\"80\"/><circle class=\"d-rt\" cx=\"180\" cy=\"44\" r=\"10\"/><path class=\"d-x\" d=\"M175 41h10M175 47h10\"/><text class=\"d-t\" x=\"180\" y=\"29\" text-anchor=\"middle\">Backbone<\/text><rect class=\"d-box\" x=\"8\" y=\"104\" width=\"164\" height=\"124\" rx=\"3\"/><text class=\"d-s\" x=\"14\" y=\"116\" text-anchor=\"start\">Area 1 (stub)<\/text><rect class=\"d-box\" x=\"188\" y=\"104\" width=\"164\" height=\"124\" rx=\"3\"/><text class=\"d-s\" x=\"194\" y=\"116\" text-anchor=\"start\">Area 2 (NSSA)<\/text><line class=\"d-ln\" x1=\"110\" y1=\"80\" x2=\"60\" y2=\"156\"/><line class=\"d-ln\" x1=\"250\" y1=\"80\" x2=\"300\" y2=\"156\"/><circle class=\"d-rt\" cx=\"110\" cy=\"80\" r=\"10\"/><path class=\"d-x\" d=\"M105 77h10M105 83h10\"/><text class=\"d-t\" x=\"94\" y=\"84\" text-anchor=\"end\">ABR 1<\/text><circle class=\"d-rt\" cx=\"250\" cy=\"80\" r=\"10\"/><path class=\"d-x\" d=\"M245 77h10M245 83h10\"/><text class=\"d-t\" x=\"266\" y=\"84\">ABR 2<\/text><circle class=\"d-rt\" cx=\"60\" cy=\"156\" r=\"10\"/><path class=\"d-x\" d=\"M55 153h10M55 159h10\"/><text class=\"d-t\" x=\"60\" y=\"178\" text-anchor=\"middle\">Internal<\/text><circle class=\"d-rt\" cx=\"300\" cy=\"156\" r=\"10\"/><path class=\"d-x\" d=\"M295 153h10M295 159h10\"/><text class=\"d-t\" x=\"300\" y=\"178\" text-anchor=\"middle\">ASBR<\/text><text class=\"d-t d-redt\" x=\"92\" y=\"124\">Type 3<\/text><text class=\"d-t d-redt\" x=\"284\" y=\"138\" text-anchor=\"end\">Type 7<\/text><text class=\"d-s\" x=\"16\" y=\"202\">Type 1 and 2 stay inside.<\/text><text class=\"d-s\" x=\"16\" y=\"214\">Gets Type 3 + default, no Type 5.<\/text><text class=\"d-s\" x=\"196\" y=\"202\">Local externals<\/text><text class=\"d-s\" x=\"196\" y=\"214\">enter as Type 7.<\/text><line class=\"d-ln d-dash\" x1=\"300\" y1=\"180\" x2=\"300\" y2=\"236\"/><rect class=\"d-cloud\" x=\"248.0\" y=\"237\" width=\"104\" height=\"26\" rx=\"13\"/><text class=\"d-t\" x=\"300\" y=\"254\" text-anchor=\"middle\">External routes<\/text><text class=\"d-s\" x=\"16\" y=\"276\" text-anchor=\"start\">ABRs pass summaries (Type 3) between areas.<\/text><text class=\"d-s\" x=\"16\" y=\"288\" text-anchor=\"start\">ABR 2 turns Type 7 into Type 5 for the rest of the domain.<\/text><\/svg>"}, {"p": "What actually limits OSPF scale comes down to router resources (memory, CPU and interface bandwidth), driven by:"}, {"ul": ["the number of prefixes,", "how often links flap,", "how many neighbours each router has,", "how many routers share an area."]}, {"check": [1, 5, 13]}]}, {"h": "Router roles", "b": [{"tbl": [["Role", "What it is"], ["Internal router", "Every interface is in one area. Keeps one LSDB."], ["Backbone router", "At least one interface in Area 0."], ["ABR (area border router)", "Interfaces in Area 0 and at least one other area. Keeps a separate LSDB for each area and advertises summaries (Type 3) between them."], ["ASBR (AS boundary router)", "Redistributes external routes (static, EIGRP, BGP and so on) into OSPF."]]}, {"p": "One router can hold several roles at once. A router with interfaces in Area 0 and Area 1 that also redistributes a static route is a backbone router, an ABR and an ASBR."}, {"check": [8, 9]}]}, {"h": "The LSA types you must know", "b": [{"p": "The exam expects you to know LSAs by number and by name."}, {"tbl": [["Type", "Name", "Who sends it", "How far it goes"], ["1", "Router", "Every router", "Its own area"], ["2", "Network", "The DR on a multi-access segment", "Its own area"], ["3", "Summary (network)", "ABR", "Into other areas: inter-area routes"], ["4", "ASBR summary", "ABR", "Tells other areas how to reach the ASBR"], ["5", "AS external", "ASBR", "The whole OSPF domain, except stub-type areas"], ["7", "NSSA external", "ASBR inside an NSSA", "Only the NSSA. The ABR translates it to Type 5."]]}, {"p": "External routes come in two flavours. E2, the default, keeps the cost set at redistribution and ignores the internal path to the ASBR. E1 adds the internal cost to reach the ASBR, which is better when there are several exit points and you want the closest one used."}, {"check": [14]}]}, {"h": "Stub, totally stubby and NSSA", "b": [{"p": "A branch area with one way out doesn't need the full list of every external route. Special area types cut LSAs and replace them with a default route."}, {"tbl": [["Area type", "Blocks", "Gets instead", "Can have an ASBR?"], ["Normal", "Nothing", "Everything (1, 2, 3, 4, 5)", "Yes"], ["Stub", "Type 4 and 5 (externals)", "Type 3 + default from the ABR", "No"], ["Totally stubby (Cisco)", "Type 3, 4 and 5", "Just a default from the ABR", "No"], ["NSSA", "Type 4 and 5", "Type 3. Default only if configured", "Yes, using Type 7"], ["Totally NSSA (Cisco)", "Type 3, 4 and 5", "A default from the ABR", "Yes, using Type 7"]]}, {"ul": ["If several ABRs serve a stub area, they all inject a default, and traffic goes to the closest one.", "Area 0 can never be a stub, and stub areas can't carry virtual links.", "NSSA is the answer whenever a branch must redistribute something local, such as a static route or a small EIGRP island, but should still be protected from the domain's Type 5 externals."]}, {"tip": "Stub areas still see inter-area (Type 3) routes. Only totally stubby areas drop those too. The exam loves asking which routes a totally stubby area doesn't get: both external and inter-area."}, {"check": [0, 7, 16]}]}, {"h": "Designing areas well", "b": [{"p": "Good OSPF design is mostly about where you draw the area borders and how addressing lines up with them."}, {"ul": ["Give each area a contiguous address block. Then the ABR can advertise one summary instead of dozens of routes, and a flap inside the area is hidden behind it.", "Summarize at the ABRs, which in a campus usually means the distribution layer.", "Keep the backbone small and stable, with as few routers in Area 0 as you can.", "Don't redistribute connected routes such as loopbacks as externals when a network statement or passive interface will do. It adds external LSAs for no reason.", "Avoid virtual links. They patch an area that has lost its connection to Area 0, but they're a repair, not a design."]}, {"p": "Hub-and-spoke WANs get their own rule: put the area boundary at the hub. The hub is the ABR, and each spoke (with its WAN link) sits in a non-backbone area. A flapping spoke link then only disturbs its own area, and the small branch router runs SPF for just its own area."}, {"dia": "<svg viewBox=\"0 0 360 206\" role=\"img\" aria-label=\"Hub-and-spoke OSPF: area boundary at the hub versus one big Area 0\"><defs><marker id=\"ar\" viewBox=\"0 0 8 8\" refX=\"7\" refY=\"4\" markerWidth=\"7\" markerHeight=\"7\" orient=\"auto-start-reverse\"><path d=\"M0 0L8 4L0 8z\" class=\"d-arh\"/><\/marker><\/defs><text class=\"d-h\" x=\"8\" y=\"14\" text-anchor=\"start\">RECOMMENDED<\/text><rect class=\"d-box d-boxa\" x=\"4\" y=\"22\" width=\"166\" height=\"44\" rx=\"3\"/><text class=\"d-s\" x=\"10\" y=\"34\" text-anchor=\"start\">Area 0<\/text><circle class=\"d-rt\" cx=\"87\" cy=\"46\" r=\"10\"/><path class=\"d-x\" d=\"M82 43h10M82 49h10\"/><text class=\"d-t\" x=\"102\" y=\"50\">Hub (ABR)<\/text><rect class=\"d-box\" x=\"4\" y=\"76\" width=\"54\" height=\"92\" rx=\"3\"/><text class=\"d-s\" x=\"31\" y=\"162\" text-anchor=\"middle\">Area 1<\/text><line class=\"d-ln\" x1=\"87\" y1=\"56\" x2=\"31\" y2=\"120\"/><circle class=\"d-rt\" cx=\"31\" cy=\"120\" r=\"10\"/><path class=\"d-x\" d=\"M26 117h10M26 123h10\"/><rect class=\"d-box\" x=\"60\" y=\"76\" width=\"54\" height=\"92\" rx=\"3\"/><text class=\"d-s\" x=\"87\" y=\"162\" text-anchor=\"middle\">Area 2<\/text><line class=\"d-ln\" x1=\"87\" y1=\"56\" x2=\"87\" y2=\"120\"/><circle class=\"d-rt\" cx=\"87\" cy=\"120\" r=\"10\"/><path class=\"d-x\" d=\"M82 117h10M82 123h10\"/><rect class=\"d-box\" x=\"116\" y=\"76\" width=\"54\" height=\"92\" rx=\"3\"/><text class=\"d-s\" x=\"143\" y=\"162\" text-anchor=\"middle\">Area 3<\/text><line class=\"d-ln\" x1=\"87\" y1=\"56\" x2=\"143\" y2=\"120\"/><circle class=\"d-rt\" cx=\"143\" cy=\"120\" r=\"10\"/><path class=\"d-x\" d=\"M138 117h10M138 123h10\"/><text class=\"d-s\" x=\"87\" y=\"186\" text-anchor=\"middle\">One area per spoke and WAN link<\/text><text class=\"d-s\" x=\"87\" y=\"198\" text-anchor=\"middle\">A flap stays in that area<\/text><text class=\"d-h\" x=\"194\" y=\"14\" text-anchor=\"start\">AVOID<\/text><rect class=\"d-box d-boxa\" x=\"190\" y=\"22\" width=\"166\" height=\"146\" rx=\"3\"/><text class=\"d-s\" x=\"196\" y=\"34\" text-anchor=\"start\">Area 0 (everything)<\/text><circle class=\"d-rt\" cx=\"273\" cy=\"46\" r=\"10\"/><path class=\"d-x\" d=\"M268 43h10M268 49h10\"/><text class=\"d-t\" x=\"288\" y=\"50\">Hub<\/text><line class=\"d-ln\" x1=\"273\" y1=\"56\" x2=\"217\" y2=\"120\"/><circle class=\"d-rt\" cx=\"217\" cy=\"120\" r=\"10\"/><path class=\"d-x\" d=\"M212 117h10M212 123h10\"/><line class=\"d-ln\" x1=\"273\" y1=\"56\" x2=\"273\" y2=\"120\"/><circle class=\"d-rt\" cx=\"273\" cy=\"120\" r=\"10\"/><path class=\"d-x\" d=\"M268 117h10M268 123h10\"/><line class=\"d-ln\" x1=\"273\" y1=\"56\" x2=\"329\" y2=\"120\"/><circle class=\"d-rt\" cx=\"329\" cy=\"120\" r=\"10\"/><path class=\"d-x\" d=\"M324 117h10M324 123h10\"/><path class=\"d-ln d-red\" d=\"M230 92l10 10M240 92l-10 10\"/><text class=\"d-s\" x=\"273\" y=\"186\" text-anchor=\"middle\">Any spoke flap floods everyone<\/text><text class=\"d-s\" x=\"273\" y=\"198\" text-anchor=\"middle\">and reruns SPF everywhere<\/text><\/svg>"}, {"p": "Don't lump all branches into one big area either. That brings back the original problem, with every branch flap felt by every branch."}, {"tbl": [["Command", "Where", "Summarizes"], ["area 1 range 10.20.0.0 255.255.252.0", "ABR", "Inter-area routes from Area 1 (Type 3)"], ["summary-address 192.168.8.0 255.255.252.0", "ASBR", "External routes being redistributed (Type 5/7)"]]}, {"check": [2, 10, 21, 22, 15]}]}, {"h": "Neighbours, DRs and network types", "b": [{"p": "Every adjacency costs hellos, database exchanges and flooding. On a shared segment with many routers, a full mesh of adjacencies would be wasteful, so OSPF elects a designated router (DR) and a backup (BDR)."}, {"ul": ["Every other router (a DROTHER) forms full adjacencies only with the DR and BDR, sending updates to 224.0.0.6. The DR then floods them to everyone on 224.0.0.5.", "The DR also originates the segment's Type 2 network LSA.", "Election: highest interface priority wins (default 1); a tie goes to the highest router ID. Priority 0 means never DR or BDR.", "The election isn't pre-emptive. A better router added later doesn't take over until the DR and BDR both fail. If the DR fails, the BDR is promoted."]}, {"p": "For a router with many neighbours, the design advice is to spread the load: if one router sits on several LAN segments, it shouldn't be DR on all of them. Once the number of adjacencies gets large, go hierarchical."}, {"p": "On hub-and-spoke (NBMA-style) WANs, use the point-to-multipoint network type. It needs no DR, treats each spoke as a separate link to the hub, and avoids the DR problems a broadcast type causes when spokes can't reach each other."}, {"check": [17, 6, 3]}]}, {"h": "Fast, stable convergence", "b": [{"p": "OSPF's own hellos detect a dead neighbour in tens of seconds by default. Tuning them down costs CPU, because they run in the control plane. The better tool is BFD."}, {"ul": ["BFD (Bidirectional Forwarding Detection) is a lightweight hello that detects a forwarding failure in under a second and tells OSPF immediately.", "It isn't tied to one protocol: the same mechanism serves OSPF, EIGRP, IS-IS and BGP. Parts of it can run in hardware, so it's lighter than aggressive routing timers.", "Graceful restart (also called NSF) keeps packets forwarding on known routes while a router switches to its standby supervisor, so neighbours don't reconverge needlessly."]}, {"p": "Two lesser-known protections from the course:"}, {"ul": ["OSPF database protection (max-lsa) caps the number of non-self-generated LSAs a router will accept, so a flood of LSAs (from a misconfiguration, say) can't exhaust its memory.", "OSPF flood reduction sets the DoNotAge bit, so unchanged LSAs aren't re-flooded every 30 minutes. That's useful on stable links where refresh traffic is just overhead."]}, {"p": "When something is wrong, the symptom to look for is neighbours repeatedly changing state along with frequent SPF runs. That points to an unstable link or a control-plane problem."}, {"check": [11, 4, 12, 18]}]}, {"h": "Areas are not security", "b": [{"p": "It's tempting to think putting Finance in Area 20 and Employees in Area 10 separates them. It doesn't. Areas divide routing information, not traffic: routers still know how to reach every prefix, and packets flow between areas freely."}, {"p": "To enforce separation you need a firewall or ACLs, placed on the actual forwarding path between the zones. A firewall can only inspect traffic that passes through it."}, {"check": [19, 20]}]}, {"h": "Key takeaways", "b": [{"ul": ["Areas exist to limit LSDB size, SPF runs and flooding, and to make summarization possible. Everything connects through Area 0.", "Know the LSAs: 1 router, 2 network (DR), 3 summary (ABR), 4 ASBR summary, 5 external, 7 NSSA external.", "Stub blocks externals. Totally stubby blocks externals and inter-area routes. NSSA blocks externals but allows a local ASBR using Type 7.", "Use contiguous addressing per area, and summarize at the ABR with area range (summary-address is for externals on an ASBR).", "In hub-and-spoke designs, put the ABR at the hub, give each spoke its own area, and use point-to-multipoint.", "Use BFD for sub-second detection rather than aggressive hello timers.", "Areas aren't a security boundary; use firewalls or ACLs."]}, {"tip": "Common traps: an ABR keeps a database for every area it's in, not just Area 0. Stub areas still receive Type 3. A new higher-priority router doesn't steal the DR role."}]}], "verified": [["Link-state, identical LSDB per area, SPF; IP protocol 89; multicast 224.0.0.5/224.0.0.6", "p. 259, 262, 267"], ["Cost = 10^8 ÷ bandwidth, minimum 1; raise the reference bandwidth on all routers", "p. 259–260"], ["Hello 10 s (30 s on NBMA)", "p. 260"], ["Benefits of areas: fewer SPF runs, less flooding, summarization at ABRs, topology hiding; Area 0 required", "p. 263"], ["Hub-and-spoke: area boundary at the hub; don't put all branches in one area", "p. 264"], ["Router types; an ABR keeps an LSDB for each of its areas", "p. 265–266, 276"], ["DR/BDR: priority default 1, tie goes to highest router ID, 0 = never; not pre-emptive; DR sends Type 2", "p. 266–267"], ["LSA types 1–5 and 7 and their flooding scope; E1 vs E2, E2 by default", "p. 268–270"], ["Stub, totally stubby, NSSA and totally NSSA behaviour; NSSA gets no default unless configured", "p. 270–272"], ["Virtual links are a temporary fix through a transit area", "p. 272"], ["Summarize at the distribution layer; assign addresses so they can be summarized", "p. 303–304"], ["BFD: sub-second, protocol-independent, less CPU than tuned timers; GR/NSF keeps forwarding during switchover", "p. 311–312"], ["OSPFv3 keeps the same areas, router types and LSA ideas; FF02::5/FF02::6", "p. 274–276"]], "course": ["OSPF scalability factors (memory, CPU, bandwidth; prefixes, flaps, neighbours, routers per area)", "Point-to-multipoint recommended for hub-and-spoke", "Database protection (max-lsa) and flood reduction (DoNotAge)", "Keep the backbone small; don't redistribute connected loopbacks", "area range vs summary-address commands"]}};
+const LESSONS={"OSPF Design": {"mins": 18, "intro": "How OSPF scales, and the design choices the exam asks about: areas, LSA types, stub area flavours, where to put the ABR, and how to keep a big OSPF network stable.", "parts": [{"h": "How OSPF works, in two minutes", "b": [{"p": "OSPF is a link-state interior gateway protocol. Instead of passing routing tables around like a distance-vector protocol, each router describes its own links in link-state advertisements (LSAs) and floods them to the other routers in its area."}, {"p": "Every router in an area ends up with an identical copy of that information, the link-state database (LSDB). Each router then runs Dijkstra's shortest path first (SPF) algorithm on its own copy to build a loop-free tree of best paths, and that becomes its routing table."}, {"ul": ["OSPFv2 is for IPv4; OSPFv3 is for IPv6 (and can now carry IPv4 too). The design ideas are the same in both.", "It runs directly over IP (protocol 89) and uses multicast: 224.0.0.5 for all OSPF routers and 224.0.0.6 for the DR and BDR (FF02::5 and FF02::6 in OSPFv3).", "The metric is cost. By default cost = 100 Mbps ÷ interface bandwidth, never lower than 1.", "Hellos every 10 seconds on broadcast and point-to-point links (30 on NBMA). Administrative distance is 110."]}, {"tip": "The default reference bandwidth makes every link of 100 Mbps or faster cost 1, so OSPF can't tell a 1 Gbps link from a 100 Gbps one. Raise the reference bandwidth, and do it the same on every router."}]}, {"h": "Why areas exist", "b": [{"p": "In one big area, every router stores every LSA and reruns SPF whenever any link anywhere changes. As the network grows, that costs memory, CPU and bandwidth, and one unstable link can keep the whole network busy."}, {"p": "Areas fix this by splitting the network into a two-level hierarchy. Area 0, the backbone, sits at the top, and every other area attaches to it. Traffic between two non-backbone areas always crosses Area 0."}, {"ul": ["Detailed topology (Type 1 and 2 LSAs) stays inside its area, so each LSDB is smaller.", "A change in one area triggers a full SPF only in that area. Other areas just see a changed summary.", "Less flooding, because LSAs don't cross area borders in detail.", "Area borders are where you can summarize, which shrinks routing tables everywhere else."]}, {"dia": "<svg viewBox=\"0 0 360 296\" role=\"img\" aria-label=\"Multi-area OSPF: Area 0 with two ABRs, a stub area and an NSSA with an ASBR\"><defs><marker id=\"ar\" viewBox=\"0 0 8 8\" refX=\"7\" refY=\"4\" markerWidth=\"7\" markerHeight=\"7\" orient=\"auto-start-reverse\"><path d=\"M0 0L8 4L0 8z\" class=\"d-arh\"/><\/marker><\/defs><rect class=\"d-box d-boxa\" x=\"60\" y=\"8\" width=\"240\" height=\"72\" rx=\"3\"/><text class=\"d-s\" x=\"66\" y=\"20\" text-anchor=\"start\">Area 0 (backbone)<\/text><line class=\"d-ln\" x1=\"180\" y1=\"44\" x2=\"110\" y2=\"80\"/><line class=\"d-ln\" x1=\"180\" y1=\"44\" x2=\"250\" y2=\"80\"/><circle class=\"d-rt\" cx=\"180\" cy=\"44\" r=\"10\"/><path class=\"d-x\" d=\"M175 41h10M175 47h10\"/><text class=\"d-t\" x=\"180\" y=\"29\" text-anchor=\"middle\">Backbone<\/text><rect class=\"d-box\" x=\"8\" y=\"104\" width=\"164\" height=\"124\" rx=\"3\"/><text class=\"d-s\" x=\"14\" y=\"116\" text-anchor=\"start\">Area 1 (stub)<\/text><rect class=\"d-box\" x=\"188\" y=\"104\" width=\"164\" height=\"124\" rx=\"3\"/><text class=\"d-s\" x=\"194\" y=\"116\" text-anchor=\"start\">Area 2 (NSSA)<\/text><line class=\"d-ln\" x1=\"110\" y1=\"80\" x2=\"60\" y2=\"156\"/><line class=\"d-ln\" x1=\"250\" y1=\"80\" x2=\"300\" y2=\"156\"/><circle class=\"d-rt\" cx=\"110\" cy=\"80\" r=\"10\"/><path class=\"d-x\" d=\"M105 77h10M105 83h10\"/><text class=\"d-t\" x=\"94\" y=\"84\" text-anchor=\"end\">ABR 1<\/text><circle class=\"d-rt\" cx=\"250\" cy=\"80\" r=\"10\"/><path class=\"d-x\" d=\"M245 77h10M245 83h10\"/><text class=\"d-t\" x=\"266\" y=\"84\">ABR 2<\/text><circle class=\"d-rt\" cx=\"60\" cy=\"156\" r=\"10\"/><path class=\"d-x\" d=\"M55 153h10M55 159h10\"/><text class=\"d-t\" x=\"60\" y=\"178\" text-anchor=\"middle\">Internal<\/text><circle class=\"d-rt\" cx=\"300\" cy=\"156\" r=\"10\"/><path class=\"d-x\" d=\"M295 153h10M295 159h10\"/><text class=\"d-t\" x=\"300\" y=\"178\" text-anchor=\"middle\">ASBR<\/text><text class=\"d-t d-redt\" x=\"92\" y=\"124\">Type 3<\/text><text class=\"d-t d-redt\" x=\"284\" y=\"138\" text-anchor=\"end\">Type 7<\/text><text class=\"d-s\" x=\"16\" y=\"202\">Type 1 and 2 stay inside.<\/text><text class=\"d-s\" x=\"16\" y=\"214\">Gets Type 3 + default, no Type 5.<\/text><text class=\"d-s\" x=\"196\" y=\"202\">Local externals<\/text><text class=\"d-s\" x=\"196\" y=\"214\">enter as Type 7.<\/text><line class=\"d-ln d-dash\" x1=\"300\" y1=\"180\" x2=\"300\" y2=\"236\"/><rect class=\"d-cloud\" x=\"248.0\" y=\"237\" width=\"104\" height=\"26\" rx=\"13\"/><text class=\"d-t\" x=\"300\" y=\"254\" text-anchor=\"middle\">External routes<\/text><text class=\"d-s\" x=\"16\" y=\"276\" text-anchor=\"start\">ABRs pass summaries (Type 3) between areas.<\/text><text class=\"d-s\" x=\"16\" y=\"288\" text-anchor=\"start\">ABR 2 turns Type 7 into Type 5 for the rest of the domain.<\/text><\/svg>"}, {"p": "What actually limits OSPF scale comes down to router resources (memory, CPU and interface bandwidth), driven by:"}, {"ul": ["the number of prefixes,", "how often links flap,", "how many neighbours each router has,", "how many routers share an area."]}, {"check": [1, 5, 13]}]}, {"h": "Router roles", "b": [{"tbl": [["Role", "What it is"], ["Internal router", "Every interface is in one area. Keeps one LSDB."], ["Backbone router", "At least one interface in Area 0."], ["ABR (area border router)", "Interfaces in Area 0 and at least one other area. Keeps a separate LSDB for each area and advertises summaries (Type 3) between them."], ["ASBR (AS boundary router)", "Redistributes external routes (static, EIGRP, BGP and so on) into OSPF."]]}, {"p": "One router can hold several roles at once. A router with interfaces in Area 0 and Area 1 that also redistributes a static route is a backbone router, an ABR and an ASBR."}, {"check": [8, 9]}]}, {"h": "The LSA types you must know", "b": [{"p": "The exam expects you to know LSAs by number and by name."}, {"tbl": [["Type", "Name", "Who sends it", "How far it goes"], ["1", "Router", "Every router", "Its own area"], ["2", "Network", "The DR on a multi-access segment", "Its own area"], ["3", "Summary (network)", "ABR", "Into other areas: inter-area routes"], ["4", "ASBR summary", "ABR", "Tells other areas how to reach the ASBR"], ["5", "AS external", "ASBR", "The whole OSPF domain, except stub-type areas"], ["7", "NSSA external", "ASBR inside an NSSA", "Only the NSSA. The ABR translates it to Type 5."]]}, {"p": "External routes come in two flavours. E2, the default, keeps the cost set at redistribution and ignores the internal path to the ASBR. E1 adds the internal cost to reach the ASBR, which is better when there are several exit points and you want the closest one used."}, {"check": [14]}]}, {"h": "Stub, totally stubby and NSSA", "b": [{"p": "A branch area with one way out doesn't need the full list of every external route. Special area types cut LSAs and replace them with a default route."}, {"tbl": [["Area type", "Blocks", "Gets instead", "Can have an ASBR?"], ["Normal", "Nothing", "Everything (1, 2, 3, 4, 5)", "Yes"], ["Stub", "Type 4 and 5 (externals)", "Type 3 + default from the ABR", "No"], ["Totally stubby (Cisco)", "Type 3, 4 and 5", "Just a default from the ABR", "No"], ["NSSA", "Type 4 and 5", "Type 3. Default only if configured", "Yes, using Type 7"], ["Totally NSSA (Cisco)", "Type 3, 4 and 5", "A default from the ABR", "Yes, using Type 7"]]}, {"ul": ["If several ABRs serve a stub area, they all inject a default, and traffic goes to the closest one.", "Area 0 can never be a stub, and stub areas can't carry virtual links.", "NSSA is the answer whenever a branch must redistribute something local, such as a static route or a small EIGRP island, but should still be protected from the domain's Type 5 externals."]}, {"tip": "Stub areas still see inter-area (Type 3) routes. Only totally stubby areas drop those too. The exam loves asking which routes a totally stubby area doesn't get: both external and inter-area."}, {"check": [0, 7, 16]}]}, {"h": "Designing areas well", "b": [{"p": "Good OSPF design is mostly about where you draw the area borders and how addressing lines up with them."}, {"ul": ["Give each area a contiguous address block. Then the ABR can advertise one summary instead of dozens of routes, and a flap inside the area is hidden behind it.", "Summarize at the ABRs, which in a campus usually means the distribution layer.", "Keep the backbone small and stable, with as few routers in Area 0 as you can.", "Don't redistribute connected routes such as loopbacks as externals when a network statement or passive interface will do. It adds external LSAs for no reason.", "Avoid virtual links. They patch an area that has lost its connection to Area 0, but they're a repair, not a design."]}, {"p": "Hub-and-spoke WANs get their own rule: put the area boundary at the hub. The hub is the ABR, and each spoke (with its WAN link) sits in a non-backbone area. A flapping spoke link then only disturbs its own area, and the small branch router runs SPF for just its own area."}, {"dia": "<svg viewBox=\"0 0 360 206\" role=\"img\" aria-label=\"Hub-and-spoke OSPF: area boundary at the hub versus one big Area 0\"><defs><marker id=\"ar\" viewBox=\"0 0 8 8\" refX=\"7\" refY=\"4\" markerWidth=\"7\" markerHeight=\"7\" orient=\"auto-start-reverse\"><path d=\"M0 0L8 4L0 8z\" class=\"d-arh\"/><\/marker><\/defs><text class=\"d-h\" x=\"8\" y=\"14\" text-anchor=\"start\">RECOMMENDED<\/text><rect class=\"d-box d-boxa\" x=\"4\" y=\"22\" width=\"166\" height=\"44\" rx=\"3\"/><text class=\"d-s\" x=\"10\" y=\"34\" text-anchor=\"start\">Area 0<\/text><circle class=\"d-rt\" cx=\"87\" cy=\"46\" r=\"10\"/><path class=\"d-x\" d=\"M82 43h10M82 49h10\"/><text class=\"d-t\" x=\"102\" y=\"50\">Hub (ABR)<\/text><rect class=\"d-box\" x=\"4\" y=\"76\" width=\"54\" height=\"92\" rx=\"3\"/><text class=\"d-s\" x=\"31\" y=\"162\" text-anchor=\"middle\">Area 1<\/text><line class=\"d-ln\" x1=\"87\" y1=\"56\" x2=\"31\" y2=\"120\"/><circle class=\"d-rt\" cx=\"31\" cy=\"120\" r=\"10\"/><path class=\"d-x\" d=\"M26 117h10M26 123h10\"/><rect class=\"d-box\" x=\"60\" y=\"76\" width=\"54\" height=\"92\" rx=\"3\"/><text class=\"d-s\" x=\"87\" y=\"162\" text-anchor=\"middle\">Area 2<\/text><line class=\"d-ln\" x1=\"87\" y1=\"56\" x2=\"87\" y2=\"120\"/><circle class=\"d-rt\" cx=\"87\" cy=\"120\" r=\"10\"/><path class=\"d-x\" d=\"M82 117h10M82 123h10\"/><rect class=\"d-box\" x=\"116\" y=\"76\" width=\"54\" height=\"92\" rx=\"3\"/><text class=\"d-s\" x=\"143\" y=\"162\" text-anchor=\"middle\">Area 3<\/text><line class=\"d-ln\" x1=\"87\" y1=\"56\" x2=\"143\" y2=\"120\"/><circle class=\"d-rt\" cx=\"143\" cy=\"120\" r=\"10\"/><path class=\"d-x\" d=\"M138 117h10M138 123h10\"/><text class=\"d-s\" x=\"87\" y=\"186\" text-anchor=\"middle\">One area per spoke and WAN link<\/text><text class=\"d-s\" x=\"87\" y=\"198\" text-anchor=\"middle\">A flap stays in that area<\/text><text class=\"d-h\" x=\"194\" y=\"14\" text-anchor=\"start\">AVOID<\/text><rect class=\"d-box d-boxa\" x=\"190\" y=\"22\" width=\"166\" height=\"146\" rx=\"3\"/><text class=\"d-s\" x=\"196\" y=\"34\" text-anchor=\"start\">Area 0 (everything)<\/text><circle class=\"d-rt\" cx=\"273\" cy=\"46\" r=\"10\"/><path class=\"d-x\" d=\"M268 43h10M268 49h10\"/><text class=\"d-t\" x=\"288\" y=\"50\">Hub<\/text><line class=\"d-ln\" x1=\"273\" y1=\"56\" x2=\"217\" y2=\"120\"/><circle class=\"d-rt\" cx=\"217\" cy=\"120\" r=\"10\"/><path class=\"d-x\" d=\"M212 117h10M212 123h10\"/><line class=\"d-ln\" x1=\"273\" y1=\"56\" x2=\"273\" y2=\"120\"/><circle class=\"d-rt\" cx=\"273\" cy=\"120\" r=\"10\"/><path class=\"d-x\" d=\"M268 117h10M268 123h10\"/><line class=\"d-ln\" x1=\"273\" y1=\"56\" x2=\"329\" y2=\"120\"/><circle class=\"d-rt\" cx=\"329\" cy=\"120\" r=\"10\"/><path class=\"d-x\" d=\"M324 117h10M324 123h10\"/><path class=\"d-ln d-red\" d=\"M230 92l10 10M240 92l-10 10\"/><text class=\"d-s\" x=\"273\" y=\"186\" text-anchor=\"middle\">Any spoke flap floods everyone<\/text><text class=\"d-s\" x=\"273\" y=\"198\" text-anchor=\"middle\">and reruns SPF everywhere<\/text><\/svg>"}, {"p": "Don't lump all branches into one big area either. That brings back the original problem, with every branch flap felt by every branch."}, {"tbl": [["Command", "Where", "Summarizes"], ["area 1 range 10.20.0.0 255.255.252.0", "ABR", "Inter-area routes from Area 1 (Type 3)"], ["summary-address 192.168.8.0 255.255.252.0", "ASBR", "External routes being redistributed (Type 5/7)"]]}, {"check": [2, 10, 21, 22, 15]}]}, {"h": "Neighbours, DRs and network types", "b": [{"p": "Every adjacency costs hellos, database exchanges and flooding. On a shared segment with many routers, a full mesh of adjacencies would be wasteful, so OSPF elects a designated router (DR) and a backup (BDR)."}, {"ul": ["Every other router (a DROTHER) forms full adjacencies only with the DR and BDR, sending updates to 224.0.0.6. The DR then floods them to everyone on 224.0.0.5.", "The DR also originates the segment's Type 2 network LSA.", "Election: highest interface priority wins (default 1); a tie goes to the highest router ID. Priority 0 means never DR or BDR.", "The election isn't pre-emptive. A better router added later doesn't take over until the DR and BDR both fail. If the DR fails, the BDR is promoted."]}, {"p": "For a router with many neighbours, the design advice is to spread the load: if one router sits on several LAN segments, it shouldn't be DR on all of them. Once the number of adjacencies gets large, go hierarchical."}, {"p": "On hub-and-spoke (NBMA-style) WANs, use the point-to-multipoint network type. It needs no DR, treats each spoke as a separate link to the hub, and avoids the DR problems a broadcast type causes when spokes can't reach each other."}, {"check": [17, 6, 3]}]}, {"h": "Fast, stable convergence", "b": [{"p": "OSPF's own hellos detect a dead neighbour in tens of seconds by default. Tuning them down costs CPU, because they run in the control plane. The better tool is BFD."}, {"ul": ["BFD (Bidirectional Forwarding Detection) is a lightweight hello that detects a forwarding failure in under a second and tells OSPF immediately.", "It isn't tied to one protocol: the same mechanism serves OSPF, EIGRP, IS-IS and BGP. Parts of it can run in hardware, so it's lighter than aggressive routing timers.", "Graceful restart (also called NSF) keeps packets forwarding on known routes while a router switches to its standby supervisor, so neighbours don't reconverge needlessly."]}, {"p": "Two lesser-known protections from the course:"}, {"ul": ["OSPF database protection (max-lsa) caps the number of non-self-generated LSAs a router will accept, so a flood of LSAs (from a misconfiguration, say) can't exhaust its memory.", "OSPF flood reduction sets the DoNotAge bit, so unchanged LSAs aren't re-flooded every 30 minutes. That's useful on stable links where refresh traffic is just overhead."]}, {"p": "When something is wrong, the symptom to look for is neighbours repeatedly changing state along with frequent SPF runs. That points to an unstable link or a control-plane problem."}, {"check": [11, 4, 12, 18]}]}, {"h": "Areas are not security", "b": [{"p": "It's tempting to think putting Finance in Area 20 and Employees in Area 10 separates them. It doesn't. Areas divide routing information, not traffic: routers still know how to reach every prefix, and packets flow between areas freely."}, {"p": "To enforce separation you need a firewall or ACLs, placed on the actual forwarding path between the zones. A firewall can only inspect traffic that passes through it."}, {"check": [19, 20]}]}, {"h": "Key takeaways", "b": [{"ul": ["Areas exist to limit LSDB size, SPF runs and flooding, and to make summarization possible. Everything connects through Area 0.", "Know the LSAs: 1 router, 2 network (DR), 3 summary (ABR), 4 ASBR summary, 5 external, 7 NSSA external.", "Stub blocks externals. Totally stubby blocks externals and inter-area routes. NSSA blocks externals but allows a local ASBR using Type 7.", "Use contiguous addressing per area, and summarize at the ABR with area range (summary-address is for externals on an ASBR).", "In hub-and-spoke designs, put the ABR at the hub, give each spoke its own area, and use point-to-multipoint.", "Use BFD for sub-second detection rather than aggressive hello timers.", "Areas aren't a security boundary; use firewalls or ACLs."]}, {"tip": "Common traps: an ABR keeps a database for every area it's in, not just Area 0. Stub areas still receive Type 3. A new higher-priority router doesn't steal the DR role."}]}], "verified": [["Link-state, identical LSDB per area, SPF; IP protocol 89; multicast 224.0.0.5/224.0.0.6", "p. 259, 262, 267"], ["Cost = 10^8 ÷ bandwidth, minimum 1; raise the reference bandwidth on all routers", "p. 259–260"], ["Hello 10 s (30 s on NBMA)", "p. 260"], ["Benefits of areas: fewer SPF runs, less flooding, summarization at ABRs, topology hiding; Area 0 required", "p. 263"], ["Hub-and-spoke: area boundary at the hub; don't put all branches in one area", "p. 264"], ["Router types; an ABR keeps an LSDB for each of its areas", "p. 265–266, 276"], ["DR/BDR: priority default 1, tie goes to highest router ID, 0 = never; not pre-emptive; DR sends Type 2", "p. 266–267"], ["LSA types 1–5 and 7 and their flooding scope; E1 vs E2, E2 by default", "p. 268–270"], ["Stub, totally stubby, NSSA and totally NSSA behaviour; NSSA gets no default unless configured", "p. 270–272"], ["Virtual links are a temporary fix through a transit area", "p. 272"], ["Summarize at the distribution layer; assign addresses so they can be summarized", "p. 303–304"], ["BFD: sub-second, protocol-independent, less CPU than tuned timers; GR/NSF keeps forwarding during switchover", "p. 311–312"], ["OSPFv3 keeps the same areas, router types and LSA ideas; FF02::5/FF02::6", "p. 274–276"]], "course": ["OSPF scalability factors (memory, CPU, bandwidth; prefixes, flaps, neighbours, routers per area)", "Point-to-multipoint recommended for hub-and-spoke", "Database protection (max-lsa) and flood reduction (DoNotAge)", "Keep the backbone small; don't redistribute connected loopbacks", "area range vs summary-address commands"]}, "Designing an IPv4 Address Plan": {"mins": 17, "intro": "How to build an IPv4 address plan that scales: subnetting and VLSM, a hierarchy that summarizes cleanly, addressing standards, voice and overlay subnets, NAT, and how addresses get handed out.", "parts": [{"h": "What a good address plan does", "b": [{"p": "An address plan is the foundation everything else sits on. Routing summaries, firewall rules, QoS policies and troubleshooting all get easier or harder depending on how addresses were laid out."}, {"p": "A good plan does four things:"}, {"ul": ["Gives every device an address, including the things nobody thinks of at first: phones, wireless, cameras, badge readers, building systems, loopbacks and management.", "Leaves room to grow. Sites get new services all the time, so size subnets for where they'll be, not where they are.", "Lets you summarize, so each site or region is advertised as one route.", "Makes traffic types easy to tell apart, so filters and QoS can match a whole range instead of individual hosts."]}, {"p": "The first step is the topology. Before choosing a single subnet, count the locations, the devices per location, and what each site needs (data, voice, wireless, video and so on)."}, {"tip": "Balance growth against waste. For 50 users, a /26 (62 hosts) is tight and a /25 (126) leaves room, but oversizing every subnet burns the space you'll later want for voice or video."}, {"check": [0]}]}, {"h": "IPv4 essentials", "b": [{"p": "A quick refresher on the pieces the exam expects you to know cold."}, {"ul": ["An IPv4 address is 32 bits, written as four decimal octets (10.1.1.1).", "The header is 20 bytes without options. Key fields: TTL (decremented by each router, packet dropped at 0), Protocol (what's inside, such as 6 for TCP or 89 for OSPF), and the ToS byte.", "The ToS byte (now called the DiffServ field) carries QoS markings. DSCP uses its upper 6 bits.", "Old classful ranges still show up in questions: Class D (224 to 239) is multicast, and Class E (240 and up) is reserved."]}, {"p": "RFC 1918 reserves three ranges for private use. They aren't routed on the internet, so you reach the internet through NAT."}, {"tbl": [["Range", "Prefix", "Typical use"], ["10.0.0.0 to 10.255.255.255", "10.0.0.0/8", "Large enterprises: room for a full hierarchy"], ["172.16.0.0 to 172.31.255.255", "172.16.0.0/12", "Mid-size networks, or a second range alongside 10/8"], ["192.168.0.0 to 192.168.255.255", "192.168.0.0/16", "Small sites and home routers"]]}, {"tip": "172.16.0.0/12 stops at 172.31. An address like 172.32.1.1 is public, and that's a classic distractor."}, {"check": [11, 12, 13]}]}, {"h": "Subnetting and VLSM", "b": [{"p": "A subnet mask splits an address into a network part and a host part. With n host bits you get 2ⁿ − 2 usable hosts, since the all-zeros address is the subnet itself and the all-ones address is the broadcast."}, {"tbl": [["Prefix", "Mask", "Usable hosts", "Typical use"], ["/22", "255.255.252.0", "1,022", "Large LAN"], ["/23", "255.255.254.0", "510", "Large LAN"], ["/24", "255.255.255.0", "254", "Standard user VLAN"], ["/25", "255.255.255.128", "126", "Floor with room to grow"], ["/26", "255.255.255.192", "62", "Small LAN"], ["/27", "255.255.255.224", "30", "Small LAN"], ["/28", "255.255.255.240", "14", "Small device group"], ["/30", "255.255.255.252", "2", "Router-to-router link"], ["/32", "255.255.255.255", "1 (the address itself)", "Loopback"]]}, {"p": "Variable-length subnet masking (VLSM) means using different mask lengths inside the same network, sizing each subnet to what it actually needs. You carve a big block into site blocks, then carve each site block into data, voice, wireless, point-to-point and loopback subnets."}, {"ul": ["Point-to-point links get a /30 (two usable addresses). Many platforms also support /31, which saves two more.", "Loopbacks get a /32: one address that identifies the router."]}, {"p": "Loopbacks are worth their own reserved range. They never go down as long as the router has any working path, so they're the right address for router IDs, management access, monitoring sources, BGP peerings and voice gateways (for example, dial peers)."}, {"check": [17, 14, 8, 4]}]}, {"h": "Build it as a hierarchy", "b": [{"p": "The single most important rule: give each part of the network one contiguous block, and carve smaller blocks out of it. Company, then region, then site, then VLAN."}, {"dia": "<svg viewBox=\"0 0 360 240\" role=\"img\" aria-label=\"Hierarchical IPv4 allocation: company /8, regional /10s, a site /20, and /24 VLANs\"><defs><marker id=\"ar\" viewBox=\"0 0 8 8\" refX=\"7\" refY=\"4\" markerWidth=\"7\" markerHeight=\"7\" orient=\"auto-start-reverse\"><path d=\"M0 0L8 4L0 8z\" class=\"d-arh\"/><\/marker><\/defs><rect class=\"d-box d-boxa\" x=\"105.0\" y=\"6\" width=\"150\" height=\"34\" rx=\"3\"/><text class=\"d-t\" x=\"180\" y=\"20\" text-anchor=\"middle\">10.0.0.0/8<\/text><text class=\"d-s\" x=\"180\" y=\"33\" text-anchor=\"middle\">Whole company<\/text><line class=\"d-ln\" x1=\"180\" y1=\"40\" x2=\"64\" y2=\"64\"/><rect class=\"d-box\" x=\"10.0\" y=\"64\" width=\"108\" height=\"34\" rx=\"3\"/><text class=\"d-t\" x=\"64\" y=\"78\" text-anchor=\"middle\">10.0.0.0/10<\/text><text class=\"d-s\" x=\"64\" y=\"91\" text-anchor=\"middle\">Americas<\/text><line class=\"d-ln\" x1=\"180\" y1=\"40\" x2=\"180\" y2=\"64\"/><rect class=\"d-box\" x=\"126.0\" y=\"64\" width=\"108\" height=\"34\" rx=\"3\"/><text class=\"d-t\" x=\"180\" y=\"78\" text-anchor=\"middle\">10.64.0.0/10<\/text><text class=\"d-s\" x=\"180\" y=\"91\" text-anchor=\"middle\">Europe<\/text><line class=\"d-ln\" x1=\"180\" y1=\"40\" x2=\"296\" y2=\"64\"/><rect class=\"d-box\" x=\"242.0\" y=\"64\" width=\"108\" height=\"34\" rx=\"3\"/><text class=\"d-t\" x=\"296\" y=\"78\" text-anchor=\"middle\">10.128.0.0/10<\/text><text class=\"d-s\" x=\"296\" y=\"91\" text-anchor=\"middle\">Asia-Pacific<\/text><line class=\"d-ln\" x1=\"64\" y1=\"98\" x2=\"64\" y2=\"120\"/><rect class=\"d-box\" x=\"10.0\" y=\"120\" width=\"108\" height=\"34\" rx=\"3\"/><text class=\"d-t\" x=\"64\" y=\"134\" text-anchor=\"middle\">10.0.16.0/20<\/text><text class=\"d-s\" x=\"64\" y=\"147\" text-anchor=\"middle\">Ottawa site<\/text><line class=\"d-ln\" x1=\"64\" y1=\"154\" x2=\"70\" y2=\"178\"/><rect class=\"d-box\" x=\"20.0\" y=\"178\" width=\"100\" height=\"34\" rx=\"3\"/><text class=\"d-t\" x=\"70\" y=\"192\" text-anchor=\"middle\">10.0.16.0/24<\/text><text class=\"d-s\" x=\"70\" y=\"205\" text-anchor=\"middle\">Data<\/text><line class=\"d-ln\" x1=\"64\" y1=\"154\" x2=\"180\" y2=\"178\"/><rect class=\"d-box\" x=\"130.0\" y=\"178\" width=\"100\" height=\"34\" rx=\"3\"/><text class=\"d-t\" x=\"180\" y=\"192\" text-anchor=\"middle\">10.0.20.0/24<\/text><text class=\"d-s\" x=\"180\" y=\"205\" text-anchor=\"middle\">Voice<\/text><line class=\"d-ln\" x1=\"64\" y1=\"154\" x2=\"290\" y2=\"178\"/><rect class=\"d-box\" x=\"240.0\" y=\"178\" width=\"100\" height=\"34\" rx=\"3\"/><text class=\"d-t\" x=\"290\" y=\"192\" text-anchor=\"middle\">10.0.24.0/24<\/text><text class=\"d-s\" x=\"290\" y=\"205\" text-anchor=\"middle\">Wireless<\/text><text class=\"d-s\" x=\"130\" y=\"134\">The site advertises one route (its /20);<\/text><text class=\"d-s\" x=\"130\" y=\"146\">the region advertises one /10.<\/text><text class=\"d-s\" x=\"180\" y=\"232\" text-anchor=\"middle\">Each level owns one contiguous block, so each level can be summarized<\/text><\/svg>"}, {"p": "Compare that with a network where subnets were handed out as needed: 10.10.4.0/24 in Asia, 10.10.6.0/24 in the Americas, 10.10.8.0/24 in Europe. Nothing can be summarized, routing tables grow with every new subnet, and nobody can tell where a subnet lives just by looking at it."}, {"p": "A typical large site might get a /20, which is sixteen /24s. A common pattern is four for data, four for voice, four for wireless, and the rest for links, loopbacks and management. Matching the subnet to the VLAN number (10.10.150.0 for VLAN 150) makes the plan almost self-documenting."}, {"p": "Worked example: 16 branches share a /16, and each needs up to 12 /24 networks. Twelve rounds up to sixteen (a power of two), and sixteen /24s make a /20. Sixteen /20s fit exactly in a /16, so each branch gets one /20 and is advertised as a single route."}, {"check": [15, 19, 2, 7]}]}, {"h": "Summarization", "b": [{"p": "A summary replaces a run of contiguous subnets with one shorter prefix. It shrinks routing tables, cuts update traffic, and hides flaps inside the summarized block."}, {"p": "To work out a summary by hand:"}, {"ul": ["Find the first octet where the first and last subnets differ.", "Count how many values that octet spans (last − first + 1) and round up to a power of two. That tells you how many bits to take off.", "Check that the first subnet sits on that boundary (it's a multiple of the block size). If it doesn't, one summary won't cover the range exactly."]}, {"tbl": [["Range", "Differing octet", "Span", "Summary"], ["10.3.8.0 to 10.3.15.0", "3rd: 8 to 15", "8 = 2³, take 3 bits off /24", "10.3.8.0/21"], ["192.168.8.0 to 192.168.11.0", "3rd: 8 to 11", "4 = 2², take 2 bits off /24", "192.168.8.0/22"], ["10.10.128.0 to 10.10.191.0", "3rd: 128 to 191", "64 = 2⁶, take 6 bits off /24", "10.10.128.0/18"]]}, {"p": "The last row is the Cert Guide's site example: data, voice, wireless, badge and server subnets spread across 10.10.130 to 10.10.176 all sit inside 10.10.128.0/18, so the whole site is advertised as one route, provided the site owns that entire block."}, {"tip": "The course phrases the method as \"subtract the first octet that is different and round up to a power of 2\". Strictly it's last − first + 1 (8 to 15 is eight values, not seven), but rounding up to the power of two gives the same mask either way."}, {"check": [1]}]}, {"h": "Standards and the three-step process", "b": [{"p": "The Cert Guide frames an address plan as three steps:"}, {"ul": ["Define addressing standards.", "Plan the IPv4 range and allocate it.", "Document the plan."]}, {"p": "Standards are the conventions everyone follows, so anyone can read an address and know what it is. Common ones:"}, {"ul": ["The default gateway is always .1 (or always .254).", "The VLAN number matches the third octet (VLAN 150 uses 10.10.150.0).", "Reserve the low addresses (say .1 to .15) for static devices and give the rest to the DHCP pool.", "User subnets come from 10.x.x.x and are /24s, with a parallel /24 for voice.", "Name DHCP-assigned ranges in DNS by location (bldg2-floor3), since the host addresses inside them keep changing."]}, {"p": "In the Cert Guide's campus case study, floor 1 of building A gets VLAN 11 with 10.10.11.0/24 for data and VLAN 111 with 10.10.111.0/24 for voice. Building B uses the 20s and 120s. Point-to-point links come from 10.10.2.0/24 as /30s, loopbacks from 10.10.1.0/24 as /32s, and 10.10.3.0/24 is set aside for access control."}, {"check": [6]}]}, {"h": "Voice and overlay subnets", "b": [{"p": "IP phones belong in their own VLAN and subnet, separate from the PCs. It makes QoS simple (match the whole voice subnet), lets you filter what can reach the phones, and makes troubleshooting easier."}, {"p": "But what if the existing plan has no spare subnets left for voice? That's where overlay subnets come in. You add a second, separate private range on top of the existing plan, for example 172.16.x.x for voice alongside 10.x.x.x for data, instead of readdressing the data network."}, {"ul": ["The requirement: an extra private address space that isn't used anywhere else.", "The benefit: scalability in a network that was never designed for the new service.", "A bonus: a different range for each traffic type makes filters and QoS rules easy to write."]}, {"check": [3, 10]}]}, {"h": "Public addresses, NAT and PAT", "b": [{"p": "Inside the enterprise, use private addresses. Use public addresses only where something faces the internet: public web and DNS servers, e-commerce, and VPN termination."}, {"ul": ["Static NAT (one-to-one) is for internal servers that must be reachable from outside.", "PAT (many-to-one, using port numbers) is for users browsing out. One public address can carry thousands of sessions.", "DMZ servers can simply be given public addresses, which avoids NAT for them altogether."]}, {"tbl": [["NAT term", "Meaning"], ["Inside local", "The real (usually private) address of your host"], ["Inside global", "What your host is translated to on the outside"], ["Outside global", "The real address of the remote host on the internet"], ["Outside local", "How that remote host appears from inside your network"]]}, {"p": "Overlapping addresses happen in mergers, when both companies used the same private ranges. Readdressing is the cleanest fix because it removes the overlap for good. In practice, NAT is often used as a workaround, or the new network is given a different private range, because readdressing a live network is disruptive."}, {"tip": "If the question asks for the cleanest solution to overlap, the answer is readdressing. If it asks what avoids readdressing, it's NAT or another private range."}, {"check": [16, 5, 9]}]}, {"h": "Handing out addresses", "b": [{"p": "Infrastructure gets static addresses: routers, switches, servers, printers, anything you need to manage at a fixed address. End devices (PCs, phones, wireless clients, even access points) get theirs from DHCP."}, {"p": "The DHCP exchange is DORA:"}, {"ul": ["Discover: the client broadcasts to 255.255.255.255 looking for a server.", "Offer: a server offers an address, lease time and options.", "Request: the client asks for (accepts) that offer.", "Acknowledge: the server confirms the lease. A NAK means it refused."]}, {"p": "DHCP runs over UDP, with the server on port 67 and the client on port 68. Routers don't forward broadcasts, so when the server is on another subnet, the client's gateway acts as a relay agent (ip helper-address on Cisco). Place DHCP servers in the data centre or server farm, and at branches."}, {"check": [18]}]}, {"h": "Key takeaways", "b": [{"ul": ["Start from the topology: count locations, devices and services, then size for growth.", "Know the RFC 1918 ranges: 10/8, 172.16/12 (ends at 172.31) and 192.168/16.", "Hosts = 2ⁿ − 2. Use /30 (or /31) for point-to-point links and /32 for loopbacks; /24 for user VLANs.", "Allocate hierarchically with contiguous blocks (company, region, site, VLAN) so each level summarizes to one route.", "To summarize, find the differing octet, round its span up to a power of two, and take that many bits off.", "Set standards (gateway .1, VLAN = third octet, a static range) and document the plan.", "Put voice on separate subnets. Overlay subnets need an extra private range and avoid readdressing.", "Private addresses inside. Static NAT for servers, PAT for users, public addresses in the DMZ. Readdressing is the cleanest fix for overlap.", "Static addresses for infrastructure, DHCP (DORA, UDP 67/68, relay) for clients."]}, {"tip": "Common traps: 172.32.x.x is not private. A /26 has 62 usable hosts, not 64. NAT hides overlapping ranges but doesn't fix them."}]}], "verified": [["IPv4 header is 20 bytes without options; ToS field carries IP precedence/DSCP; TTL and Protocol fields", "p. 44–46"], ["Class D is multicast, Class E reserved", "p. 58"], ["RFC 1918 ranges 10/8, 172.16/12, 192.168/16, and which size of organization tends to use each", "p. 60"], ["NAT vs PAT; static and dynamic NAT; overlapping networks; inside/outside local/global terms", "p. 61–63"], ["Hosts = 2ⁿ − 2; /24 common on LANs, /30 on point-to-point links, /32 on loopbacks", "p. 65–68"], ["Factors for an address plan: number of locations and devices, site requirements, subnet size", "p. 66–67"], ["VLSM: size each subnet to its need; carve site blocks into data, voice, wireless, links and loopbacks", "p. 70–72"], ["Reasons to use loopbacks: always up, router ID, management, IP telephony dial peers, monitoring source", "p. 73"], ["Separate voice subnets for QoS and troubleshooting; overlay subnets use a different private range", "p. 73–74"], ["Large site gets a /20 split into data, voice and wireless /24s", "p. 75–76"], ["Plan for growth; balance scalability against efficiency (the /25 vs /26 example)", "p. 77"], ["New design is cleanest, but avoid readdressing in practice: use another private range or NAT", "p. 78"], ["Summarize a site as 10.10.128.0/18; allocate contiguous blocks per region. (The book labels its regional example blocks /18; the ranges it describes only add up as /10s, which is what this lesson uses.)", "p. 78–80"], ["Public addresses only on internet-facing services; static NAT for servers, PAT for clients", "p. 80–81"], ["Three steps: define standards, plan and allocate, document; standards such as gateway .1/.254, VLAN = third octet, static .1–.15", "p. 81–82"], ["Campus case study: VLAN 11/111 for data and voice, /30 links from 10.10.2.0/24, loopbacks from 10.10.1.0/24", "p. 83–85"], ["Static addressing for infrastructure, DHCP for clients; DORA; UDP 67/68; relay agents; where to place DHCP servers", "p. 86–89"]], "course": ["Determining the summary mask by \"subtracting the differing octet and rounding up to a power of 2\" (the lesson explains the exact form)", "Naming DHCP ranges in DNS by location", "\"User subnets from 10.x.x.x/24\" as a standard (the book recommends /24s for users without naming a range)", "Readdressing as the cleanest fix for overlapping ranges (the book agrees it's cleanest but recommends avoiding it)", "/31 point-to-point links"]}};
 S.gtab=S.gtab||{};S.lpart=S.lpart||{};S.lread=S.lread||{};
 function lessonTabs(name){if(!LESSONS[name])return'';const t=S.gtab[name]==='qs'?'qs':'lesson';
   return `<div class="ltabs"><button type="button" class="ltab" data-t="lesson" aria-pressed="${t==='lesson'}">Lesson</button><button type="button" class="ltab" data-t="qs" aria-pressed="${t==='qs'}">Questions (${DATA[SECBY[name]].qs.length})</button></div>`}
