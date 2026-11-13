@@ -9612,6 +9612,216 @@ const DATA = [
       0
      ]
     }
+   },
+   {
+    "q": "A company wants Cisco to operate its controller infrastructure and reduce its own infrastructure maintenance. Which model best fits?",
+    "a": [
+     "Cisco cloud-hosted"
+    ],
+    "why": "In the Cisco cloud-hosted model, Cisco runs the vManage, vSmart and vBond instances, so the enterprise doesn't host or maintain controller infrastructure.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "Cisco cloud-hosted",
+      "Dedicated on-premises",
+      "Air-gapped controller deployment",
+      "MPLS-only edge routing"
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "What is a key requirement when controllers are distributed between a public cloud and an enterprise data center?",
+    "a": [
+     "IP connectivity and permitted secure communications between components"
+    ],
+    "why": "When controllers are split between a public cloud and an on-premises data center, they still need IP reachability to each other, with firewalls permitting their secure (DTLS/TLS) sessions.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "All devices must use the same VLAN",
+      "IP connectivity and permitted secure communications between components",
+      "NAT must be disabled everywhere",
+      "All application traffic must cross the cloud"
+     ],
+     "c": [
+      1
+     ]
+    }
+   },
+   {
+    "q": "In a cloud-hosted model, controllers use private IPs internally and are reachable through public IP mappings. What technique provides these mappings?",
+    "a": [
+     "One-to-one NAT"
+    ],
+    "why": "Static one-to-one NAT maps each controller's private address to its own fixed public address, so WAN Edges can always reach the same controller. PAT can't give each controller a stable, dedicated public address.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "PAT only",
+      "GRE",
+      "One-to-one NAT",
+      "OSPF summarization"
+     ],
+     "c": [
+      2
+     ]
+    }
+   },
+   {
+    "q": "Which statement about control-plane and data-plane transports is correct?",
+    "a": [
+     "Controller sessions may use Internet while user traffic uses MPLS"
+    ],
+    "why": "Control connections and data tunnels are independent. A branch could reach the controllers over the internet while sending user traffic over MPLS tunnels.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "Both must always use the Internet",
+      "MPLS cannot carry SD-WAN data traffic",
+      "Controllers always forward branch user traffic",
+      "Controller sessions may use Internet while user traffic uses MPLS"
+     ],
+     "c": [
+      3
+     ]
+    }
+   },
+   {
+    "q": "A vBond with a private address must support onboarding from WAN Edge routers over the public internet. Which design is appropriate?",
+    "a": [
+     "Publicly reachable address via one-to-one NAT and required firewall permissions"
+    ],
+    "why": "WAN Edges have to reach vBond first, so a private vBond needs a public address (usually static one-to-one NAT) and firewall rules allowing its DTLS traffic.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "Publicly reachable address via one-to-one NAT and required firewall permissions",
+      "No public reachability or routing",
+      "Only a loopback in VPN 512",
+      "Disable certificate validation"
+     ],
+     "c": [
+      0
+     ]
+    }
+   },
+   {
+    "q": "What is the main purpose of an enterprise Certificate Authority in SD-WAN?",
+    "a": [
+     "Issue and sign certificates used to establish trust"
+    ],
+    "why": "The CA issues and signs the certificates that every controller and WAN Edge uses to prove its identity before control connections come up.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "Assign site IDs",
+      "Calculate OMP routes",
+      "Issue and sign certificates used to establish trust",
+      "Perform source NAT"
+     ],
+     "c": [
+      2
+     ]
+    }
+   },
+   {
+    "q": "A branch has MPLS and Internet circuits, but cloud controllers are reachable only over the Internet. If Internet fails, what is the most accurate outcome?",
+    "a": [
+     "Control connectivity may be lost even if MPLS data transport remains available"
+    ],
+    "why": "Two circuits don't give control-plane redundancy unless both can reach the controllers. If only the internet reaches the cloud controllers, losing it can drop control connections even while MPLS is still up.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "MPLS automatically provides an alternate controller path",
+      "Existing traffic must immediately stop on all links",
+      "Control connectivity may be lost even if MPLS data transport remains available",
+      "vManage becomes a data-plane router"
+     ],
+     "c": [
+      2
+     ]
+    }
+   },
+   {
+    "q": "Which protocol secures datagram-based SD-WAN control communications?",
+    "a": [
+     "DTLS"
+    ],
+    "why": "DTLS is TLS adapted for UDP datagrams. It authenticates and encrypts SD-WAN control connections (TLS is the TCP option).",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "FTP",
+      "DTLS",
+      "SNMPv1",
+      "TFTP"
+     ],
+     "c": [
+      1
+     ]
+    }
+   },
+   {
+    "q": "Why is a DMZ/perimeter firewall important for Internet-facing on-premises controllers?",
+    "a": [
+     "It filters and protects externally reachable controller services"
+    ],
+    "why": "Internet-facing controllers in a DMZ sit behind a perimeter firewall that only allows the ports and services the controllers actually need.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "It eliminates certificate requirements",
+      "It forces all user traffic through vBond",
+      "It filters and protects externally reachable controller services",
+      "It replaces OMP"
+     ],
+     "c": [
+      2
+     ]
+    }
+   },
+   {
+    "q": "Which design change most directly reduces a branch single point of failure for cloud-controller reachability?",
+    "a": [
+     "Add a second independently routed Internet path with verified controller reachability"
+    ],
+    "why": "A second, independently routed internet path that can actually reach the controllers removes the single point of failure. A second VLAN on the same failed circuit doesn't help.",
+    "note": "",
+    "dup": false,
+    "src": "Practice set",
+    "mc": {
+     "o": [
+      "Add a second independently routed Internet path with verified controller reachability",
+      "Add a second VLAN on the same failed ISP circuit",
+      "Disable control connections on all transports",
+      "Use a single private DNS server with no backup"
+     ],
+     "c": [
+      0
+     ]
+    }
    }
   ]
  },
