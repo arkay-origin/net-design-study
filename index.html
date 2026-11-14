@@ -116,6 +116,14 @@ h1 span{color:var(--red)}
 .ref b{font-family:var(--label);font-weight:500;letter-spacing:.18em;text-transform:uppercase;font-size:.62rem;color:var(--tan-dim);margin-right:6px}
 .srcnote{margin:0;font-size:.82rem;color:var(--muted)}
 .chip.bk{border-style:dashed}
+.spick{display:flex;flex-direction:column;gap:12px;width:100%;flex:1 1 100%}
+.sgh{display:flex;justify-content:space-between;align-items:baseline;width:100%;background:none;border:0;border-bottom:1px solid var(--line);padding:0 0 4px;margin-bottom:6px;cursor:pointer;font-family:var(--label);font-weight:500;text-transform:uppercase;letter-spacing:.22em;font-size:.7rem;color:var(--tan-dim)}
+.sgh[aria-pressed="true"]{color:var(--tan)}
+.sgn{font-family:var(--mono);letter-spacing:0;font-size:.72rem}
+.sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:6px}
+.sgrid .chip{display:flex;justify-content:space-between;align-items:center;gap:8px;text-align:left;padding:8px 10px;min-height:38px}
+.sgrid .chip .cn{opacity:.6;font-family:var(--mono);font-size:.75rem}
+
 .srctag{display:inline-block;vertical-align:middle;margin-left:6px;font:500 .62rem var(--label);letter-spacing:.16em;text-transform:uppercase;color:var(--tan-dim);border:1px solid var(--line);border-radius:2px;padding:1px 5px}
 
 .mgrp{display:flex;flex-direction:column;gap:4px;margin-top:10px}
@@ -17940,8 +17948,24 @@ function build(){
   if(shuffled){for(let i=list.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[list[i],list[j]]=[list[j],list[i]]}}
   queue=list;pos=0;flipped=false;render();
 }
+const GROUPS=[["Addressing",["Designing an IPv4 Address Plan","Exploring IPv6","Deploying IPv6"]],
+ ["Routing",["OSPF Design","IS-IS Routing","EIGRP Design","BGP Routing","BGP Attributes, Communities and Path Selection"]],
+ ["Campus",["Designing Enterprise Campus LAN","Layer 2 Campus","Designing Layer 3 Campus"]],
+ ["SD-Access",["Discovering the Cisco SD-Access Architecture","Exploring Cisco SD-Access Fabric Design","Exploring Cisco SD-Access Site Design Strategy and Considerations"]],
+ ["WAN and VPN",["Discovering Service Provider-Managed VPNs","Designing Enterprise-Managed VPNs","Designing WAN Resiliency"]],
+ ["SD-WAN",["Examining Cisco SD-WAN Architectures","Examining Cisco SD-WAN Deployment Design Considerations","Examining Cisco SD-WAN NAT and Hybrid Design Considerations","Designing Cisco SD-WAN Routing and High Availability"]],
+ ["QoS",["Exploring QoS","Designing LAN and WAN QoS"]],
+ ["Multicast",["Introducing Multicast","Exploring Multicast with PIM-SM","Designing Rendezvous Point Distribution Solutions"]],
+ ["Automation",["Introducing Network APIs and Protocols","Exploring YANG, NETCONF, RESTCONF and Model-Driven Telemetry"]]];
+{const named=new Set(GROUPS.flatMap(g=>g[1]));const rest=DATA.map(s=>s.name).filter(n=>!named.has(n));if(rest.length)GROUPS.push(["Other",rest])}
+function SECI(){const m={};DATA.forEach((s,i)=>m[s.name]=i);return m}
+function secPicker(sel){
+  return '<div class="spick">'+GROUPS.map(([gn,names])=>{names=names.filter(n=>SECI()[n]!==undefined);const on=names.filter(n=>sel.includes(n)).length;
+    return `<div class="sgrp"><button type="button" class="sgh" data-g="${esc(gn)}" aria-pressed="${on===names.length}"><span>${esc(gn)}</span><span class="sgn">${on}/${names.length}</span></button><div class="sgrid">${names.map(n=>{const s=DATA[SECI()[n]];return `<button type="button" class="chip${s.book?' bk':''}" aria-pressed="${sel.includes(n)}" data-s="${esc(n)}"><span>${esc(SHORT[n]||n)}</span><span class="cn">${s.qs.length}</span></button>`}).join('')}</div></div>`}).join('')+'</div>'}
+function secToggle(e,sel){const g=e.target.closest('[data-g]');if(g){const names=GROUPS.find(x=>x[0]===g.dataset.g)[1].filter(n=>SECI()[n]!==undefined);const all=names.every(n=>sel.includes(n));return all?sel.filter(n=>!names.includes(n)):[...new Set([...sel,...names])]}
+  const b=e.target.closest('.chip');if(!b)return null;const n=b.dataset.s;return sel.includes(n)?sel.filter(x=>x!==n):[...sel,n]}
 function chips(){
-  $('chips').innerHTML=DATA.map(s=>`<button type="button" class="chip${s.book?' bk':''}" aria-pressed="${S.secs.includes(s.name)}" data-s="${esc(s.name)}">${esc(SHORT[s.name]||s.name)} <span style="opacity:.6">${s.qs.length}</span></button>`).join('');
+  $('chips').innerHTML=secPicker(S.secs);
   $('allBtn').textContent=S.secs.length===DATA.length?'Clear all':'Select all';
   ['all','new','rev','due','star'].forEach(m=>$('m-'+m).setAttribute('aria-pressed',S.mode===m));
   $('shuffleBtn').textContent=shuffled?'In order':'Shuffle';
@@ -17991,7 +18015,7 @@ function grade(g){
   if(g==='r'){const at=Math.min(queue.length,pos+4);queue.splice(at,0,c)}
   pos++;flipped=false;render();
 }
-$('chips').onclick=e=>{const b=e.target.closest('.chip');if(!b)return;const n=b.dataset.s;S.secs=S.secs.includes(n)?S.secs.filter(x=>x!==n):[...S.secs,n];save();build()};
+$('chips').onclick=e=>{const r=secToggle(e,S.secs);if(!r)return;S.secs=r;save();build()};
 $('allBtn').onclick=()=>{S.secs=S.secs.length===DATA.length?[]:DATA.map(s=>s.name);save();build()};
 document.querySelectorAll('.seg button').forEach(b=>b.onclick=()=>{S.mode=b.dataset.mode;save();build()});
 $('shuffleBtn').onclick=()=>{shuffled=!shuffled;S.shuffled=shuffled;save();build()};
@@ -18023,16 +18047,6 @@ function goTo(y){y=Math.max(0,Math.round(y));const se=document.scrollingElement|
 function jumpTo(id){const el=document.getElementById(id);if(!el)return;
   const y=el.getBoundingClientRect().top+(window.pageYOffset||document.documentElement.scrollTop||0)-8;goTo(y);
   setTimeout(()=>{const r=el.getBoundingClientRect().top;if(Math.abs(r-8)>40){try{el.scrollIntoView(true)}catch(e){}}},80)}
-const GROUPS=[["Addressing",["Designing an IPv4 Address Plan","Exploring IPv6","Deploying IPv6"]],
- ["Routing",["OSPF Design","IS-IS Routing","EIGRP Design","BGP Routing","BGP Attributes, Communities and Path Selection"]],
- ["Campus",["Designing Enterprise Campus LAN","Layer 2 Campus","Designing Layer 3 Campus"]],
- ["SD-Access",["Discovering the Cisco SD-Access Architecture","Exploring Cisco SD-Access Fabric Design","Exploring Cisco SD-Access Site Design Strategy and Considerations"]],
- ["WAN and VPN",["Discovering Service Provider-Managed VPNs","Designing Enterprise-Managed VPNs","Designing WAN Resiliency"]],
- ["SD-WAN",["Examining Cisco SD-WAN Architectures","Examining Cisco SD-WAN Deployment Design Considerations","Examining Cisco SD-WAN NAT and Hybrid Design Considerations","Designing Cisco SD-WAN Routing and High Availability"]],
- ["QoS",["Exploring QoS","Designing LAN and WAN QoS"]],
- ["Multicast",["Introducing Multicast","Exploring Multicast with PIM-SM","Designing Rendezvous Point Distribution Solutions"]],
- ["Automation",["Introducing Network APIs and Protocols","Exploring YANG, NETCONF, RESTCONF and Model-Driven Telemetry"]]];
-{const named=new Set(GROUPS.flatMap(g=>g[1]));const rest=DATA.map(s=>s.name).filter(n=>!named.has(n));if(rest.length)GROUPS.push(["Other",rest])}
 const SECBY={};DATA.forEach((s,i)=>SECBY[s.name]=i);
 let gExpand=false;
 function hl(t,q){const s=esc(t);if(!q)return s;const re=new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi');return s.replace(re,'<mark style="background:var(--red-soft);color:var(--tan)">$1</mark>')}
@@ -18167,7 +18181,7 @@ function tSetup(v){
     <h2>New test</h2>
     <div style="display:flex;flex-direction:column;gap:8px">
       <div class="row"><span class="label">Sections</span><button class="tool" id="tAll" type="button">${cfg.secs.length===DATA.length?'Clear all':'Select all'}</button></div>
-      <div class="chips" id="tChips">${DATA.map(s=>`<button type="button" class="chip" aria-pressed="${cfg.secs.includes(s.name)}" data-s="${esc(s.name)}">${esc(SHORT[s.name]||s.name)}</button>`).join('')}</div>
+      <div id="tChips">${secPicker(cfg.secs)}</div>
     </div>
     <div class="row">
       <div style="display:flex;flex-direction:column;gap:6px"><span class="label">Questions</span>
@@ -18180,7 +18194,7 @@ function tSetup(v){
     ${T.cur&&T.cur.done?`<button type="button" class="go alt" id="tLast">Last results</button>`:''}</div>
     <div class="row" style="justify-content:flex-end"><button class="tool danger" id="tReset" type="button">Reset test history</button></div>
   </div>`;
-  $('tChips').onclick=e=>{const b=e.target.closest('.chip');if(!b)return;const n=b.dataset.s;cfg.secs=cfg.secs.includes(n)?cfg.secs.filter(x=>x!==n):[...cfg.secs,n];tSave();tSetup(v)};
+  $('tChips').onclick=e=>{const r=secToggle(e,cfg.secs);if(!r)return;cfg.secs=r;tSave();tSetup(v)};
   $('tAll').onclick=()=>{cfg.secs=cfg.secs.length===DATA.length?[]:DATA.map(s=>s.name);tSave();tSetup(v)};
   $('tCount').onclick=e=>{const b=e.target.closest('button');if(!b)return;cfg.count=b.dataset.n==='all'?'all':+b.dataset.n;tSave();tSetup(v)};
   $('tFb').onclick=e=>{const b=e.target.closest('button');if(!b)return;cfg.fb=b.dataset.f;tSave();tSetup(v)};
